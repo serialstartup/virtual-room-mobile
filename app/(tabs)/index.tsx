@@ -40,7 +40,7 @@ const Home = () => {
             <Hero />
         </SectionWrapper>
 
-         <SectionWrapper>
+         <SectionWrapper padding={0}>
             <HowItsWorks />
         </SectionWrapper>
 

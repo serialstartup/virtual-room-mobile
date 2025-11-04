@@ -49,7 +49,7 @@ export const Colors = {
   },
   primary: '#000000',
   secondary: '#71717a',
-  background: '#ffffff',
+  background: '#000',
   surface: '#f8f8f8',
   text: '#000000',
   textSecondary: '#71717a',

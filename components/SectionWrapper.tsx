@@ -15,7 +15,7 @@ interface SectionWrapperProps {
 
 const SectionWrapper: React.FC<SectionWrapperProps> = ({
   children,
-  backgroundColor = Colors.surface,
+  backgroundColor = Colors.background,
   padding = 16,
   margin = 0,
   borderRadius = 8,
