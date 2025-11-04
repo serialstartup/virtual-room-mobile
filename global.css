@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom color palette */
+:root {
+  /* Muted Pink Colors */
+  --color-muted-pink-50: #fdf2f8;
+  --color-muted-pink-100: #fce7f3;
+  --color-muted-pink-200: #fbcfe8;
+  --color-muted-pink-300: #f9a8d4;
+  --color-muted-pink-400: #f472b6;
+  --color-muted-pink-500: #ec4899;
+  --color-muted-pink-600: #db2777;
+  --color-muted-pink-700: #be185d;
+  --color-muted-pink-800: #9d174d;
+  --color-muted-pink-900: #831843;
+
+  /* App specific colors */
+  --color-primary: #000000;
+  --color-secondary: #71717a;
+  --color-background: #ffffff;
+  --color-surface: #f8f8f8;
+  --color-text: #000000;
+  --color-text-secondary: #71717a;
+  --color-border: #e4e4e7;
+}
