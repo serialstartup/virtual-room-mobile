@@ -11,7 +11,7 @@ import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { FlashList } from "@shopify/flash-list";
 import GradientView from "../GradientView";
-import HomeSection from "./HomeSection";
+import TitleSection from "../TitleSection";
 const HowItsWorks = () => {
   const howItWorksData = [
     {
@@ -82,7 +82,7 @@ const HowItsWorks = () => {
   );
 
   return (
-    <HomeSection className="my-10" bgColor="bg-gray-100" subtitle="Learn how to use the app and get the most out of it!" title="How it's Works">
+    <TitleSection className="my-10" bgColor="bg-gray-100" subtitle="Learn how to use the app and get the most out of it!" title="How it's Works">
       <AnimatedView className="h-72" animation="fadeIn" duration={600} easing="easeInOut">
         <FlashList
           horizontal
@@ -92,7 +92,7 @@ const HowItsWorks = () => {
           showsHorizontalScrollIndicator={false}
         />
       </AnimatedView>
-    </HomeSection>
+    </TitleSection>
   );
 };
 

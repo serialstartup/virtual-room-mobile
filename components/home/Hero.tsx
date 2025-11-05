@@ -21,7 +21,7 @@ const Hero = () => {
       >
         <GradientView
           preset="custom"
-          colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.8)"]}
+          colors={["rgba(0, 0, 0, 0.2)", "rgba(0, 0, 0, 0.7)"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={styles.overlay}
@@ -32,7 +32,7 @@ const Hero = () => {
             duration={600}
             easing="easeOut"
             style={styles.content}
-            className="px-6 items-center justify-center gap-4 mt-4"
+            className="px-6 items-center justify-center gap-4 mt-12"
           >
             <AnimatedText
               animation="scale"

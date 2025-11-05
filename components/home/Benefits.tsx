@@ -1,5 +1,5 @@
 import React from "react";
-import HomeSection from "./HomeSection";
+import TitleSection from "../TitleSection";
 import { Sparkles, ShoppingBag, Heart,Share2 } from "lucide-react-native";
 import AnimatedView from "../ui/AnimatedView";
 import { Text, View } from "react-native";
@@ -34,7 +34,7 @@ const whyUs = [
 
 const Benefits = () => {
   return (
-    <HomeSection
+    <TitleSection
       subtitle="Revolutionize your fashion shopping with cutting-edge AI technology"
       title="Why Choose Our App?"
     >
@@ -55,7 +55,7 @@ const Benefits = () => {
           </AnimatedView>
         );
       })}
-    </HomeSection>
+    </TitleSection>
   );
 };
 

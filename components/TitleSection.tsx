@@ -1,10 +1,10 @@
 
 import React, { ReactNode } from 'react'
-import AnimatedView from "../ui/AnimatedView";
-import AnimatedText from "../ui/AnimatedText";
+import AnimatedView from "./ui/AnimatedView";
+import AnimatedText from "./ui/AnimatedText";
 import { View } from 'react-native';
 
-interface HomeSectionProps {
+interface TitleSectionProps {
   children?: ReactNode
   title: string
   subtitle?: string
@@ -12,7 +12,7 @@ interface HomeSectionProps {
   className?: string
 }
 
-const HomeSection:React.FC<HomeSectionProps> = ({title,subtitle,children,bgColor,className}) => {
+const TitleSection:React.FC<TitleSectionProps> = ({title,subtitle,children,bgColor,className}) => {
   return (
     <AnimatedView className={`p-4 items-center  ${bgColor ? bgColor : 'bg-white'} ${className}`} animation="fadeIn" duration={600} easing="easeInOut">
     <View className='mb-6 mt-4 px-8'> 
@@ -28,4 +28,4 @@ const HomeSection:React.FC<HomeSectionProps> = ({title,subtitle,children,bgColor
   );
 }
 
-export default HomeSection
+export default TitleSection

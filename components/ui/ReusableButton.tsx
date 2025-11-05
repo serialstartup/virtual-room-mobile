@@ -49,7 +49,7 @@ const ReusableButton: React.FC<ReusableButtonProps> = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className={`items-center justify-center min-h-[48px] rounded-xl ${padding ? padding : "py-3 px-6"} ${disabled ? "opacity-50" : "opacity-100"} ${bgColor ? bgColor : "bg-white"} ${buttonShadow ? "shadow-lg shadow-black/50" : ""}`}
+      className={`items-center justify-center min-h-[48px] rounded-xl ${padding ? padding : "py-3 px-6"} ${disabled ? "opacity-50" : "opacity-100"} ${bgColor ? bgColor : "bg-white"} ${buttonShadow ? "shadow-md shadow-virtual-primary-light/90" : ""}`}
       style={style}
     >
       <Text
