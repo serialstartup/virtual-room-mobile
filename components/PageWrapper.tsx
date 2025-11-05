@@ -39,7 +39,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({
   }
   return (
     <SafeAreaView
-      edges={["top", "left", "right", "bottom"]}
+      edges={["top", "left", "right"]}
       style={[styles.container, { backgroundColor, padding }, style]}
     >
       <StatusBar

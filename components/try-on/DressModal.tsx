@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { AnimatePresence, MotiView } from "moti";
 import DescriptionDressTab from "./tabs/DescriptionDressTab";
 import UploadDressTab from "./tabs/UploadDressTab";
 import ProductDressTab from "./tabs/ProductDressTab";
@@ -59,15 +60,23 @@ const DressModal = () => {
       </View>
 
       {/* Tab Content */}
-      <View>
-        {activeTab === "description" ? (
-          <DescriptionDressTab />
-        ) : activeTab === "uploadDress" ? (
-          <UploadDressTab />
-        ) : (
-          <ProductDressTab />
-        )}
-      </View>
+      <AnimatePresence exitBeforeEnter>
+        <MotiView
+          key={activeTab}
+          from={{ opacity: 0, translateX: 20 }}
+          animate={{ opacity: 1, translateX: 0 }}
+          exit={{ opacity: 0, translateX: -20 }}
+          transition={{ type: "timing", duration: 200 }}
+        >
+          {activeTab === "description" ? (
+            <DescriptionDressTab />
+          ) : activeTab === "uploadDress" ? (
+            <UploadDressTab />
+          ) : (
+            <ProductDressTab />
+          )}
+        </MotiView>
+      </AnimatePresence>
     </View>
   );
 };

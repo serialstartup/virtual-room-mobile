@@ -21,7 +21,8 @@ export default function RootLayout() {
           fontWeight: '600',
         },
         headerShown: false,
-      }}
+        animation: 'fade',
+        }}
     >
       <Tabs.Screen
         name="index"

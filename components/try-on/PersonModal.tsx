@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { AnimatePresence, MotiView } from "moti";
 import UploadModelTab from "./tabs/UploadModelTab";
 import ChooseModelTab from "./tabs/ChooseModelTab";
 
@@ -53,9 +54,17 @@ const PersonModal = () => {
       </View>
 
       {/* Tab Content */}
-      <View>
-        {activeTab === "uploadImage" ? <UploadModelTab /> : <ChooseModelTab />}
-      </View>
+      <AnimatePresence exitBeforeEnter>
+        <MotiView
+          key={activeTab}
+          from={{ opacity: 0, translateX: 20 }}
+          animate={{ opacity: 1, translateX: 0 }}
+          exit={{ opacity: 0, translateX: -20 }}
+          transition={{ type: "timing", duration: 200 }}
+        >
+          {activeTab === "uploadImage" ? <UploadModelTab /> : <ChooseModelTab />}
+        </MotiView>
+      </AnimatePresence>
     </View>
   );
 };
