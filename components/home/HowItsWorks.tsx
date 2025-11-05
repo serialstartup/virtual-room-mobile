@@ -11,9 +11,7 @@ import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { FlashList } from "@shopify/flash-list";
 import GradientView from "../GradientView";
-import AnimatedText from "../ui/AnimatedText";
-import { Colors } from "@/constants";
-
+import HomeSection from "./HomeSection";
 const HowItsWorks = () => {
   const howItWorksData = [
     {
@@ -35,28 +33,28 @@ const HowItsWorks = () => {
       title: "Görsel Yükle",
       description:
         "Beğendiğin bir kıyafetin ya da tasarımın varsa, fotoğrafını yükle. AI senin için üstüne uygulasın.",
-      icon: <ScanFace color="pink"  size={36} />,
+      icon: <ScanFace color="pink" size={36} />,
     },
     {
       id: 4,
       title: "Linkini Paylaş",
       description:
         "Bir e-ticaret sitesinde kıyafet gördün mü? Linki yapıştır, biz onu senin üstünde gösterelim.",
-      icon: <Link  color="pink" size={36} />,
+      icon: <Link color="pink" size={36} />,
     },
     {
       id: 5,
       title: "Kendini Gör",
       description:
         "Yapay zeka kıyafeti senin üstüne yerleştirir. Tarzının nasıl göründüğünü anında keşfet!",
-      icon: <Smile color="pink" size={36}  />,
+      icon: <Smile color="pink" size={36} />,
     },
     {
       id: 6,
       title: "Wardrobe'ına Ekle ",
       description:
         "Favori görünümlerini kaydet, kombinler oluştur ve kendi dijital gardırobunu yarat.",
-      icon: <ToolCase color="pink" size={36}  />,
+      icon: <ToolCase color="pink" size={36} />,
     },
   ];
 
@@ -65,7 +63,7 @@ const HowItsWorks = () => {
       <GradientView
         preset="custom"
         borderRadius={16}
-        colors={["#1E1E1E", "#3D3D3D"]}
+        colors={["#000000", "#3B3B3B"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
       >
@@ -74,7 +72,7 @@ const HowItsWorks = () => {
             {item.title}
           </Text>
           <Text className="text-virtual-surface">{item.description}</Text>
-          <View className="mt-auto self-end text-xl">{item.icon}</View>
+          <Text className="mt-auto self-end text-xl text-virtual-primary-dark bg-virtual-primary-light rounded-full py-2 px-4 font-semibold">{item.id}</Text>
           {/* <Text className="bg-virtual-primary text-white font-semibold px-4 py-2 mt-3 rounded-full text-3xl self-center">
             {item.id}
           </Text> */}
@@ -84,11 +82,8 @@ const HowItsWorks = () => {
   );
 
   return (
-    <AnimatedView className="my-10 p-4">
-      <AnimatedText className="text-2xl font-semibold text-center text-white mb-8">
-        How it works?
-      </AnimatedText>
-      <AnimatedView className="h-80">
+    <HomeSection className="my-10" bgColor="bg-gray-100" subtitle="Learn how to use the app and get the most out of it!" title="How it's Works">
+      <AnimatedView className="h-72" animation="fadeIn" duration={600} easing="easeInOut">
         <FlashList
           horizontal
           data={howItWorksData}
@@ -97,7 +92,7 @@ const HowItsWorks = () => {
           showsHorizontalScrollIndicator={false}
         />
       </AnimatedView>
-    </AnimatedView>
+    </HomeSection>
   );
 };
 

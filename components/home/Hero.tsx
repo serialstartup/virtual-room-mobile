@@ -12,6 +12,7 @@ const Hero = () => {
       duration={800}
       easing="easeInOut"
       style={styles.container}
+      className="rounded-b-2xl overflow-hidden"
     >
       <ImageBackground
         source={ require("@/assets/images/fashion1.png") }
@@ -24,7 +25,6 @@ const Hero = () => {
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={styles.overlay}
-          className="justify-between items-center pt-16 pb-10"
         >
           <AnimatedView
             animation="scale"

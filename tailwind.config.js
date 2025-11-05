@@ -8,12 +8,14 @@ module.exports = {
         colors: {
         // Guideland Custom Colors
         'virtual': {
+          'primary-light': '#f9a8d4',
           primary: '#ec4899',
           'primary-dark': '#9d174d',
           secondary: '#6b7280',
           surface: '#f9fafb',
           'surface-dark': '#f3f4f6',
           'text-muted': '#6b7280',
+          'text-muted-dark': '#262626',
           'text-light': '#9ca3af',
         }
       },

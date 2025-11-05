@@ -45,12 +45,12 @@ const Home = () => {
         </SectionWrapper>
 
 
-         <SectionWrapper>
+         <SectionWrapper padding={0}>
             <Benefits />
         </SectionWrapper>
 
 
-         <SectionWrapper>
+         <SectionWrapper padding={0}>
             <ReadyButton />
         </SectionWrapper>
         <Footer currentPage={currentPage} onNavigate={handleNavigate} />

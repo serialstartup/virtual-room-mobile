@@ -30,7 +30,7 @@ const gradientPresets: Record<Exclude<GradientPreset, 'custom'>, readonly [strin
   pink: ['#f472b6', '#be185d'] as const,
   dark: ['#1a1a1a', '#000000'] as const,
   light: ['#f1f3f4', '#e4e4e7'] as const,
-  accent: ['#ec4899', '#9d174d'] as const,
+  accent: ['#ec4899', '#9d174d','#F70F83'] as const,
 }
 
 const GradientView: React.FC<GradientViewProps> = ({

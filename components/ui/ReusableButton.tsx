@@ -1,8 +1,4 @@
-import {
-  Text,
-  TouchableOpacity,
-  ViewStyle,
-} from "react-native";
+import { Text, TouchableOpacity, ViewStyle } from "react-native";
 import React from "react";
 
 interface ReusableButtonProps {
@@ -11,9 +7,12 @@ interface ReusableButtonProps {
   variant?: "filled" | "outlined";
   disabled?: boolean;
   style?: ViewStyle;
-  textColor?:string;
+  textColor?: string;
   borderColor?: string;
   bgColor?: string;
+  padding?: string;
+  buttonShadow?: boolean;
+  textShadow?: boolean;
 }
 
 const ReusableButton: React.FC<ReusableButtonProps> = ({
@@ -24,17 +23,22 @@ const ReusableButton: React.FC<ReusableButtonProps> = ({
   style,
   textColor,
   borderColor,
-  bgColor
+  bgColor,
+  padding,
+  textShadow = false,
+  buttonShadow = false,
 }) => {
   if (variant === "outlined") {
     return (
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
-        className={`items-center justify-center border-2 bg-transparent py-3 px-6 min-h-[48px] rounded-xl ${disabled ? 'opacity-50' : 'opacity-100'} ${borderColor ? borderColor : 'border-white'}`}
+        className={`items-center justify-center border-2 bg-transparent min-h-[48px] rounded-xl ${padding ? padding : "py-3 px-6"} ${disabled ? "opacity-50" : "opacity-100"} ${borderColor ? borderColor : "border-white"} ${buttonShadow ? "shadow-lg shadow-black/50" : ""}`}
         style={style}
       >
-        <Text className={`font-semibold text-center text-base ${textColor ? textColor : 'text-white'}`}>
+        <Text
+          className={`font-semibold text-center text-base ${textColor ? textColor : "text-white"} ${textShadow && "text-shadow-lg"}`}
+        >
           {title}
         </Text>
       </TouchableOpacity>
@@ -45,10 +49,12 @@ const ReusableButton: React.FC<ReusableButtonProps> = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className={`items-center justify-center py-3 px-6 min-h-[48px] rounded-xl ${disabled ? 'opacity-50' : 'opacity-100'} ${bgColor ? bgColor : 'bg-white'}`}
+      className={`items-center justify-center min-h-[48px] rounded-xl ${padding ? padding : "py-3 px-6"} ${disabled ? "opacity-50" : "opacity-100"} ${bgColor ? bgColor : "bg-white"} ${buttonShadow ? "shadow-lg shadow-black/50" : ""}`}
       style={style}
     >
-      <Text className={`font-semibold text-center text-base ${textColor ? textColor : 'text-black'}`}>
+      <Text
+        className={`font-semibold text-center text-base ${textColor ? textColor : "text-black"} ${textShadow && "text-shadow-lg"}`}
+      >
         {title}
       </Text>
     </TouchableOpacity>
