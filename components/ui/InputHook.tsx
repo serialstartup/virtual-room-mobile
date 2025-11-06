@@ -13,6 +13,7 @@ interface InputProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   error?: FieldError;
   label?: string;
+  editable?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -26,6 +27,7 @@ export const Input: React.FC<InputProps> = ({
   autoCapitalize = 'none',
   error,
   label,
+  editable = true,
 }) => {
   return (
     <View style={{ marginBottom: 16 }}>
@@ -46,17 +48,19 @@ export const Input: React.FC<InputProps> = ({
               paddingHorizontal: 12,
               paddingVertical: 8,
               fontSize: 16,
-              height: multiline ? 80 : 48
+              height: multiline ? 80 : 38
             }}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            editable={editable}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             multiline={multiline}
             numberOfLines={numberOfLines}
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
+            className={!editable ? 'bg-gray-100 text-gray-400' : ''}
           />
         )}
       />

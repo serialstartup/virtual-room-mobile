@@ -32,7 +32,7 @@ const DressModal = () => {
             return (
               <TouchableOpacity
                 key={tab.key}
-                className="flex-1 mx-1"
+                className="flex-1"
                 onPress={() =>
                   setActiveTab(
                     tab.key as "description" | "uploadDress" | "chooseDress"
@@ -42,13 +42,13 @@ const DressModal = () => {
               >
                 {isActive ? (
                   <View className="rounded-2xl py-3 bg-white">
-                    <Text className="text-black text-center font-semibold text-sm">
+                    <Text className="text-virtual-primary text-center font-semibold text-sm">
                       {tab.title}
                     </Text>
                   </View>
                 ) : (
                   <View className="rounded-xl py-3 bg-transparent">
-                    <Text className="text-white text-center font-semibold text-sm">
+                    <Text className="text-gray-500 text-center font-semibold text-sm">
                       {tab.title}
                     </Text>
                   </View>

@@ -3,6 +3,7 @@ import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import AnimatedText from "../ui/AnimatedText";
 import { Calendar, ExternalLink, Heart } from 'lucide-react-native';
+import { Colors } from "@/constants";
 
 // Sample outfits for demo purposes
 const SAMPLE_OUTFITS = [
@@ -106,9 +107,9 @@ const EachOutput = () => {
     <ScrollView 
       className="flex-1"
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ padding: 16 }}
+      contentContainerStyle={{ padding: 20 }}
     >
-      <View className="flex-row flex-wrap justify-between">
+      <View className="flex-row flex-wrap justify-between shadow-sm">
         {SAMPLE_OUTFITS.map((outfit, index) => (
           <AnimatedView
             key={outfit.id}
@@ -116,14 +117,14 @@ const EachOutput = () => {
             delay={index * 150}
             duration={600}
             easing="spring"
-            className="w-full mb-4"
+            className="w-full my-4"
           >
-            <TouchableOpacity className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <TouchableOpacity className="bg-white rounded-2xl overflow-hidden">
               {/* Image Container */}
               <View className="relative">
                 <Image
                   source={{ uri: outfit.resultImageUrl }}
-                  className="w-full h-80 bg-gray-100"
+                  className="w-full h-96 bg-gray-100"
                   resizeMode="cover"
                 />
                 
@@ -174,19 +175,17 @@ const EachOutput = () => {
                     </Text>
                   </AnimatedView>
 
-                  {outfit.productUrl && (
                     <AnimatedView
                       animation="slideUp"
                       delay={(index * 150) + 400}
                     >
-                      <TouchableOpacity className="flex-row items-center bg-gray-100 px-3 py-1 rounded-full">
-                        <ExternalLink size={12} color="#6b7280" />
-                        <Text className="text-xs text-gray-600 ml-1 font-medium">
+                      <TouchableOpacity className="flex-row items-center border-[1px] border-virtual-primary px-3 py-1 rounded-full">
+                        <ExternalLink size={12} color={Colors.mutedPink[500]} />
+                        <Text className="text-xs text-virtual-primary ml-1 font-medium">
                           Shop
                         </Text>
                       </TouchableOpacity>
                     </AnimatedView>
-                  )}
                 </View>
               </View>
             </TouchableOpacity>

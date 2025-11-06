@@ -7,7 +7,7 @@ import AnimatedText from "../ui/AnimatedText";
 const statistics = [
   {
     id: 1,
-    title: "Total",
+    title: "Total Outfits",
     icon: LayoutGrid,
     value: 12,
     color: "#6366f1",
@@ -23,7 +23,7 @@ const statistics = [
 
 const TopStatistics = () => {
   return (
-    <View className="flex-row justify-between gap-3 px-4">
+    <View className="flex-row justify-between gap-3 px-4 mt-4">
       {statistics.map((stat, index) => {
         const IconComponent = stat.icon;
         return (
@@ -32,7 +32,7 @@ const TopStatistics = () => {
             animation="scale"
             delay={index * 100}
             duration={400}
-            className="flex-1 bg-white p-4 rounded-xl shadow-sm border border-gray-100"
+            className="flex-1 bg-white p-3 rounded-xl border border-gray-100"
           >
             <View className="flex-row items-center">
               <View
