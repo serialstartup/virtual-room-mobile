@@ -2,8 +2,10 @@ import { View, Text, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { Key, LogOut, Trash2, AlertTriangle } from "lucide-react-native";
+import { useRouter } from "expo-router";
 
 const CriticialButtons = () => {
+  const router = useRouter();
   const handleForgotPassword = () => {
     Alert.alert(
       "Şifre Sıfırlama",
@@ -33,7 +35,7 @@ const CriticialButtons = () => {
         {
           text: "Çıkış Yap",
           style: "destructive",
-          onPress: () => console.log("User logged out"),
+          onPress: () => router.replace('/(auth)/login')
         },
       ]
     );

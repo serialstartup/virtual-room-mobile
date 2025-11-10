@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, View, Text } from 'react-native';
-import { Controller, Control, FieldError } from 'react-hook-form';
+import { Controller, Control, FieldError, RegisterOptions } from 'react-hook-form';
 
 interface InputProps {
   name: string;
@@ -14,6 +14,10 @@ interface InputProps {
   error?: FieldError;
   label?: string;
   editable?: boolean;
+  disabled?: boolean;
+  rules?: RegisterOptions;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -28,6 +32,10 @@ export const Input: React.FC<InputProps> = ({
   error,
   label,
   editable = true,
+  disabled = false,
+  rules,
+  leftIcon,
+  rightIcon,
 }) => {
   return (
     <View style={{ marginBottom: 16 }}>
@@ -39,29 +47,48 @@ export const Input: React.FC<InputProps> = ({
       <Controller
         control={control}
         name={name}
+        rules={rules}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: error ? '#EF4444' : '#D1D5DB',
-              borderRadius: 8,
-              paddingHorizontal: 12,
-              paddingVertical: 8,
-              fontSize: 16,
-              height: multiline ? 80 : 38
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            editable={editable}
-            placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
-            multiline={multiline}
-            numberOfLines={numberOfLines}
-            keyboardType={keyboardType}
-            autoCapitalize={autoCapitalize}
-            className={!editable ? 'bg-gray-100 text-gray-400' : ''}
-          />
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            borderWidth: 1,
+            borderColor: error ? '#EF4444' : '#D1D5DB',
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            backgroundColor: (!editable || disabled) ? '#F3F4F6' : 'white'
+          }}>
+            {leftIcon && (
+              <View style={{ marginRight: 8 }}>
+                {leftIcon}
+              </View>
+            )}
+            <TextInput
+              style={{
+                flex: 1,
+                paddingVertical: 8,
+                fontSize: 16,
+                height: multiline ? 80 : 38,
+                color: (!editable || disabled) ? '#9CA3AF' : '#000'
+              }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              editable={editable && !disabled}
+              placeholder={placeholder}
+              placeholderTextColor="#9CA3AF"
+              secureTextEntry={secureTextEntry}
+              multiline={multiline}
+              numberOfLines={numberOfLines}
+              keyboardType={keyboardType}
+              autoCapitalize={autoCapitalize}
+            />
+            {rightIcon && (
+              <View style={{ marginLeft: 8 }}>
+                {rightIcon}
+              </View>
+            )}
+          </View>
         )}
       />
       {error && (
