@@ -1,6 +1,5 @@
 // components/try-on/StepIndicator.tsx
 import { View } from "react-native";
-import React from "react";
 
 type Props = {
   currentStep: number;

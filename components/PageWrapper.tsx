@@ -1,5 +1,5 @@
 import { StyleSheet, StatusBar, ViewStyle, View } from "react-native";
-import React, { ReactNode } from "react";
+import { type ReactNode, type FC } from "react";
 import { Colors } from "../constants";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -13,7 +13,7 @@ interface PageWrapperProps {
   withoutTopEdge?: boolean;
 }
 
-const PageWrapper: React.FC<PageWrapperProps> = ({
+const PageWrapper: FC<PageWrapperProps> = ({
   children,
   backgroundColor = Colors.background,
   statusBarStyle = "dark-content",

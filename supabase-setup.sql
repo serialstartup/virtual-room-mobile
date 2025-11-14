@@ -46,7 +46,11 @@ CREATE TABLE try_on (
   processing_status TEXT DEFAULT 'pending', -- pending, processing, completed, failed
   result_image TEXT, -- AI sonucu
   
+  -- Soft delete
+  active BOOLEAN DEFAULT true,
+  
   created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
   
   -- Constraints: En az bir image kaynağı olmalı
   CONSTRAINT check_image_source CHECK (
@@ -109,6 +113,12 @@ $$ language 'plpgsql';
 -- Users tablosu için trigger
 CREATE TRIGGER update_users_updated_at 
     BEFORE UPDATE ON users 
+    FOR EACH ROW 
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Try_on tablosu için trigger
+CREATE TRIGGER update_try_on_updated_at 
+    BEFORE UPDATE ON try_on 
     FOR EACH ROW 
     EXECUTE FUNCTION update_updated_at_column();
 

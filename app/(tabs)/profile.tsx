@@ -1,5 +1,4 @@
 import { ScrollView } from "react-native";
-import React from "react";
 import { PageWrapper, SectionWrapper } from "@/components";
 import PageHeader from "@/components/PageHeader";
 import ProfileSettings from "@/components/profile/ProfileSettings";

@@ -1,11 +1,19 @@
-import React from "react";
 import TitleSectionTab from "./TitleSectionTab";
 import UploadSkeleton from "./UploadSkeleton";
 
-const UploadModelTab = () => {
+interface UploadModelTabProps {
+  onImageSelect: (imageUrl: string) => void;
+  selectedImage?: string;
+}
+
+const UploadModelTab: React.FC<UploadModelTabProps> = ({ onImageSelect, selectedImage }) => {
   return (
     <TitleSectionTab title="Resmini Yükle">
-      <UploadSkeleton title="Model resmini yükle" />
+      <UploadSkeleton 
+        title="Model resmini yükle" 
+        onImageSelect={onImageSelect}
+        selectedImage={selectedImage}
+      />
     </TitleSectionTab>
   );
 };

@@ -7,7 +7,6 @@ import {
   ToolCase,
 } from "lucide-react-native";
 import { View, Text } from "react-native";
-import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { FlashList } from "@shopify/flash-list";
 import GradientView from "../GradientView";

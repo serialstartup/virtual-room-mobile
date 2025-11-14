@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import React from "react";
 import ReusableButton from "../../ui/ReusableButton";
 import { Check, Crown, Zap, Shield, Sparkles, Star } from "lucide-react-native";
 

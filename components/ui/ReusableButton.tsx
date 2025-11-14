@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, ViewStyle } from "react-native";
-import React from "react";
+import { type FC } from "react";
 
 interface ReusableButtonProps {
   title: string;
@@ -15,7 +15,7 @@ interface ReusableButtonProps {
   textShadow?: boolean;
 }
 
-const ReusableButton: React.FC<ReusableButtonProps> = ({
+const ReusableButton: FC<ReusableButtonProps> = ({
   title,
   onPress,
   variant = "filled",

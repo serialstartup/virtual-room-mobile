@@ -19,13 +19,20 @@ export interface UpdateUserRequest {
 class AuthService {
   // Login
   async login(credentials: LoginCredentials): Promise<AuthResponse['data']> {
-    const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
     
-    if (!response.success || !response.data) {
-      throw new Error(response.error || 'Login failed');
+    try {
+      const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
+      
+      if (!response.success || !response.data) {
+        console.error('[AUTH_SERVICE] ❌ Login failed:', response.error);
+        throw new Error(response.error || 'Login failed');
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error('[AUTH_SERVICE] 🚨 Login error:', error);
+      throw error;
     }
-    
-    return response.data;
   }
 
   // Signup
@@ -41,18 +48,33 @@ class AuthService {
 
   // Logout
   async logout(): Promise<void> {
-    await apiClient.post('/auth/logout');
+    
+    try {
+      await apiClient.get('/auth/logout');
+    } catch (error) {
+      // Continue with local logout even if server logout fails
+      console.warn('[AUTH_SERVICE] ⚠️ Server logout failed, continuing with local logout:', error);
+    }
+    
+    // Note: Store logout will be handled by the useAuth hook to avoid circular dependency
   }
 
   // Get current user (me endpoint)
   async getCurrentUser(): Promise<User> {
-    const response = await apiClient.get<ApiResponse<{ user: User }>>('/auth/me');
     
-    if (!response.success || !response.data) {
-      throw new Error(response.error || 'Failed to get user');
+    try {
+      const response = await apiClient.get<ApiResponse<{ user: User }>>('/auth/me');
+      
+      if (!response.success || !response.data) {
+        console.error('[AUTH_SERVICE] ❌ Failed to get current user:', response.error);
+        throw new Error(response.error || 'Failed to get user');
+      }
+      
+      return response.data.user;
+    } catch (error) {
+      console.error('[AUTH_SERVICE] 🚨 Get current user error:', error);
+      throw error;
     }
-    
-    return response.data.user;
   }
 
   // Update user profile

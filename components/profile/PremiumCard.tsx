@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { AnimatePresence, MotiView } from "moti";
 import MonthlyPriceTab from "./tabs/MonthlyPriceTab";

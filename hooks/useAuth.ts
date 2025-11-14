@@ -10,18 +10,21 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: authService.login,
     onMutate: () => {
-      setLoading(true)
+      console.log('[USE_AUTH] 🔄 Login mutation started');
+      setLoading(true);
     },
     onSuccess: (data) => {
-      login(data.user, data.token)
+      console.log('[USE_AUTH] ✅ Login mutation successful, updating store');
+      login(data.user, data.token);
       // Invalidate and refetch user-related queries
-      queryClient.invalidateQueries({ queryKey: ['auth'] })
+      queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
     onError: (error) => {
-      console.error('Login error:', error)
+      console.error('[USE_AUTH] ❌ Login mutation error:', error);
     },
     onSettled: () => {
-      setLoading(false)
+      console.log('[USE_AUTH] 🏁 Login mutation settled');
+      setLoading(false);
     }
   })
 
@@ -47,20 +50,45 @@ export const useAuth = () => {
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: authService.logout,
+    onMutate: () => {
+      console.log('[USE_AUTH] 🚪 Logout mutation started');
+    },
     onSuccess: () => {
-      logout()
+      console.log('[USE_AUTH] ✅ Logout successful, clearing store and cache');
+      logout();
       // Clear all cached data
-      queryClient.clear()
+      queryClient.clear();
+    },
+    onError: (error) => {
+      console.error('[USE_AUTH] ❌ Logout error:', error);
+      // Even if server logout fails, clear local state
+      console.log('[USE_AUTH] 🧹 Clearing local state despite server error');
+      logout();
+      queryClient.clear();
     }
   })
 
   // Current user query
-  const { data: currentUser, isLoading: isUserLoading } = useQuery({
+  const { data: currentUser, isLoading: isUserLoading, error: currentUserError } = useQuery({
     queryKey: ['auth', 'currentUser'],
-    queryFn: authService.getCurrentUser,
+    queryFn: () => {
+      console.log('[USE_AUTH] 👤 Fetching current user from server...');
+      return authService.getCurrentUser();
+    },
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5, // 5 minutes
     retry: false,
+    onSuccess: (data) => {
+      console.log('[USE_AUTH] ✅ Current user query successful:', data.email);
+    },
+    onError: (error: any) => {
+      console.error('[USE_AUTH] ❌ Current user query failed:', error);
+      // If token is invalid, logout user
+      if (error?.message?.includes('Token') || error?.message?.includes('401')) {
+        console.log('[USE_AUTH] 🔄 Invalid token detected, logging out...');
+        logout();
+      }
+    }
   })
 
   // Profile update mutation
@@ -116,11 +144,23 @@ export const useAuth = () => {
     return deleteAccountMutation.mutateAsync()
   }
 
+  // Determine the most current user data
+  const finalUser = currentUser || user;
+  const finalIsLoading = useAuthStore(state => state.isLoading) || isUserLoading;
+  
+  console.log('[USE_AUTH] 📊 State summary:', {
+    isAuthenticated,
+    hasStoreUser: !!user,
+    hasCurrentUser: !!currentUser,
+    finalUserEmail: finalUser?.email || 'None',
+    isLoading: finalIsLoading
+  });
+
   return {
     // State
-    user: currentUser || user,
+    user: finalUser,
     isAuthenticated,
-    isLoading: useAuthStore(state => state.isLoading) || isUserLoading,
+    isLoading: finalIsLoading,
     
     // Actions
     login: performLogin,
@@ -145,5 +185,6 @@ export const useAuth = () => {
     updateProfileError: updateProfileMutation.error,
     resetPasswordError: resetPasswordMutation.error,
     deleteAccountError: deleteAccountMutation.error,
+    currentUserError,
   }
 }

@@ -1,5 +1,4 @@
 import { Dimensions, ImageBackground, StyleSheet } from "react-native";
-import React from "react";
 import { GradientView } from "../index";
 import AnimatedView from "../ui/AnimatedView";
 import AnimatedText from "../ui/AnimatedText";
@@ -21,7 +20,7 @@ const Hero = () => {
       >
         <GradientView
           preset="custom"
-          colors={["rgba(0, 0, 0, 0.2)", "rgba(0, 0, 0, 0.7)"]}
+          colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.8)"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
           style={styles.overlay}

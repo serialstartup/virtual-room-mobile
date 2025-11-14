@@ -1,5 +1,4 @@
 import { ScrollView } from 'react-native'
-import React from 'react'
 import PageWrapper from '../../components/PageWrapper'
 import { Footer } from '../../components/Footer'
 import Hero from '@/components/home/Hero'

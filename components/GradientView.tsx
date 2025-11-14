@@ -1,5 +1,5 @@
 import { ViewStyle, DimensionValue } from 'react-native'
-import React, { ReactNode } from 'react'
+import { type ReactNode, type FC } from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 
 export type GradientPreset = 
@@ -33,7 +33,7 @@ const gradientPresets: Record<Exclude<GradientPreset, 'custom'>, readonly [strin
   accent: ['#ec4899', '#9d174d','#F70F83'] as const,
 }
 
-const GradientView: React.FC<GradientViewProps> = ({
+const GradientView: FC<GradientViewProps> = ({
   children,
   preset = 'primary',
   colors,

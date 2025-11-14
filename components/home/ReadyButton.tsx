@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import GradientView from "../GradientView";
 import ReusableButton from "../ui/ReusableButton";
@@ -25,7 +24,7 @@ const ReadyButton = () => {
             padding="py-2 px-10"
             title="Get started now"
             buttonShadow={true}
-            onPress={() => console.log("clicked!")}
+            onPress={() => {}}
           />
         </View>
       </GradientView>

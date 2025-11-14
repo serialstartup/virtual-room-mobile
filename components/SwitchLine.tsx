@@ -1,24 +1,43 @@
 import { View, Text, Switch } from 'react-native'
-import React, { useState } from 'react'
+import { useState, useEffect, type FC } from 'react'
 
 interface SwitchLineProps {
   title: string;
   subtitle: string;
   defaultValue?: boolean;
+  value?: boolean; // Add controlled value prop
   onValueChange?: (value: boolean) => void;
+  disabled?: boolean;
 }
 
-const SwitchLine: React.FC<SwitchLineProps> = ({
+const SwitchLine: FC<SwitchLineProps> = ({
   title,
   subtitle,
   defaultValue = false,
-  onValueChange
+  value, // Controlled value
+  onValueChange,
+  disabled = false
 }) => {
-  const [isEnabled, setIsEnabled] = useState(defaultValue);
+  const [isEnabled, setIsEnabled] = useState(value !== undefined ? value : defaultValue);
 
-  const handleToggle = (value: boolean) => {
-    setIsEnabled(value);
-    onValueChange?.(value);
+  // Sync with controlled value
+  useEffect(() => {
+    if (value !== undefined) {
+      setIsEnabled(value);
+    }
+  }, [value]);
+
+  const handleToggle = (newValue: boolean) => {
+    if (disabled) return;
+    
+    // If controlled, only call onValueChange
+    if (value !== undefined) {
+      onValueChange?.(newValue);
+    } else {
+      // If uncontrolled, update internal state
+      setIsEnabled(newValue);
+      onValueChange?.(newValue);
+    }
   };
 
   return (
@@ -32,8 +51,9 @@ const SwitchLine: React.FC<SwitchLineProps> = ({
       <Switch
         value={isEnabled}
         onValueChange={handleToggle}
-        trackColor={{ false: '#e5e7eb', true: '#ec4899' }}
+        trackColor={{ false: '#e5e7eb', true: disabled ? '#d1d5db' : '#ec4899' }}
         thumbColor={isEnabled ? '#ffffff' : '#ffffff'}
+        disabled={disabled}
       />
     </View>
   )

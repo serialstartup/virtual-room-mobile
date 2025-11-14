@@ -1,32 +1,13 @@
-import { View, TouchableOpacity, Text } from "react-native";
-import React, { useState } from "react";
+import { View, TouchableOpacity, Text, Alert } from "react-native";
+import { useState } from "react";
 import AnimatedView from "../ui/AnimatedView";
 import SettingTitle from "./SettingTitle";
 import SwitchLine from "../SwitchLine";
 import DropdownLine from "../DropdownLine";
 import PrivacyModal from "./PrivacyModal";
 import { Shield, FileText, Database, ChevronRight } from "lucide-react-native";
+import { useUser } from "@/hooks/useUser";
 
-const notifications = [
-  {
-    id: 1,
-    title: "Push Bildirimleri",
-    subtitle: "Yeni denemeler ve güncellemeler",
-    status: true,
-  },
-  {
-    id: 2,
-    title: "E-posta Bildirimleri",
-    subtitle: "Önemli duyurular ve kampanyalar",
-    status: false,
-  },
-  {
-    id: 3,
-    title: "Yeni Özellikler",
-    subtitle: "Ön izleme ve beta özellikleri",
-    status: true,
-  },
-];
 
 const languageOptions = [
   { label: "Türkçe", value: "tr" },
@@ -65,6 +46,15 @@ const GeneralSettings = () => {
     "privacy-policy" | "terms-of-service" | "data-management"
   >("privacy-policy");
 
+  const {
+    userSettings,
+    notificationSettings,
+    updateSettings,
+    isUpdateSettingsLoading,
+    isSettingsLoading,
+    updateSettingsError
+  } = useUser();
+
   const openModal = (
     type: "privacy-policy" | "terms-of-service" | "data-management"
   ) => {
@@ -72,22 +62,61 @@ const GeneralSettings = () => {
     setModalVisible(true);
   };
 
+  const handleNotificationChange = async (type: 'push_notifications' | 'email_notifications' | 'new_features', value: boolean) => {
+    try {
+      await updateSettings({ [type]: value });
+    } catch (error) {
+      console.error('Update settings error:', error);
+      Alert.alert("Hata", "Ayar güncellenirken bir hata oluştu");
+    }
+  };
+
+  const handleLanguageChange = async (value: string) => {
+    try {
+      await updateSettings({ language: value });
+      Alert.alert("Başarılı", "Dil ayarınız güncellendi");
+    } catch (error) {
+      console.error('Language update error:', error);
+      Alert.alert("Hata", "Dil ayarı güncellenirken bir hata oluştu");
+    }
+  };
+
+  if (isSettingsLoading) {
+    return (
+      <AnimatedView animation="slideUp">
+        <View className="bg-gray-50 p-6 rounded-2xl">
+          <Text className="text-gray-500 text-center">Ayarlar yükleniyor...</Text>
+        </View>
+      </AnimatedView>
+    );
+  }
+
   return (
     <AnimatedView animation="slideUp">
       {/* Notifications Section */}
       <SettingTitle title="Bildirimler" iconName="Bell" iconColor="#ec4899">
         <View className="space-y-2">
-          {notifications.map((notification) => (
-            <SwitchLine
-              key={notification.id}
-              title={notification.title}
-              subtitle={notification.subtitle}
-              defaultValue={notification.status}
-              onValueChange={(value) =>
-                console.log(`${notification.title}: ${value}`)
-              }
-            />
-          ))}
+          <SwitchLine
+            title="Push Bildirimleri"
+            subtitle="Yeni denemeler ve güncellemeler"
+            defaultValue={notificationSettings?.push_notifications ?? true}
+            onValueChange={(value) => handleNotificationChange('push_notifications', value)}
+            disabled={isUpdateSettingsLoading}
+          />
+          <SwitchLine
+            title="E-posta Bildirimleri"
+            subtitle="Önemli duyurular ve kampanyalar"
+            defaultValue={notificationSettings?.email_notifications ?? true}
+            onValueChange={(value) => handleNotificationChange('email_notifications', value)}
+            disabled={isUpdateSettingsLoading}
+          />
+          <SwitchLine
+            title="Yeni Özellikler"
+            subtitle="Ön izleme ve beta özellikleri"
+            defaultValue={notificationSettings?.new_features ?? true}
+            onValueChange={(value) => handleNotificationChange('new_features', value)}
+            disabled={isUpdateSettingsLoading}
+          />
         </View>
       </SettingTitle>
 
@@ -97,8 +126,9 @@ const GeneralSettings = () => {
           title="Uygulama Dili"
           subtitle="Uygulamada kullanılacak dili seçin"
           options={languageOptions}
-          defaultValue="tr"
-          onValueChange={(value) => console.log(`Language selected: ${value}`)}
+          defaultValue={userSettings?.language ?? "tr"}
+          onValueChange={handleLanguageChange}
+          disabled={isUpdateSettingsLoading}
         />
       </SettingTitle>
 

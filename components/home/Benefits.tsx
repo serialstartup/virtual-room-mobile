@@ -1,4 +1,3 @@
-import React from "react";
 import TitleSection from "../TitleSection";
 import { Sparkles, ShoppingBag, Heart,Share2 } from "lucide-react-native";
 import AnimatedView from "../ui/AnimatedView";

@@ -1,45 +1,86 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { useEffect, useState } from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "../ui/ReusableButton";
 import { Crown, Smile, Pencil, User } from "lucide-react-native";
+import { useUser } from "@/hooks/useUser";
 
 type FormValues = {
   name: string;
   email: string;
 };
 
-interface ProfileSettingsProps {
-  premium?: boolean;
-}
-
-const ProfileSettings = ({ premium = false }: ProfileSettingsProps) => {
+const ProfileSettings = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const { 
+    user, 
+    updateProfile, 
+    isUpdateUserLoading, 
+    isUserLoading 
+  } = useUser();
+  
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormValues>({
     defaultValues: {
-      name: "Hakan Çoban",
-      email: "hakan@gmail.com",
+      name: user?.name || "",
+      email: user?.email || "",
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Profile updated:", data);
-    setIsEditing(false);
+  useEffect(() => {
+    if (user) {
+      setValue('name', user.name);
+      setValue('email', user.email);
+    }
+  }, [user, setValue]);
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      await updateProfile({ name: data.name });
+      setIsEditing(false);
+      Alert.alert("Başarılı", "Profiliniz güncellendi");
+    } catch (error) {
+      console.error("Profile update error:", error);
+      Alert.alert("Hata", "Profil güncellenirken bir hata oluştu");
+    }
   };
 
   const handleEdit = () => {
     setIsEditing(!isEditing);
     if (isEditing) {
-      reset();
+      if (user) {
+        setValue('name', user.name);
+        setValue('email', user.email);
+      }
     }
   };
+
+  if (isUserLoading) {
+    return (
+      <AnimatedView animation="slideUp" className="bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
+        <View className="bg-gray-50 px-6 py-8 border-b border-gray-100">
+          <Text className="text-gray-500 text-center">Profil bilgileri yükleniyor...</Text>
+        </View>
+      </AnimatedView>
+    );
+  }
+
+  if (!user) {
+    return (
+      <AnimatedView animation="slideUp" className="bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
+        <View className="bg-gray-50 px-6 py-8 border-b border-gray-100">
+          <Text className="text-red-500 text-center">Profil bilgileri yüklenemedi</Text>
+        </View>
+      </AnimatedView>
+    );
+  }
 
   return (
     <AnimatedView
@@ -55,9 +96,9 @@ const ProfileSettings = ({ premium = false }: ProfileSettingsProps) => {
             </View>
             <View>
               <Text className="text-gray-800 text-xl font-bold">
-                Hakan Çoban
+                {user.name}
               </Text>
-              <Text className="text-gray-500 text-sm">hakan@gmail.com</Text>
+              <Text className="text-gray-500 text-sm">{user.email}</Text>
             </View>
           </View>
           <TouchableOpacity className="mt-1" onPress={handleEdit}>
@@ -104,11 +145,12 @@ const ProfileSettings = ({ premium = false }: ProfileSettingsProps) => {
             <View className="flex-row gap-3 mt-6">
               <View className="flex-1">
                 <ReusableButton
-                  title="Kaydet"
+                  title={isUpdateUserLoading ? "Kaydediliyor..." : "Kaydet"}
                   onPress={handleSubmit(onSubmit)}
                   variant="filled"
                   bgColor="bg-virtual-primary"
                   textColor="text-white"
+                  disabled={isUpdateUserLoading}
                 />
               </View>
               <View className="flex-1">
@@ -127,13 +169,13 @@ const ProfileSettings = ({ premium = false }: ProfileSettingsProps) => {
             <View className="mb-4">
               <Text className="text-gray-500 text-sm mb-1">Ad Soyad</Text>
               <Text className="text-gray-800 text-base font-medium">
-                Hakan Çoban
+                {user.name}
               </Text>
             </View>
             <View>
               <Text className="text-gray-500 text-sm mb-1">E-posta</Text>
               <Text className="text-gray-800 text-base font-medium">
-                hakan@gmail.com
+                {user.email}
               </Text>
             </View>
           </View>
@@ -147,12 +189,12 @@ const ProfileSettings = ({ premium = false }: ProfileSettingsProps) => {
               <View className="flex-row items-center gap-3 ">
                 <View
                   className={`p-2 rounded-full border-2 ${
-                    premium
+                    user.premium_status
                       ? "bg-gray-800 border-virtual-primary"
                       : "bg-gray-400 border-gray-300"
                   }`}
                 >
-                  {premium ? (
+                  {user.premium_status ? (
                     <Crown color="white" size={20} />
                   ) : (
                     <Smile color="white" size={20} />
@@ -160,14 +202,14 @@ const ProfileSettings = ({ premium = false }: ProfileSettingsProps) => {
                 </View>
                 <View>
                   <Text className="text-gray-800 font-semibold text-base">
-                    {premium ? "Premium Plan" : "Ücretsiz Plan"}
+                    {user.premium_status ? "Premium Plan" : "Ücretsiz Plan"}
                   </Text>
                   <Text className="text-gray-500 text-sm">
-                    {premium ? "Tüm özelliklere erişim" : "Sınırlı özellikler"}
+                    {user.premium_status ? "Tüm özelliklere erişim" : "Sınırlı özellikler"}
                   </Text>
                 </View>
               </View>
-              {!premium && (
+              {!user.premium_status && (
                 <TouchableOpacity className="bg-virtual-primary px-6 py-2 rounded-lg">
                   <Text className="text-white font-semibold text-sm">
                     Yükselt

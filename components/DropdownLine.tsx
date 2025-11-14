@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ChevronDown, ChevronUp } from 'lucide-react-native'
 
 interface DropdownOption {
@@ -13,6 +13,7 @@ interface DropdownLineProps {
   options: DropdownOption[];
   defaultValue?: string;
   onValueChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 const DropdownLine: React.FC<DropdownLineProps> = ({
@@ -20,7 +21,8 @@ const DropdownLine: React.FC<DropdownLineProps> = ({
   subtitle,
   options,
   defaultValue,
-  onValueChange
+  onValueChange,
+  disabled = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(defaultValue || options[0]?.value || '');
@@ -28,6 +30,7 @@ const DropdownLine: React.FC<DropdownLineProps> = ({
   const selectedOption = options.find(option => option.value === selectedValue);
 
   const handleSelect = (value: string) => {
+    if (disabled) return;
     setSelectedValue(value);
     setIsOpen(false);
     onValueChange?.(value);
@@ -37,9 +40,10 @@ const DropdownLine: React.FC<DropdownLineProps> = ({
     <View>
       {/* Main Dropdown Button */}
       <TouchableOpacity
-        onPress={() => setIsOpen(!isOpen)}
-        className="flex-row items-center justify-between py-3"
-        activeOpacity={0.7}
+        onPress={() => !disabled && setIsOpen(!isOpen)}
+        className={`flex-row items-center justify-between py-3 ${disabled ? 'opacity-50' : ''}`}
+        activeOpacity={disabled ? 1 : 0.7}
+        disabled={disabled}
       >
         <View className="flex-1 mr-4">
           <Text className="text-gray-800 font-semibold text-base">{title}</Text>
@@ -60,7 +64,7 @@ const DropdownLine: React.FC<DropdownLineProps> = ({
       </TouchableOpacity>
 
       {/* Dropdown Options */}
-      {isOpen && (
+      {isOpen && !disabled && (
         <View className="bg-gray-50 rounded-xl mt-2 border border-gray-100">
           {options.map((option, index) => (
             <TouchableOpacity

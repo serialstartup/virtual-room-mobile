@@ -1,5 +1,4 @@
 import { View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native'
-import React from 'react'
 import { X, Shield, FileText, Database } from 'lucide-react-native'
 import ReusableButton from '../ui/ReusableButton'
 

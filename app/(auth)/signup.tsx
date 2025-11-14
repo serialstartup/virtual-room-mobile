@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, router } from "expo-router";
 import { PageWrapper } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -42,7 +42,6 @@ const Signup = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Simulate signup success
-      console.log("Signup data:", data);
       Alert.alert("Başarılı!", "Hesabınız oluşturuldu", [
         { text: "Tamam", onPress: () => router.replace("/(tabs)") },
       ]);
@@ -164,12 +163,12 @@ const Signup = () => {
             <ReusableButton
               bgColor="bg-blue-500"
               title="Google ile Kayıt Ol"
-              onPress={() => console.log("Google signup")}
+              onPress={() => {}}
               textColor="text-white"
             />
             <ReusableButton
               title="Apple ile Kayıt Ol"
-              onPress={() => console.log("Apple signup")}
+              onPress={() => {}}
               bgColor="bg-black"
               textColor="text-white"
             />

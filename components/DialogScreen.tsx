@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Modal } from 'react-native'
-import React, { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { ChevronRight, X, Shield, Lock, Eye, FileText } from 'lucide-react-native'
 import ReusableButton from './ui/ReusableButton'
 
@@ -7,7 +7,7 @@ interface DialogOption {
   id: string;
   title: string;
   subtitle: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   onPress?: () => void;
 }
 
@@ -32,28 +32,28 @@ const DialogScreen: React.FC<DialogScreenProps> = ({
       title: 'Gizlilik Politikası',
       subtitle: 'Verilerinizi nasıl kullandığımızı öğrenin',
       icon: <Eye color="#6b7280" size={20} />,
-      onPress: () => console.log('Privacy Policy')
+      onPress: () => {}
     },
     {
       id: 'terms-conditions',
       title: 'Kullanım Koşulları',
       subtitle: 'Hizmet kullanım koşullarımız',
       icon: <FileText color="#6b7280" size={20} />,
-      onPress: () => console.log('Terms & Conditions')
+      onPress: () => {}
     },
     {
       id: 'data-security',
       title: 'Veri Güvenliği',
       subtitle: 'Bilgilerinizi nasıl koruduğumuzu görün',
       icon: <Lock color="#6b7280" size={20} />,
-      onPress: () => console.log('Data Security')
+      onPress: () => {}
     },
     {
       id: 'account-security',
       title: 'Hesap Güvenliği',
       subtitle: 'Hesabınızı güvende tutun',
       icon: <Shield color="#6b7280" size={20} />,
-      onPress: () => console.log('Account Security')
+      onPress: () => {}
     }
   ];
 

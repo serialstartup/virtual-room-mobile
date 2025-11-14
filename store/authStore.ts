@@ -35,7 +35,7 @@ export const useAuthStore = create<AuthState>()(
           token,
           isAuthenticated: true,
           isLoading: false
-        })
+        });
       },
 
       logout: () => {
@@ -44,30 +44,42 @@ export const useAuthStore = create<AuthState>()(
           token: null,
           isAuthenticated: false,
           isLoading: false
-        })
+        });
       },
 
       updateUser: (userData: Partial<User>) => {
-        const currentUser = get().user
+        const currentUser = get().user;
         if (currentUser) {
+          const updatedUser = { ...currentUser, ...userData };
           set({
-            user: { ...currentUser, ...userData }
-          })
+            user: updatedUser
+          });
+        } else {
+          console.warn('[AUTH_STORE] ⚠️ No current user to update');
         }
       },
 
       setLoading: (loading: boolean) => {
-        set({ isLoading: loading })
+        set({ isLoading: loading });
       }
     }),
     {
       name: 'virtual-room-auth',
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({
-        user: state.user,
-        token: state.token,
-        isAuthenticated: state.isAuthenticated
-      })
+      partialize: (state) => {
+        return {
+          user: state.user,
+          token: state.token,
+          isAuthenticated: state.isAuthenticated
+        };
+      },
+      onRehydrateStorage: () => {
+        return (state, error) => {
+          if (error) {
+            console.error('[AUTH_STORE] 🚨 Hydration failed:', error);
+          }
+        };
+      }
     }
   )
 )

@@ -1,5 +1,5 @@
 import { View, ViewStyle } from 'react-native'
-import React, { ReactNode } from 'react'
+import { type ReactNode, type FC } from 'react'
 
 interface SectionWrapperProps {
   children: ReactNode
@@ -7,7 +7,7 @@ interface SectionWrapperProps {
   className?: string
 }
 
-const SectionWrapper: React.FC<SectionWrapperProps> = ({
+const SectionWrapper: FC<SectionWrapperProps> = ({
   children,
   style,
   className = "w-full bg-white rounded-lg"

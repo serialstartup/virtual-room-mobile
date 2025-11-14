@@ -1,5 +1,5 @@
 import { StyleSheet, View, ViewStyle } from 'react-native'
-import React, { ReactNode } from 'react'
+import { type ReactNode, type FC } from 'react'
 import { Colors } from '../../constants'
 
 interface CardProps {
@@ -11,7 +11,7 @@ interface CardProps {
   style?: ViewStyle
 }
 
-const Card: React.FC<CardProps> = ({
+const Card: FC<CardProps> = ({
   children,
   variant = 'default',
   padding = 16,

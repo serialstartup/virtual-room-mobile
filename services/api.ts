@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Backend base URL - update this based on your environment
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api';
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -29,16 +29,36 @@ class ApiClient {
 
   private async getAuthHeader(): Promise<Record<string, string>> {
     try {
-      const token = await AsyncStorage.getItem('virtual-room-auth');
-      if (token) {
-        const authData = JSON.parse(token);
+      let authToken: string | null = null;
+      
+      try {
+        // Dynamic import to avoid circular dependencies
+        const { useAuthStore } = await import('@/store/authStore');
+        authToken = useAuthStore.getState().token;
+      } catch (storeError) {
+        console.warn('[API] ⚠️ Could not get token from store, falling back to AsyncStorage:', storeError);
+      }
+      
+      // Fallback to AsyncStorage if store is not available
+      if (!authToken) {
+        const token = await AsyncStorage.getItem('virtual-room-auth');
+        if (token) {
+          const authData = JSON.parse(token);
+          // Zustand persist format: {state: {token, user, ...}}
+          authToken = authData.state?.token;
+        } else {
+        }
+      }
+      
+      if (authToken) {
         return {
-          Authorization: `Bearer ${authData.state.token}`,
+          Authorization: `Bearer ${authToken}`,
         };
       }
+      
       return {};
     } catch (error) {
-      console.error('Error getting auth header:', error);
+      console.error('[API] 🚨 Error getting auth header:', error);
       return {};
     }
   }
@@ -47,6 +67,8 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
+    const startTime = Date.now();
+    
     const authHeaders = await this.getAuthHeader();
     
     const url = `${this.baseURL}${endpoint}`;
@@ -59,17 +81,23 @@ class ApiClient {
       ...options,
     };
 
+
     try {
       const response = await fetch(url, config);
+      const duration = Date.now() - startTime;
+      
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.error(`[API] ❌ Error response:`, errorData);
         throw new Error(errorData.error || `HTTP Error: ${response.status}`);
       }
 
-      return await response.json();
+      const responseData = await response.json();
+      return responseData;
     } catch (error) {
-      console.error(`API Error [${endpoint}]:`, error);
+      const duration = Date.now() - startTime;
+      console.error(`[API] 🚨 Request failed [${endpoint}] (${duration}ms):`, error);
       throw error;
     }
   }

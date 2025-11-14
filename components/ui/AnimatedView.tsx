@@ -1,9 +1,9 @@
-import React from 'react'
+import { type ReactNode } from 'react'
 import { MotiView } from 'moti'
 import { ViewProps } from 'react-native'
 
 interface AnimatedViewProps extends ViewProps {
-  children: React.ReactNode
+  children: ReactNode
   animation?: 'fadeIn' | 'slideUp' | 'slideDown' | 'scale' | 'crossfade' | 'none'
   delay?: number
   duration?: number

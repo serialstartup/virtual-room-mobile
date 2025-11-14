@@ -1,4 +1,3 @@
-import React from "react";
 import TitleSectionTab from "./TitleSectionTab";
 import { View } from "react-native";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -7,19 +6,26 @@ import { Input } from "@/components/ui/InputHook";
 type FormValues = {
   productURL: string;
 };
-const ProductDressTab = () => {
+
+interface ProductDressTabProps {
+  onImageSelect: (imageUrl: string, description?: string) => void;
+  selectedImage?: string;
+}
+
+const ProductDressTab: React.FC<ProductDressTabProps> = ({ onImageSelect, selectedImage }) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      productURL: "",
+      productURL: selectedImage || "",
     },
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log("Product URL:", data.productURL);
+    // Pass the URL as image selection
+    onImageSelect(data.productURL);
   };
 
   return (

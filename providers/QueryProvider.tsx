@@ -1,4 +1,4 @@
-import React from 'react'
+import { type ReactNode, type FC } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Create a client
@@ -16,10 +16,10 @@ const queryClient = new QueryClient({
 })
 
 interface QueryProviderProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
-export const QueryProvider: React.FC<QueryProviderProps> = ({ children }) => {
+export const QueryProvider: FC<QueryProviderProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       {children}

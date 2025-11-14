@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, router } from "expo-router";
 import { PageWrapper } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "@/components/ui/ReusableButton";
 import { Eye, EyeOff, Mail, Lock, Sparkles } from "lucide-react-native";
+import { useAuth } from "@/hooks/useAuth";
 
 type LoginFormValues = {
   email: string;
@@ -14,7 +15,7 @@ type LoginFormValues = {
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { login, isLoginLoading, loginError } = useAuth();
 
   const {
     control,
@@ -28,20 +29,21 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    setIsLoading(true);
+    
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Call real authentication service
+      await login({
+        email: data.email,
+        password: data.password,
+      });
 
-      // Simulate login success
-      console.log("Login data:", data);
       Alert.alert("Başarılı!", "Giriş yapıldı", [
         { text: "Tamam", onPress: () => router.replace("/(tabs)") },
       ]);
-    } catch (error) {
-      Alert.alert("Hata", "Giriş yapılırken bir hata oluştu");
-    } finally {
-      setIsLoading(false);
+    } catch (error: any) {
+      console.error("Login form error:", error);
+      const errorMessage = error?.message || "Giriş yapılırken bir hata oluştu";
+      Alert.alert("Hata", errorMessage);
     }
   };
 
@@ -117,6 +119,15 @@ const Login = () => {
             </View>
           </View>
 
+          {/* Error Message */}
+          {loginError && (
+            <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <Text className="text-red-600 text-sm">
+                {loginError.message || "Giriş yapılırken bir hata oluştu"}
+              </Text>
+            </View>
+          )}
+
           {/* Forgot Password */}
           <TouchableOpacity className="mb-6">
             <Text className="text-virtual-primary text-right font-medium">
@@ -126,12 +137,12 @@ const Login = () => {
 
           {/* Login Button */}
           <ReusableButton
-            title={isLoading ? "Giriş Yapılıyor..." : "Giriş Yap"}
+            title={isLoginLoading ? "Giriş Yapılıyor..." : "Giriş Yap"}
             onPress={handleSubmit(onSubmit)}
             variant="filled"
             bgColor="bg-virtual-primary"
             textColor="text-white"
-            disabled={isLoading}
+            disabled={isLoginLoading}
             buttonShadow={true}
           />
 
@@ -147,12 +158,12 @@ const Login = () => {
             <ReusableButton
               bgColor="bg-blue-500"
               title="Google ile Giriş Yap"
-              onPress={() => console.log("Google signup")}
+              onPress={() => {}}
               textColor="text-white"
             />
             <ReusableButton
               title="Apple ile Giriş Yap"
-              onPress={() => console.log("Apple signup")}
+              onPress={() => {}}
               bgColor="bg-black"
               textColor="text-white"
             />

@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native'
-import React from 'react'
 import { Sparkles } from 'lucide-react-native'
 
 interface PageHeaderProps {

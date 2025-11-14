@@ -1,4 +1,3 @@
-import React from 'react'
 import { MotiText } from 'moti'
 import { TextProps } from 'react-native'
 

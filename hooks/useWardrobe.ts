@@ -1,61 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { wardrobeService } from '@/services/wardrobe'
-import { Wardrobe, UserFavorites, UserStats, TryOnWithWardrobe } from '@/types/database'
+import { wardrobeService, WardrobeWithTryOn } from '@/services/wardrobe'
+import { UserStats, TryOnWithWardrobe } from '@/types/database'
+import { useAuthStore } from '@/store/authStore'
 
 export const useWardrobe = () => {
   const queryClient = useQueryClient()
+  const { isAuthenticated } = useAuthStore()
 
-  // Get all wardrobe items
+  // Get all wardrobe items with try_on data
   const { 
     data: wardrobeItems, 
     isLoading, 
     error, 
     refetch 
-  } = useQuery({
+  } = useQuery<WardrobeWithTryOn[]>({
     queryKey: ['wardrobe'],
-    queryFn: wardrobeService.getWardrobe,
+    queryFn: () => wardrobeService.getWardrobe(),
+    enabled: isAuthenticated,
     staleTime: 1000 * 60 * 2, // 2 minutes
   })
 
-  // Get favorites
-  const { 
-    data: favorites, 
-    isLoading: isFavoritesLoading 
-  } = useQuery({
-    queryKey: ['wardrobe', 'favorites'],
-    queryFn: wardrobeService.getFavorites,
-    staleTime: 1000 * 60 * 2, // 2 minutes
-  })
+  // Get favorites (filtered from wardrobeItems)
+  const favorites = wardrobeItems?.filter((item: WardrobeWithTryOn) => item.liked === true) || []
 
-  // Get disliked items
-  const { 
-    data: disliked, 
-    isLoading: isDislikedLoading 
-  } = useQuery({
-    queryKey: ['wardrobe', 'disliked'],
-    queryFn: wardrobeService.getDisliked,
-    staleTime: 1000 * 60 * 2, // 2 minutes
-  })
-
-  // Get undecided items
-  const { 
-    data: undecided, 
-    isLoading: isUndecidedLoading 
-  } = useQuery({
-    queryKey: ['wardrobe', 'undecided'],
-    queryFn: wardrobeService.getUndecided,
-    staleTime: 1000 * 60 * 2, // 2 minutes
-  })
-
-  // Get user stats
+  // Get wardrobe stats
   const { 
     data: userStats, 
     isLoading: isStatsLoading 
   } = useQuery({
     queryKey: ['wardrobe', 'stats'],
-    queryFn: wardrobeService.getUserStats,
+    queryFn: wardrobeService.getWardrobeStats,
+    enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
+
+
 
   // Add to wardrobe mutation
   const addToWardrobeMutation = useMutation({
@@ -80,13 +59,10 @@ export const useWardrobe = () => {
   // Update wardrobe item mutation
   const updateWardrobeItemMutation = useMutation({
     mutationFn: ({ tryOnId, liked }: { tryOnId: string; liked?: boolean | null }) =>
-      wardrobeService.updateWardrobeItem(tryOnId, { try_on_id: tryOnId, liked }),
+      wardrobeService.updateWardrobeItem(tryOnId, { liked }),
     onSuccess: (updatedItem, { tryOnId }) => {
       // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ['wardrobe'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'favorites'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'disliked'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'undecided'] })
       queryClient.invalidateQueries({ queryKey: ['wardrobe', 'stats'] })
       
       // Update try-ons cache
@@ -125,8 +101,6 @@ export const useWardrobe = () => {
     onSuccess: (updatedItem, tryOnId) => {
       // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ['wardrobe'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'favorites'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'undecided'] })
       queryClient.invalidateQueries({ queryKey: ['wardrobe', 'stats'] })
       
       // Update try-ons cache
@@ -140,26 +114,6 @@ export const useWardrobe = () => {
     }
   })
 
-  // Toggle dislike mutation
-  const toggleDislikeMutation = useMutation({
-    mutationFn: wardrobeService.toggleDislike,
-    onSuccess: (updatedItem, tryOnId) => {
-      // Invalidate relevant queries
-      queryClient.invalidateQueries({ queryKey: ['wardrobe'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'disliked'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'undecided'] })
-      queryClient.invalidateQueries({ queryKey: ['wardrobe', 'stats'] })
-      
-      // Update try-ons cache
-      queryClient.setQueryData<TryOnWithWardrobe[]>(['tryOns'], (old) => {
-        return old?.map(item => 
-          item.id === tryOnId 
-            ? { ...item, wardrobe: updatedItem }
-            : item
-        ) || []
-      })
-    }
-  })
 
   // Actions
   const addToWardrobe = async (tryOnId: string, liked?: boolean | null) => {
@@ -178,36 +132,26 @@ export const useWardrobe = () => {
     return toggleLikeMutation.mutateAsync(tryOnId)
   }
 
-  const toggleDislike = async (tryOnId: string) => {
-    return toggleDislikeMutation.mutateAsync(tryOnId)
-  }
 
   return {
     // Data
     wardrobeItems: wardrobeItems || [],
     favorites: favorites || [],
-    disliked: disliked || [],
-    undecided: undecided || [],
     userStats,
     
     // Loading states
     isLoading,
-    isFavoritesLoading,
-    isDislikedLoading,
-    isUndecidedLoading,
     isStatsLoading,
     isAddingToWardrobe: addToWardrobeMutation.isPending,
     isUpdatingWardrobe: updateWardrobeItemMutation.isPending,
     isRemovingFromWardrobe: removeFromWardrobeMutation.isPending,
     isTogglingLike: toggleLikeMutation.isPending,
-    isTogglingDislike: toggleDislikeMutation.isPending,
     
     // Actions
     addToWardrobe,
     updateWardrobeItem,
     removeFromWardrobe,
     toggleLike,
-    toggleDislike,
     refetch,
     
     // Errors
@@ -216,6 +160,5 @@ export const useWardrobe = () => {
     updateWardrobeError: updateWardrobeItemMutation.error,
     removeFromWardrobeError: removeFromWardrobeMutation.error,
     toggleLikeError: toggleLikeMutation.error,
-    toggleDislikeError: toggleDislikeMutation.error,
   }
 }

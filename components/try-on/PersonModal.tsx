@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { AnimatePresence, MotiView } from "moti";
 import UploadModelTab from "./tabs/UploadModelTab";
 import ChooseModelTab from "./tabs/ChooseModelTab";
 
-const PersonModal = () => {
+interface PersonModalProps {
+  onImageSelect: (imageUrl: string) => void;
+  selectedImage?: string;
+}
+
+const PersonModal: React.FC<PersonModalProps> = ({ onImageSelect, selectedImage }) => {
   const [activeTab, setActiveTab] = useState<"uploadImage" | "model">(
     "uploadImage"
   );
@@ -62,7 +67,11 @@ const PersonModal = () => {
           exit={{ opacity: 0, translateX: -20 }}
           transition={{ type: "timing", duration: 200 }}
         >
-          {activeTab === "uploadImage" ? <UploadModelTab /> : <ChooseModelTab />}
+          {activeTab === "uploadImage" ? (
+            <UploadModelTab onImageSelect={onImageSelect} selectedImage={selectedImage} />
+          ) : (
+            <ChooseModelTab onImageSelect={onImageSelect} selectedImage={selectedImage} />
+          )}
         </MotiView>
       </AnimatePresence>
     </View>

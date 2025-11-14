@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import React from "react";
 import { Bell, Globe, Shield, Smartphone, Mail, Sparkles } from 'lucide-react-native';
 
 interface SettingTitleProps {
