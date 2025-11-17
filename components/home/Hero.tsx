@@ -1,182 +1,173 @@
-import { Dimensions, ImageBackground, StyleSheet } from "react-native";
-import { GradientView } from "../index";
+import { View, Image } from "react-native";
 import AnimatedView from "../ui/AnimatedView";
 import AnimatedText from "../ui/AnimatedText";
 import ReusableButton from "../ui/ReusableButton";
+import { Plus, ArrowRight } from "lucide-react-native";
+import { router } from "expo-router";
 
 const Hero = () => {
-  return (
-    <AnimatedView
-      animation="crossfade"
-      duration={800}
-      easing="easeInOut"
-      style={styles.container}
-      className="rounded-b-2xl overflow-hidden"
-    >
-      <ImageBackground
-        source={ require("@/assets/images/fashion1.png") }
-        resizeMode="cover"
-        style={styles.imageBackground}
-      >
-        <GradientView
-          preset="custom"
-          colors={["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0.8)"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={styles.overlay}
-        >
-          <AnimatedView
-            animation="scale"
-            delay={200}
-            duration={600}
-            easing="easeOut"
-            style={styles.content}
-            className="px-6 items-center justify-center gap-4 mt-12"
-          >
-            <AnimatedText
-              animation="scale"
-              delay={400}
-              duration={500}
-              easing="easeOut"
-              style={styles.title}
-              className="text-5xl font-bold text-white text-center mb-2"
-            >
-              Kendinle en uyumlusunu bul!
-            </AnimatedText>
-            <AnimatedText
-              animation="scale"
-              delay={600}
-              duration={500}
-              easing="easeOut"
-              style={styles.description}
-              className="text-lg text-white text-center leading-6 mb-5"
-            >
-             Fotoğrafını yükle ya da hazır bir model seç. Hayalindeki kıyafetleri üstünde görmeye başla!
-            </AnimatedText>
-          </AnimatedView>
+  const handleTryNow = () => {
+    router.push("/(tabs)/try-on");
+  };
 
-          <AnimatedView
+  return (
+    <View className="bg-white px-6 pt-8 pb-12 min-h-[550px] md:min-h-[600px] rounded-b-3xl ">
+      {/* Header Text */}
+      <AnimatedView
+        animation="slideUp"
+        duration={600}
+        easing="easeOut"
+        className="mb-8"
+      >
+        <AnimatedText
+          animation="slideUp"
+          delay={200}
+          duration={500}
+          easing="easeOut"
+          className="text-3xl font-bold text-gray-900 text-center mb-3"
+        >
+          Your Fit, Reimagined!
+        </AnimatedText>
+        <AnimatedText
+          animation="slideUp"
+          delay={400}
+          duration={500}
+          easing="easeOut"
+          className="text-base text-gray-600 text-center px-10"
+        >
+          Kıyafetleri ve kombinleri saniyeler içinde üzerinde gör
+        </AnimatedText>
+      </AnimatedView>
+
+      {/* Process Visualization */}
+      <View className="flex-row justify-between items-center px-2 md:px-4 mb-5">
+        {/* Step 1: Model */}
+        <AnimatedView
+          animation="slideUp"
+          delay={600}
+          duration={600}
+          easing="easeOut"
+          className="flex-1 items-center"
+        >
+          <View className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-gray-50 shadow-lg">
+            <Image
+              source={require("@/assets/images/model.jpg")}
+              className="w-full h-full"
+              resizeMode="cover"
+            />
+          </View>
+          <AnimatedText
             animation="slideUp"
             delay={800}
-            duration={600}
-            easing="easeOut"
-            className="px-6 gap-4 w-full my-10"
+            duration={400}
+            className="text-sm font-semibold text-gray-700 mt-3 text-center"
           >
-            <ReusableButton
-              title="Try it now!"
-              onPress={() => console.log("Shop Now!")}
-              variant="filled"
-              bgColor="bg-virtual-primary"
-              textColor="text-white"
-              style={{ width: "100%" }}
-            />
+            Fotoğraf
+          </AnimatedText>
+        </AnimatedView>
 
-            <ReusableButton
-              title="View Wardrobe"
-              onPress={() => console.log("View Collection!")}
-              variant="outlined"
-              borderColor="border-virtual-primary"
-              style={{ width: "100%" }}
+        {/* Plus Icon */}
+        <AnimatedView
+          animation="scale"
+          delay={1000}
+          duration={400}
+          easing="easeOut"
+          className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-50 justify-center items-center mx-2 md:mx-4"
+        >
+          <Plus size={24} color="#ec4899" strokeWidth={3} />
+        </AnimatedView>
+
+        {/* Step 2: Garment */}
+        <AnimatedView
+          animation="slideUp"
+          delay={1200}
+          duration={600}
+          easing="easeOut"
+          className="flex-1 items-center"
+        >
+          <View className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-gray-50 shadow-lg">
+            <Image
+              source={require("@/assets/images/black-jacket.png")}
+              className="w-full h-full"
+              resizeMode="cover"
             />
-          </AnimatedView>
-        </GradientView>
-      </ImageBackground>
-    </AnimatedView>
+          </View>
+          <AnimatedText
+            animation="slideUp"
+            delay={1400}
+            duration={400}
+            className="text-sm font-semibold text-gray-700 mt-3 text-center"
+          >
+            Kıyafet
+          </AnimatedText>
+        </AnimatedView>
+      </View>
+
+      {/* Arrow Down */}
+      <AnimatedView
+        animation="slideUp"
+        delay={1600}
+        duration={400}
+        easing="easeOut"
+        className="items-center my-4"
+      >
+        <View className="transform rotate-90">
+          <ArrowRight size={24} color="#ec4899" strokeWidth={3} />
+        </View>
+      </AnimatedView>
+
+      {/* Step 3: Result */}
+      <AnimatedView
+        animation="scale"
+        delay={1800}
+        duration={600}
+        easing="easeOut"
+        className="items-center mt-2"
+      >
+        <View className="w-32 h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-[1px]  border-virtual-primary shadow-xl">
+          <Image
+            source={require("@/assets/images/output.png")}
+            className="w-full h-full"
+            resizeMode="cover"
+          />
+        </View>
+        <AnimatedText
+          animation="slideUp"
+          delay={2000}
+          duration={400}
+          className="text-lg font-bold text-virtual-primary mt-4 text-center"
+        >
+          Sonuç 🎉
+        </AnimatedText>
+        <AnimatedText
+          animation="slideUp"
+          delay={2200}
+          duration={400}
+          className="text-xs text-gray-600 mt-2 text-center"
+        >
+          Saniyeler içinde AI ile oluşturuldu
+        </AnimatedText>
+      </AnimatedView>
+
+      {/* Action Buttons */}
+      <AnimatedView
+        animation="slideUp"
+        delay={2400}
+        duration={600}
+        easing="easeOut"
+        className="mt-10 gap-4"
+      >
+        <ReusableButton
+          title="Şimdi Dene"
+          onPress={handleTryNow}
+          variant="filled"
+          bgColor="bg-virtual-primary"
+          textColor="text-white"
+          style={{ width: "100%" }}
+        />
+      </AnimatedView>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    height: Dimensions.get("window").height * 0.6,
-  },
-  imageBackground: {
-    flex: 1,
-  },
-  overlay: {
-    flex: 1,
-    width: "100%",
-  },
-  content: {
-    flex: 1,
-  },
-  title: {
-    textShadowColor: "rgba(0, 0, 0, 0.5)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-  },
-  description: {
-    textShadowColor: "rgba(0, 0, 0, 0.5)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-  },
-});
-
 export default Hero;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const heroSections = [
-//   {
-//     id: 1,
-//     title: "Kendini Giydir 🎨",
-//     description:
-//       "Fotoğrafını yükle ya da hazır bir model seç. Hayalindeki kıyafetleri üstünde görmeye başla!",
-//     image: Farber0,
-//   },
-//   {
-//     id: 2,
-//     title: "Tarzını Yarat ✨",
-//     description:
-//       "Sadece 'kırmızı uzun etek' de — yapay zeka senin için tasarlasın. Moda artık senin dilinden anlıyor!",
-//     image: require("@/assets/images/Fashion1.svg"),
-//   },
-//   {
-//     id: 3,
-//     title: "Beğendiklerini Kaydet 💖",
-//     description:
-//       "Favori görünümlerini sakla, kıyafet fikirlerini arşivle ve ilham panonu oluştur.",
-//     image: require("@/assets/images/Fashion2.svg"),
-//   },
-//   {
-//     id: 4,
-//     title: "Alışverişe Dönüştür 🛍️",
-//     description:
-//       "Beğendiğin kombinleri Google Lens ile bul, tarzını gerçeğe dönüştür.",
-//     image: require("@/assets/images/Fashion3.svg"),
-//   },
-// ];
-
-
-
-//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-//   const heroImages = useMemo(
-//     () => heroSections.map((section) => section.image),
-//     []
-//   );
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-//     }, 10000);
-//     return () => clearInterval(interval);
-//   }, [heroImages.length]);

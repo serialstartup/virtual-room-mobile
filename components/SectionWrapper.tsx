@@ -10,7 +10,7 @@ interface SectionWrapperProps {
 const SectionWrapper: FC<SectionWrapperProps> = ({
   children,
   style,
-  className = "w-full bg-white rounded-lg"
+  className = "w-full  rounded-lg"
 }) => {
   return (
     <View

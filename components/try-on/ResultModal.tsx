@@ -269,9 +269,24 @@ const ResultModal: React.FC<ResultModalProps> = ({
             <Text className="text-red-500 text-center mb-4">
               İşlem başarısız oldu
             </Text>
-            <Text className="text-gray-500 text-center mb-6 text-sm">
+            <Text className="text-gray-500 text-center mb-4 text-sm">
               {error?.message || 'Lütfen farklı bir fotoğraf ile tekrar deneyin'}
             </Text>
+            {__DEV__ && tryOn && (
+              <View className="bg-gray-100 p-3 rounded-lg mb-4 w-full">
+                <Text className="text-xs text-gray-600 text-center">
+                  DEBUG: Status={tryOn.processing_status}, ID={tryOn.id}
+                </Text>
+                <Text className="text-xs text-gray-600 text-center mt-1">
+                  Request: self_image={tryOn.self_image ? '✓' : '✗'}, dress_desc={tryOn.dress_description ? '✓' : '✗'}
+                </Text>
+                {error?.message && (
+                  <Text className="text-xs text-red-600 text-center mt-1">
+                    Error: {error.message}
+                  </Text>
+                )}
+              </View>
+            )}
             <View className="flex-row gap-4">
               <TouchableOpacity
                 onPress={handleRetry}

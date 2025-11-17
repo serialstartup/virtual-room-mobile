@@ -31,13 +31,23 @@ export class TryOnService {
 
   // Create a new try-on request
   async createTryOn(data: CreateTryOnRequest): Promise<TryOn> {
-    const response = await apiClient.post<ApiResponse<TryOn>>('/try-on/create', data);
+    console.log('[TRYON_SERVICE] 📤 Creating try-on with data:', data);
     
-    if (!response.success) {
-      throw new Error(response.error || 'Failed to create try-on');
+    try {
+      const response = await apiClient.post<ApiResponse<TryOn>>('/try-on/create', data);
+      console.log('[TRYON_SERVICE] 📥 API Response:', response);
+      
+      if (!response.success) {
+        console.error('[TRYON_SERVICE] ❌ API Error:', response.error);
+        throw new Error(response.error || 'Failed to create try-on');
+      }
+      
+      console.log('[TRYON_SERVICE] ✅ Try-on created successfully:', response.data);
+      return response.data!;
+    } catch (error: any) {
+      console.error('[TRYON_SERVICE] ❌ Network/API Error:', error);
+      throw error;
     }
-    
-    return response.data!;
   }
 
   // Update a try-on
@@ -96,7 +106,7 @@ export class TryOnService {
           lastStatus = tryOn.processing_status;
         }
         
-        // Continue polling if still processing
+        // Continue polling if still processing  
         const status = tryOn.processing_status as ProcessingStatus;
         if (status === 'pending' || status === 'processing') {
           setTimeout(poll, 2000); // Poll every 2 seconds

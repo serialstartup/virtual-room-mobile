@@ -9,9 +9,9 @@ import { SectionWrapper } from '@/components'
 const Home = () => {
 
   return (
-    <PageWrapper withoutTopEdge>
+    <PageWrapper>
       <ScrollView>
-        <SectionWrapper>
+        <SectionWrapper >
             <Hero />
         </SectionWrapper>
 

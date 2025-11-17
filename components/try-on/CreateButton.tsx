@@ -45,19 +45,37 @@ const CreateButton: React.FC<CreateButtonProps> = ({
     try {
       setIsCreating(true);
 
-      const createRequest = {
+      const createRequest: any = {
         self_image: tryOnData.selectedPersonImage,
-        dress_image: tryOnData.selectedDressImage,
-        dress_description: tryOnData.dressDescription,
       };
 
+      // Only add dress_image if it exists and is not empty
+      if (tryOnData.selectedDressImage) {
+        createRequest.dress_image = tryOnData.selectedDressImage;
+      }
+
+      // Only add dress_description if it exists and is not empty
+      if (tryOnData.dressDescription) {
+        createRequest.dress_description = tryOnData.dressDescription;
+      }
+
+      console.log('[CREATE_BUTTON] 📤 Sending request:', createRequest);
+      
       const newTryOn = await createTryOn(createRequest);
+      console.log('[CREATE_BUTTON] ✅ Try-on created successfully:', newTryOn);
       onTryOnCreate(newTryOn.id);
     } catch (error: any) {
-      console.error("Try-on creation error:", error);
+      console.error('[CREATE_BUTTON] ❌ Try-on creation error:', error);
+      console.error('[CREATE_BUTTON] ❌ Error details:', {
+        message: error.message,
+        response: error.response,
+        data: error.data,
+        status: error.status
+      });
+      
       Alert.alert(
         "Hata",
-        error.message || "Try-on oluşturulurken hata oluştu."
+        error.message || "Try-on oluşturulurken hata oluştu. Lütfen internet bağlantınızı kontrol edin."
       );
     } finally {
       setIsCreating(false);
