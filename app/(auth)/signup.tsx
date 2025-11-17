@@ -5,7 +5,7 @@ import { PageWrapper } from "@/components";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "@/components/ui/ReusableButton";
-import { Eye, EyeOff, Mail, Lock, User, Sparkles } from "lucide-react-native";
+import { Eye, EyeOff, Mail, Lock, Sparkles } from "lucide-react-native";
 
 type SignupFormValues = {
   name: string;
@@ -16,13 +16,13 @@ type SignupFormValues = {
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
     handleSubmit,
-    watch,
+    // watch,
     formState: { errors },
   } = useForm<SignupFormValues>({
     defaultValues: {
@@ -33,7 +33,7 @@ const Signup = () => {
     },
   });
 
-  const password = watch("password");
+  // const password = watch("password");
 
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     setIsLoading(true);
@@ -46,7 +46,7 @@ const Signup = () => {
         { text: "Tamam", onPress: () => router.replace("/(tabs)") },
       ]);
     } catch (error) {
-      Alert.alert("Hata", "Hesap oluşturulurken bir hata oluştu");
+      Alert.alert("Hata", "Hesap oluşturulurken bir hata oluştu",error);
     } finally {
       setIsLoading(false);
     }

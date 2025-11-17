@@ -1,4 +1,4 @@
-import { StyleSheet, StatusBar, ViewStyle, View } from "react-native";
+import { StyleSheet, StatusBar, ViewStyle } from "react-native";
 import { type ReactNode, type FC } from "react";
 import { Colors } from "../constants";
 import { SafeAreaView } from "react-native-safe-area-context";

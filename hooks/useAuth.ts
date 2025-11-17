@@ -77,18 +77,15 @@ export const useAuth = () => {
     },
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    retry: false,
-    onSuccess: (data) => {
-      console.log('[USE_AUTH] ✅ Current user query successful:', data.email);
-    },
-    onError: (error: any) => {
-      console.error('[USE_AUTH] ❌ Current user query failed:', error);
-      // If token is invalid, logout user
+    retry: (failureCount, error: any) => {
+      // If token is invalid, logout user and don't retry
       if (error?.message?.includes('Token') || error?.message?.includes('401')) {
         console.log('[USE_AUTH] 🔄 Invalid token detected, logging out...');
         logout();
+        return false;
       }
-    }
+      return failureCount < 2;
+    },
   })
 
   // Profile update mutation
@@ -152,7 +149,7 @@ export const useAuth = () => {
     isAuthenticated,
     hasStoreUser: !!user,
     hasCurrentUser: !!currentUser,
-    finalUserEmail: finalUser?.email || 'None',
+    finalUserEmail: (finalUser as any)?.email || 'None',
     isLoading: finalIsLoading
   });
 

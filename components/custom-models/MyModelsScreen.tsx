@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -30,7 +30,7 @@ const MyModelsScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const fetchModels = async (isRefresh = false) => {
+  const fetchModels = useCallback(async (isRefresh = false) => {
     try {
       if (isRefresh) {
         setRefreshing(true);
@@ -61,7 +61,7 @@ const MyModelsScreen: React.FC = () => {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, []);
 
   const handleRefresh = () => {
     fetchModels(true);
@@ -260,7 +260,7 @@ const MyModelsScreen: React.FC = () => {
   useFocusEffect(
     useCallback(() => {
       fetchModels();
-    }, [])
+    }, [fetchModels])
   );
 
   if (loading) {

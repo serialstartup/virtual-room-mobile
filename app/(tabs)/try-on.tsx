@@ -134,18 +134,18 @@ const TryOn = () => {
     }
   };
 
-  const handleClearForm = async () => {
-    try {
-      await storageService.clearTryOnData();
-      setTryOnData({
-        selectedPersonImage: undefined,
-        selectedDressImage: undefined,
-        dressDescription: undefined,
-      });
-    } catch (error) {
-      console.error('[TRY_ON] ❌ Error clearing form:', error);
-    }
-  };
+  // const handleClearForm = async () => {
+  //   try {
+  //     await storageService.clearTryOnData();
+  //     setTryOnData({
+  //       selectedPersonImage: undefined,
+  //       selectedDressImage: undefined,
+  //       dressDescription: undefined,
+  //     });
+  //   } catch (error) {
+  //     console.error('[TRY_ON] ❌ Error clearing form:', error);
+  //   }
+  // };
 
   const handleFormReset = () => {
     // Reset the form state immediately

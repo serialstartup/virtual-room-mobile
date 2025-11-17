@@ -68,7 +68,6 @@ const AnimatedHeart: React.FC<AnimatedHeartProps> = ({
             type: 'spring',
             damping: 15,
             stiffness: 150,
-            duration: 200,
           }}
         >
           <Heart 

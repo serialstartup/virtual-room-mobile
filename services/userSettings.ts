@@ -42,6 +42,43 @@ class UserSettingsService {
       new_features: response.data.new_features,
     };
   }
+
+  async updatePushNotifications(enabled: boolean): Promise<UserSettings> {
+    const response = await apiClient.put<{ data: UserSettings }>('/user/settings', {
+      push_notifications: enabled
+    });
+    return response.data;
+  }
+
+  async updateEmailNotifications(enabled: boolean): Promise<UserSettings> {
+    const response = await apiClient.put<{ data: UserSettings }>('/user/settings', {
+      email_notifications: enabled
+    });
+    return response.data;
+  }
+
+  async updateNewFeaturesNotifications(enabled: boolean): Promise<UserSettings> {
+    const response = await apiClient.put<{ data: UserSettings }>('/user/settings', {
+      new_features: enabled
+    });
+    return response.data;
+  }
+
+  async updateLanguage(language: string): Promise<UserSettings> {
+    const response = await apiClient.put<{ data: UserSettings }>('/user/settings', {
+      language
+    });
+    return response.data;
+  }
+
+  async updateAllNotifications(notifications: {
+    push_notifications?: boolean;
+    email_notifications?: boolean;
+    new_features?: boolean;
+  }): Promise<UserSettings> {
+    const response = await apiClient.put<{ data: UserSettings }>('/user/settings', notifications);
+    return response.data;
+  }
 }
 
 export const userSettingsService = new UserSettingsService();

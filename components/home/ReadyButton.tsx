@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import AnimatedView from "../ui/AnimatedView";
 import GradientView from "../GradientView";
 import ReusableButton from "../ui/ReusableButton";
 
