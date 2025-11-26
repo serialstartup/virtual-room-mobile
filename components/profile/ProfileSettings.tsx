@@ -4,10 +4,9 @@ import AnimatedView from "../ui/AnimatedView";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "../ui/ReusableButton";
-import { Crown, Smile, Pencil, User } from "lucide-react-native";
+import { Pencil, User } from "lucide-react-native";
 import { useUser } from "@/hooks/useUser";
 import TokenPurchaseModal from "./TokenPurchaseModal";
-import { useTranslation } from "react-i18next";
 
 type FormValues = {
   name: string;
@@ -28,7 +27,6 @@ const ProfileSettings = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
   } = useForm<FormValues>({
     defaultValues: {

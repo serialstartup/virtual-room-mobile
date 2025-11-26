@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { View, Alert } from "react-native";
 import { AnimatePresence, MotiView } from "moti";
 import PageWrapper from "../../components/PageWrapper";
 import { SectionWrapper } from "@/components";
-import { Footer } from "../../components/Footer";
 import PageHeader from "@/components/PageHeader";
 import { useAppStore } from '@/store/appStore';
 import { ArrowLeft } from 'lucide-react-native';
@@ -16,7 +15,7 @@ import AvatarTryOn from "@/components/try-on/workflows/AvatarTryOn";
 import ResultModal from "@/components/try-on/ResultModal";
 
 // Stores
-import { useWorkflowStore, WorkflowType } from "@/store/workflowStore";
+import { useWorkflowStore } from "@/store/workflowStore";
 
 const TryOn = () => {
   const { activeWorkflow, resetCurrentWorkflow } = useWorkflowStore();
@@ -59,7 +58,7 @@ const TryOn = () => {
     };
     
     loadSavedData();
-  }, []);
+  }, [getLastActiveTryOn, removeActiveTryOn]);
 
   const handleWorkflowSelect = () => {
     setShowWorkflowSelection(false);

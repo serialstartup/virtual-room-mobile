@@ -92,7 +92,7 @@ export interface Database {
           dress_description: string | null
           dress_image: string | null
           product_url: string | null
-          processing_status: string
+          processing_status: ProcessingStatus
           result_image: string | null
           created_at: string
         }
@@ -104,7 +104,7 @@ export interface Database {
           dress_description?: string | null
           dress_image?: string | null
           product_url?: string | null
-          processing_status?: string
+          processing_status?: ProcessingStatus
           result_image?: string | null
           created_at?: string
         }
@@ -116,7 +116,7 @@ export interface Database {
           dress_description?: string | null
           dress_image?: string | null
           product_url?: string | null
-          processing_status?: string
+          processing_status?: ProcessingStatus
           result_image?: string | null
           created_at?: string
         }
@@ -218,7 +218,7 @@ export interface Database {
           dress_description: string | null
           dress_image: string | null
           product_url: string | null
-          processing_status: string
+          processing_status: ProcessingStatus
           result_image: string | null
           created_at: string
           added_to_wardrobe_at: string

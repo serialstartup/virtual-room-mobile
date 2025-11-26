@@ -3,8 +3,8 @@ import {
   downloadAsync, 
   documentDirectory, 
   cacheDirectory,
-  type DownloadProgressData 
-} from 'expo-file-system';
+} from 'expo-file-system/legacy';
+import type { DownloadProgressData } from 'expo-file-system/build/legacy/FileSystem.types';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import { Alert, Platform } from 'react-native';

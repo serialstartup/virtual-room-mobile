@@ -10,6 +10,9 @@ import type {
   TryOnFeedback 
 } from '@/services/feedback';
 
+// Re-export types for convenience
+export type { FeedbackType, WorkflowType, FeedbackSource, TryOnFeedback };
+
 export const useFeedback = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

@@ -222,7 +222,7 @@ export class TryOnService {
         if (tryOn.processing_status !== lastStatus) {
           const update: TryOnStatusUpdate = {
             new: tryOn,
-            old: { ...tryOn, processing_status: (lastStatus || 'pending') as ProcessingStatus }
+            old: { ...tryOn, processing_status: lastStatus || 'pending' }
           };
           
           callback(update);

@@ -50,12 +50,10 @@ const GeneralSettings = () => {
   >("privacy-policy");
 
   const {
-    userSettings,
     notificationSettings,
     updateSettings,
     isUpdateSettingsLoading,
     isSettingsLoading,
-    updateSettingsError
   } = useUser();
 
   const { language, updateLanguage } = useSettingsStore();

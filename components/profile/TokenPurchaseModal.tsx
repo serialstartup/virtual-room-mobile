@@ -20,7 +20,8 @@ interface TokenPurchaseModalProps {
   onPurchase: (packageId: string, tokens: number) => Promise<void>;
 }
 
-const { width: screenWidth } = Dimensions.get('window');
+// Dimensions available if needed in the future
+// const { width: screenWidth } = Dimensions.get('window');
 
 const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
   visible,

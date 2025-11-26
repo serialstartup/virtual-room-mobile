@@ -8,6 +8,7 @@ export interface Avatar {
   status: 'processing' | 'completed' | 'failed';
   processing_status: 'processing' | 'completed' | 'failed'; // Alias for status to match ResultModal interface
   avatar_image_url?: string;
+  is_primary?: boolean;
   created_at: string;
 }
 
