@@ -190,20 +190,109 @@ FROM wardrobe w
 JOIN try_on t ON w.try_on_id = t.id
 WHERE w.liked = true;
 
--- Kullanıcının try-on istatistikleri için view
-CREATE VIEW user_stats AS
-SELECT 
-    u.id as user_id,
-    u.name,
-    u.email,
-    COUNT(t.id) as total_try_ons,
-    COUNT(CASE WHEN w.liked = true THEN 1 END) as favorites_count,
-    COUNT(CASE WHEN w.liked = false THEN 1 END) as disliked_count,
-    COUNT(CASE WHEN w.liked IS NULL THEN 1 END) as undecided_count
-FROM users u
-LEFT JOIN try_on t ON u.id = t.user_id
-LEFT JOIN wardrobe w ON t.id = w.try_on_id
-GROUP BY u.id, u.name, u.email;
+-- Try-On Feedback tablosu (kullanıcı memnuniyet ve favorite tracking)
+CREATE TABLE try_on_feedback (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    try_on_id UUID NOT NULL, -- References farklı tablolara göre değişebilir (try_on, avatars, custom_models)
+    try_on_type VARCHAR(50) NOT NULL CHECK (try_on_type IN ('classic', 'avatar', 'text-to-fashion', 'product-to-model')),
+    feedback_type VARCHAR(20) NOT NULL CHECK (feedback_type IN ('like', 'dislike', 'neutral')),
+    feedback_source VARCHAR(20) NOT NULL CHECK (feedback_source IN ('heart', 'thumbs')), -- Heart = favorite, Thumbs = satisfaction
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(user_id, try_on_id, feedback_source) -- Bir kullanıcı bir sonuca hem heart hem thumbs verebilir ama her birinden sadece 1
+);
+
+-- Try-On Feedback için index'ler
+CREATE INDEX idx_try_on_feedback_user_id ON try_on_feedback(user_id);
+CREATE INDEX idx_try_on_feedback_type ON try_on_feedback(try_on_type);
+CREATE INDEX idx_try_on_feedback_source ON try_on_feedback(feedback_source);
+CREATE INDEX idx_try_on_feedback_created_at ON try_on_feedback(created_at);
+
+-- User stats tablosu (trigger ile otomatik güncellenir)
+CREATE TABLE user_stats (
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    total_try_ons INTEGER DEFAULT 0,
+    favorites_count INTEGER DEFAULT 0,
+    disliked_count INTEGER DEFAULT 0,
+    undecided_count INTEGER DEFAULT 0,
+    satisfied_count INTEGER DEFAULT 0, -- thumbs up count
+    dissatisfied_count INTEGER DEFAULT 0, -- thumbs down count
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    PRIMARY KEY (user_id)
+);
+
+-- Try-On Feedback için RLS
+ALTER TABLE try_on_feedback ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own feedback" 
+    ON try_on_feedback FOR ALL 
+    USING (auth.uid() = user_id);
+
+-- User stats için RLS
+ALTER TABLE user_stats ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own stats" 
+    ON user_stats FOR ALL 
+    USING (auth.uid() = user_id);
+
+-- User stats güncelleme fonksiyonu (wardrobe ve feedback tabloları için)
+CREATE OR REPLACE FUNCTION update_user_stats()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO user_stats (user_id, total_try_ons, favorites_count, disliked_count, undecided_count, satisfied_count, dissatisfied_count)
+  VALUES (
+    COALESCE(NEW.user_id, OLD.user_id),
+    COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id)), 0),
+    COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND liked = true), 0),
+    COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND liked = false), 0),
+    COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND liked IS NULL), 0),
+    COALESCE((SELECT COUNT(*) FROM try_on_feedback WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND feedback_source = 'thumbs' AND feedback_type = 'like'), 0),
+    COALESCE((SELECT COUNT(*) FROM try_on_feedback WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND feedback_source = 'thumbs' AND feedback_type = 'dislike'), 0)
+  )
+  ON CONFLICT (user_id) 
+  DO UPDATE SET
+    total_try_ons = COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id)), 0),
+    favorites_count = COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND liked = true), 0),
+    disliked_count = COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND liked = false), 0),
+    undecided_count = COALESCE((SELECT COUNT(*) FROM wardrobe WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND liked IS NULL), 0),
+    satisfied_count = COALESCE((SELECT COUNT(*) FROM try_on_feedback WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND feedback_source = 'thumbs' AND feedback_type = 'like'), 0),
+    dissatisfied_count = COALESCE((SELECT COUNT(*) FROM try_on_feedback WHERE user_id = COALESCE(NEW.user_id, OLD.user_id) AND feedback_source = 'thumbs' AND feedback_type = 'dislike'), 0),
+    updated_at = NOW();
+
+  RETURN COALESCE(NEW, OLD);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- User stats trigger'ları
+CREATE OR REPLACE TRIGGER update_user_stats_on_wardrobe_insert
+  AFTER INSERT ON wardrobe
+  FOR EACH ROW EXECUTE FUNCTION update_user_stats();
+
+CREATE OR REPLACE TRIGGER update_user_stats_on_wardrobe_update
+  AFTER UPDATE ON wardrobe
+  FOR EACH ROW EXECUTE FUNCTION update_user_stats();
+
+CREATE OR REPLACE TRIGGER update_user_stats_on_wardrobe_delete
+  AFTER DELETE ON wardrobe
+  FOR EACH ROW EXECUTE FUNCTION update_user_stats();
+
+-- Try-On Feedback trigger'ları (user_stats'ı otomatik günceller)
+CREATE OR REPLACE TRIGGER update_user_stats_on_feedback_insert
+  AFTER INSERT ON try_on_feedback
+  FOR EACH ROW EXECUTE FUNCTION update_user_stats();
+
+CREATE OR REPLACE TRIGGER update_user_stats_on_feedback_update
+  AFTER UPDATE ON try_on_feedback
+  FOR EACH ROW EXECUTE FUNCTION update_user_stats();
+
+CREATE OR REPLACE TRIGGER update_user_stats_on_feedback_delete
+  AFTER DELETE ON try_on_feedback
+  FOR EACH ROW EXECUTE FUNCTION update_user_stats();
+
+-- User stats indeksi
+CREATE INDEX IF NOT EXISTS idx_user_stats_user_id ON user_stats(user_id);
 
 -- ==============================================
 -- SETUP TAMAMLANDI!

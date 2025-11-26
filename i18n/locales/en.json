@@ -1,0 +1,230 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "previous": "Previous"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "forgotPassword": "Forgot Password",
+    "loginError": "An error occurred while logging in",
+    "signupError": "An error occurred while signing up",
+    "resetPassword": "Reset Password",
+    "resetPasswordDesc": "Would you like to receive a password reset link via email?",
+    "send": "Send"
+  },
+  "navigation": {
+    "home": "Home",
+    "tryOn": "Try On",
+    "wardrobe": "Wardrobe",
+    "profile": "Profile"
+  },
+  "tryOn": {
+    "title": "Multi-Modal AI Try-On",
+    "subtitle": "Choose from 4 powerful AI-powered fashion workflows",
+    "workflows": {
+      "classic": "Classic Try-On",
+      "productToModel": "Product → Model",
+      "textToFashion": "Text → Fashion",
+      "avatar": "Avatar Try-On",
+      "classicDesc": "Try clothes on yourself",
+      "productToModelDesc": "Showcase products on models",
+      "textToFashionDesc": "Create fashion designs from text",
+      "avatarDesc": "Try clothes with your avatar"
+    },
+    "processing": {
+      "pending": "Preparing... ⏳",
+      "processing": "AI is working... 🤖",
+      "completed": "Here's your result! 🎉",
+      "failed": "An error occurred 😞"
+    },
+    "steps": {
+      "uploadImage": "Upload Photo",
+      "selectClothes": "Select Clothes",
+      "processing": "Processing...",
+      "result": "Result",
+      "step": "Step",
+      "of": "of"
+    },
+    "placeholders": {
+      "selectPerson": "Select person photo",
+      "selectDress": "Select clothes",
+      "describeDress": "Describe the clothes"
+    },
+    "buttons": {
+      "uploadPhoto": "Upload Photo",
+      "takePhoto": "Take Photo",
+      "selectFromGallery": "Select from Gallery",
+      "startTryOn": "Start Try-On",
+      "newTryOn": "New Try-On",
+      "viewResult": "View Result",
+      "createTryOn": "Create Try-On"
+    },
+    "messages": {
+      "processingTip": "💡 Tip: Use high-quality, single-person photos for better results",
+      "processingDescription": "AI is fitting the outfit to you...",
+      "processingDuration": "This process may take 30-60 seconds",
+      "preparingRequest": "Your data is being sent to the AI system",
+      "followSteps": "Follow the steps to create AI fashion content"
+    }
+  },
+  "wardrobe": {
+    "title": "Wardrobe",
+    "empty": "No try-ons in wardrobe yet - Start creating virtual try-ons!",
+    "favorites": "Favorites",
+    "all": "All",
+    "liked": "Liked",
+    "disliked": "Disliked",
+    "stats": {
+      "totalTryOns": "Total Try-Ons",
+      "favorites": "Favorites",
+      "thisWeek": "This Week"
+    },
+    "actions": {
+      "addToFavorites": "Add to Favorites",
+      "removeFromFavorites": "Remove from Favorites",
+      "share": "Share",
+      "delete": "Delete",
+      "shop": "Shop"
+    },
+    "messages": {
+      "noFavorites": "No favorites yet - Try some outfits and like them!",
+      "autoSaving": "Saving...",
+      "autoSaved": "✓ Saved",
+      "likeError": "An error occurred while updating favorite status"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "settings": "Settings",
+    "general": "General",
+    "notifications": "Notifications",
+    "language": "Language",
+    "premium": "Premium",
+    "support": "Support",
+    "about": "About",
+    "logout": "Logout",
+    "tokenBalance": "Token Balance",
+    "tokensUsed": "Tokens Used",
+    "total": "Total",
+    "used": "Used",
+    "buyTokens": "Buy Tokens",
+    "upgrade": "Upgrade",
+    "accountActions": "Account Actions",
+    "forgotPasswordTitle": "Forgot Password",
+    "forgotPasswordDesc": "Reset password via email",
+    "logoutTitle": "Logout",
+    "logoutDesc": "Securely logout from your account",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "profileUpdated": "Your profile has been updated",
+    "profileUpdateError": "An error occurred while updating profile",
+    "profileLoading": "Loading profile information...",
+    "profileLoadError": "Failed to load profile information",
+    "tokenInfo": "Tokens are used for generation.",
+    "sections": {
+      "notifications": {
+        "title": "Notifications",
+        "push": "Push Notifications",
+        "pushDesc": "New try-ons and updates",
+        "email": "Email Notifications",
+        "emailDesc": "Important announcements and campaigns",
+        "features": "New Features",
+        "featuresDesc": "Preview and beta features"
+      },
+      "language": {
+        "title": "Language Settings",
+        "app": "App Language",
+        "appDesc": "Select the language to use in the app"
+      },
+      "privacy": {
+        "title": "Privacy & Security",
+        "policy": "Privacy Policy",
+        "policyDesc": "Learn how we protect your data",
+        "terms": "Terms of Service",
+        "termsDesc": "Our service terms and conditions",
+        "data": "Data Management",
+        "dataDesc": "See how we manage your data"
+      }
+    },
+    "messages": {
+      "settingsLoading": "Loading settings...",
+      "settingUpdateError": "An error occurred while updating settings",
+      "languageUpdated": "Your language setting has been updated"
+    }
+  },
+  "tokens": {
+    "title": "Buy Tokens",
+    "subtitle": "Load tokens for AI generation",
+    "benefits": {
+      "title": "What Can You Do with Tokens?",
+      "aiTryOn": "Try on clothes with AI",
+      "productShowcase": "Create product showcase images",
+      "textToFashion": "Design with Text-to-Fashion",
+      "avatarCreation": "Create and use avatars"
+    },
+    "packages": {
+      "title": "Select Package",
+      "tokens": "Tokens",
+      "oneTime": "one-time",
+      "perToken": "per token",
+      "mostPopular": "Most Popular",
+      "bestValue": "Best Value",
+      "save": "save"
+    },
+    "info": {
+      "title": "💡 Info",
+      "description": "Tokens are permanently added to your account and can be used indefinitely. Tokens are consumed for each AI generation operation."
+    },
+    "purchase": {
+      "selectPackage": "Select Package",
+      "pay": "Pay",
+      "processing": "Processing...",
+      "securePayment": "Protected by secure payment",
+      "success": "Success! 🎉",
+      "successMessage": "{{tokens}} tokens added to your account!",
+      "error": "An error occurred while purchasing tokens. Please try again."
+    }
+  },
+  "home": {
+    "title": "Virtual Try-On Room",
+    "subtitle": "Try on clothes with AI",
+    "features": {
+      "aiTryOn": "AI Try-On",
+      "virtualWardrobe": "Virtual Wardrobe",
+      "instantResults": "Instant Results"
+    },
+    "cta": {
+      "getStarted": "Get Started",
+      "tryNow": "Try Now"
+    }
+  },
+  "errors": {
+    "networkError": "Check your internet connection",
+    "serverError": "Server error, please try again later",
+    "uploadError": "Error occurred while uploading file",
+    "processingError": "Error occurred during processing",
+    "unknownError": "An unknown error occurred"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français"
+  }
+}

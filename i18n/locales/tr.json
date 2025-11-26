@@ -1,0 +1,230 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "retry": "Tekrar Dene",
+    "back": "Geri",
+    "next": "İleri",
+    "done": "Tamam",
+    "previous": "Önceki"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "signup": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "email": "E-posta",
+    "password": "Şifre",
+    "name": "İsim",
+    "forgotPassword": "Şifremi Unuttum",
+    "loginError": "Giriş yapılırken bir hata oluştu",
+    "signupError": "Kayıt olurken bir hata oluştu",
+    "resetPassword": "Şifre Sıfırlama",
+    "resetPasswordDesc": "E-posta adresinize şifre sıfırlama bağlantısı gönderilsin mi?",
+    "send": "Gönder"
+  },
+  "navigation": {
+    "home": "Ana Sayfa",
+    "tryOn": "Dene",
+    "wardrobe": "Gardırop",
+    "profile": "Profil"
+  },
+  "tryOn": {
+    "title": "Multi-Modal AI Try-On",
+    "subtitle": "4 güçlü AI destekli moda workflow'undan birini seçin",
+    "workflows": {
+      "classic": "Klasik Deneme",
+      "productToModel": "Ürün → Model",
+      "textToFashion": "Metin → Moda",
+      "avatar": "Avatar Deneme",
+      "classicDesc": "Kıyafetleri kendinizde deneyin",
+      "productToModelDesc": "Ürünleri modellerde sergileyin",
+      "textToFashionDesc": "Metinden moda tasarımı oluşturun",
+      "avatarDesc": "Avatar'ınızla kıyafet deneyin"
+    },
+    "processing": {
+      "pending": "Hazırlanıyor... ⏳",
+      "processing": "AI çalışıyor... 🤖",
+      "completed": "İşte sonucunuz! 🎉",
+      "failed": "Bir hata oluştu 😞"
+    },
+    "steps": {
+      "uploadImage": "Fotoğraf Yükle",
+      "selectClothes": "Kıyafet Seç",
+      "processing": "İşleniyor...",
+      "result": "Sonuç",
+      "step": "Adım",
+      "of": "/"
+    },
+    "placeholders": {
+      "selectPerson": "Kişi fotoğrafı seçin",
+      "selectDress": "Kıyafet seçin",
+      "describeDress": "Kıyafeti tarif edin"
+    },
+    "buttons": {
+      "uploadPhoto": "Fotoğraf Yükle",
+      "takePhoto": "Fotoğraf Çek",
+      "selectFromGallery": "Galeriden Seç",
+      "startTryOn": "Denemeyi Başlat",
+      "newTryOn": "Yeni Deneme",
+      "viewResult": "Sonucu Görüntüle",
+      "createTryOn": "Try-On Oluştur"
+    },
+    "messages": {
+      "processingTip": "💡 İpucu: Daha iyi sonuçlar için yüksek kaliteli, tek kişilik fotoğraflar kullanın",
+      "processingDescription": "AI kıyafetinizi size uyduruyor...",
+      "processingDuration": "Bu işlem 30-60 saniye sürebilir",
+      "preparingRequest": "Verileriniz AI sistemine gönderiliyor",
+      "followSteps": "AI moda içeriği oluşturmak için adımları takip edin"
+    }
+  },
+  "wardrobe": {
+    "title": "Gardırop",
+    "empty": "Henüz gardıropta deneme yok - Sanal deneme oluşturmaya başlayın!",
+    "favorites": "Favoriler",
+    "all": "Tümü",
+    "liked": "Beğenilen",
+    "disliked": "Beğenilmeyen",
+    "stats": {
+      "totalTryOns": "Toplam Deneme",
+      "favorites": "Favoriler",
+      "thisWeek": "Bu Hafta"
+    },
+    "actions": {
+      "addToFavorites": "Favorilere Ekle",
+      "removeFromFavorites": "Favorilerden Çıkar",
+      "share": "Paylaş",
+      "delete": "Sil",
+      "shop": "Satın Al"
+    },
+    "messages": {
+      "noFavorites": "Henüz favori yok - Kıyafetleri deneyin ve beğenin!",
+      "autoSaving": "Kaydediliyor...",
+      "autoSaved": "✓ Kaydedildi",
+      "likeError": "Favori durumu güncellenirken bir hata oluştu"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "settings": "Ayarlar",
+    "general": "Genel",
+    "notifications": "Bildirimler",
+    "language": "Dil",
+    "premium": "Premium",
+    "support": "Destek",
+    "about": "Hakkında",
+    "logout": "Çıkış Yap",
+    "tokenBalance": "Token Bakiyesi",
+    "tokensUsed": "Kullanılan Token",
+    "total": "Toplam",
+    "used": "Kullanılan",
+    "buyTokens": "Token Satın Al",
+    "upgrade": "Yükselt",
+    "accountActions": "Hesap İşlemleri",
+    "forgotPasswordTitle": "Şifremi Unuttum",
+    "forgotPasswordDesc": "E-posta ile şifre sıfırlama",
+    "logoutTitle": "Çıkış Yap",
+    "logoutDesc": "Hesabınızdan güvenli çıkış",
+    "logoutConfirm": "Hesabınızdan çıkış yapmak istediğinizden emin misiniz?",
+    "profileUpdated": "Profiliniz güncellendi",
+    "profileUpdateError": "Profil güncellenirken bir hata oluştu",
+    "profileLoading": "Profil bilgileri yükleniyor...",
+    "profileLoadError": "Profil bilgileri yüklenemedi",
+    "tokenInfo": "Üretim için token kullanılır.",
+    "sections": {
+      "notifications": {
+        "title": "Bildirimler",
+        "push": "Push Bildirimleri",
+        "pushDesc": "Yeni denemeler ve güncellemeler",
+        "email": "E-posta Bildirimleri", 
+        "emailDesc": "Önemli duyurular ve kampanyalar",
+        "features": "Yeni Özellikler",
+        "featuresDesc": "Ön izleme ve beta özellikleri"
+      },
+      "language": {
+        "title": "Dil Ayarları",
+        "app": "Uygulama Dili",
+        "appDesc": "Uygulamada kullanılacak dili seçin"
+      },
+      "privacy": {
+        "title": "Gizlilik ve Güvenlik",
+        "policy": "Gizlilik Politikası",
+        "policyDesc": "Verilerinizi nasıl koruduğumuzu öğrenin",
+        "terms": "Kullanım Koşulları",
+        "termsDesc": "Hizmet kullanım şartlarımız",
+        "data": "Veri Yönetimi",
+        "dataDesc": "Verilerinizi nasıl yönettiğimizi görün"
+      }
+    },
+    "messages": {
+      "settingsLoading": "Ayarlar yükleniyor...",
+      "settingUpdateError": "Ayar güncellenirken bir hata oluştu",
+      "languageUpdated": "Dil ayarınız güncellendi"
+    }
+  },
+  "tokens": {
+    "title": "Token Satın Al",
+    "subtitle": "AI üretim için token yükle",
+    "benefits": {
+      "title": "Token ile Neler Yapabilirsin?",
+      "aiTryOn": "AI ile kıyafet deneme",
+      "productShowcase": "Ürün vitrin görselleri oluşturma",
+      "textToFashion": "Text-to-Fashion ile tasarım",
+      "avatarCreation": "Avatar oluşturma ve kullanma"
+    },
+    "packages": {
+      "title": "Paket Seç",
+      "tokens": "Token",
+      "oneTime": "tek seferlik",
+      "perToken": "Token başına",
+      "mostPopular": "En Popüler",
+      "bestValue": "En İyi Değer",
+      "save": "tasarruf"
+    },
+    "info": {
+      "title": "💡 Bilgi",
+      "description": "Tokenlar hesabınıza kalıcı olarak eklenir ve süresiz kullanabilirsiniz. Her AI üretim işlemi için token harcanır."
+    },
+    "purchase": {
+      "selectPackage": "Paket Seçin",
+      "pay": "Öde",
+      "processing": "İşleniyor...",
+      "securePayment": "Güvenli ödeme ile korunuyorsunuz",
+      "success": "Başarılı! 🎉",
+      "successMessage": "{{tokens}} token hesabınıza eklendi!",
+      "error": "Token satın alırken bir hata oluştu. Lütfen tekrar deneyin."
+    }
+  },
+  "home": {
+    "title": "Sanal Deneme Odası",
+    "subtitle": "AI ile kıyafetlerinizi deneyin",
+    "features": {
+      "aiTryOn": "AI Deneme",
+      "virtualWardrobe": "Sanal Gardırop",
+      "instantResults": "Anında Sonuçlar"
+    },
+    "cta": {
+      "getStarted": "Başlayın",
+      "tryNow": "Şimdi Deneyin"
+    }
+  },
+  "errors": {
+    "networkError": "İnternet bağlantısını kontrol edin",
+    "serverError": "Sunucu hatası, lütfen daha sonra tekrar deneyin",
+    "uploadError": "Dosya yüklenirken hata oluştu",
+    "processingError": "İşlem sırasında hata oluştu",
+    "unknownError": "Bilinmeyen bir hata oluştu"
+  },
+  "languages": {
+    "tr": "Türkçe",
+    "en": "English",
+    "es": "Español",
+    "fr": "Français"
+  }
+}

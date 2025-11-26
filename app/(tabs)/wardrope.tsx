@@ -1,10 +1,11 @@
 import { View, Text } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageWrapper, SectionWrapper } from "@/components";
 import TopStatistics from "@/components/wardrope/TopStatisticsNew";
 import EachOutput from "@/components/wardrope/EachOutput";
 import PageHeader from "@/components/PageHeader";
 import { useWardrobe } from "@/hooks/useWardrobe";
+import { useAuthStore } from "@/store/authStore";
 
 const Wardrope = () => {
   const [activeFilter, setActiveFilter] = useState<"all" | "liked">("all");
@@ -18,6 +19,33 @@ const Wardrope = () => {
   };
 
   const { wardrobeItems, favorites, isLoading, error } = useWardrobe();
+  const { isAuthenticated, user } = useAuthStore();
+
+  // Debug logs
+  useEffect(() => {
+    console.log('[WARDROBE_PAGE] 🔍 Debug Info:');
+    console.log('- isAuthenticated:', isAuthenticated);
+    console.log('- user:', user?.email);
+    console.log('- isLoading:', isLoading);
+    console.log('- error:', error);
+    console.log('- wardrobeItems length:', wardrobeItems?.length || 0);
+    console.log('- favorites length:', favorites?.length || 0);
+    console.log('- wardrobeItems sample:', wardrobeItems?.slice(0, 2));
+  }, [isAuthenticated, user, isLoading, error, wardrobeItems, favorites]);
+
+  if (!isAuthenticated) {
+    return (
+      <PageWrapper>
+        <SectionWrapper>
+          <View className="flex-1 justify-center items-center">
+            <Text className="text-gray-500 text-center">
+              Please log in to view your wardrobe
+            </Text>
+          </View>
+        </SectionWrapper>
+      </PageWrapper>
+    );
+  }
 
   if (isLoading) {
     return (

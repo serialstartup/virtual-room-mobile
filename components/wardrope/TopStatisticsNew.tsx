@@ -44,7 +44,7 @@ const TopStatisticsNew: React.FC<TopStatisticsNewProps> = ({
             <View
               className={`p-3 rounded-xl border ${
                 isActive
-                  ? "bg-white border-virtual-primary shadow-sm"
+                  ? "bg-white border-virtual-primary"
                   : "bg-white border-gray-100"
               }`}
             >

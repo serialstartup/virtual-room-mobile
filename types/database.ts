@@ -15,6 +15,8 @@ export interface Database {
           name: string
           email: string
           premium_status: boolean
+          token: string
+          total_tokens_used: string
           active: boolean
           created_at: string
           updated_at: string
@@ -23,6 +25,8 @@ export interface Database {
           id?: string
           name: string
           email: string
+          token: string
+          total_tokens_used: string
           premium_status?: boolean
           active?: boolean
           created_at?: string
@@ -32,6 +36,8 @@ export interface Database {
           id?: string
           name?: string
           email?: string
+          token: string
+          total_tokens_used: string
           premium_status?: boolean
           active?: boolean
           created_at?: string
@@ -163,6 +169,44 @@ export interface Database {
           }
         ]
       }
+      user_stats: {
+        Row: {
+          user_id: string
+          total_try_ons: number
+          favorites_count: number
+          disliked_count: number
+          undecided_count: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          user_id: string
+          total_try_ons?: number
+          favorites_count?: number
+          disliked_count?: number
+          undecided_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          user_id?: string
+          total_try_ons?: number
+          favorites_count?: number
+          disliked_count?: number
+          undecided_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_stats_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       user_favorites: {
@@ -184,26 +228,6 @@ export interface Database {
             foreignKeyName: "try_on_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      user_stats: {
-        Row: {
-          user_id: string
-          name: string
-          email: string
-          total_try_ons: number
-          favorites_count: number
-          disliked_count: number
-          undecided_count: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "users_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -238,8 +262,12 @@ export type TryOnWithWardrobe = TryOn & {
   wardrobe?: Wardrobe | null
 }
 
+export type WardrobeWithTryOn = Wardrobe & {
+  try_on?: TryOn | null
+}
+
 export type UserFavorites = Database['public']['Views']['user_favorites']['Row']
-export type UserStats = Database['public']['Views']['user_stats']['Row']
+export type UserStats = Tables<'user_stats'>
 
 // Processing status enum
 export type ProcessingStatus = 'pending' | 'processing' | 'completed' | 'failed'

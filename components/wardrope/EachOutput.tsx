@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import AnimatedView from "../ui/AnimatedView";
 import AnimatedText from "../ui/AnimatedText";
 import AnimatedHeart from "../ui/AnimatedHeart";
-import FadeTransition from "../ui/FadeTransition";
-import { Calendar, ExternalLink } from 'lucide-react-native';
-import { Colors } from "@/constants";
+import { Calendar } from 'lucide-react-native';
 import { useWardrobe } from "@/hooks/useWardrobe";
 import { WardrobeWithTryOn } from "@/services/wardrobe";
 import { formatDate } from "@/utils";
@@ -22,48 +20,28 @@ const EachOutput: React.FC<EachOutputProps> = ({
   favorites = []
 }) => {
   const { toggleLike, isTogglingLike } = useWardrobe();
-  const [hiddenItems, setHiddenItems] = useState<Set<string>>(new Set());
   
   // Filter the wardrobeItems based on the filter prop
   const filteredOutfits = React.useMemo(() => {
+    console.log('[EACH_OUTPUT] 🔍 Filtering outfits:');
+    console.log('- filter:', filter);
+    console.log('- wardrobeItems length:', wardrobeItems?.length || 0);
+    console.log('- favorites length:', favorites?.length || 0);
+    
     if (filter === 'liked') {
+      console.log('- returning favorites:', favorites?.length || 0);
       return favorites;
     }
+    console.log('- returning wardrobeItems:', wardrobeItems?.length || 0);
     return wardrobeItems;
   }, [wardrobeItems, favorites, filter]);
 
-  const toggleFavorite = async (tryOnId: string, isCurrentlyLiked: boolean) => {
+  const toggleFavorite = async (tryOnId: string) => {
     try {
-      // If removing from liked filter, hide the item first
-      if (filter === 'liked' && isCurrentlyLiked) {
-        setHiddenItems(prev => new Set(prev).add(tryOnId));
-        
-        // Wait a bit for animation then toggle
-        setTimeout(async () => {
-          await toggleLike(tryOnId);
-          // Remove from hidden items after backend update
-          setTimeout(() => {
-            setHiddenItems(prev => {
-              const newSet = new Set(prev);
-              newSet.delete(tryOnId);
-              return newSet;
-            });
-          }, 100);
-        }, 250);
-      } else {
-        // Normal toggle for other cases
-        await toggleLike(tryOnId);
-      }
+      await toggleLike(tryOnId);
     } catch (error) {
       console.error('Toggle like error:', error);
       Alert.alert("Hata", "Favori durumu güncellenirken bir hata oluştu");
-      
-      // Restore item if error occurred
-      setHiddenItems(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(tryOnId);
-        return newSet;
-      });
     }
   };
 
@@ -83,33 +61,54 @@ const EachOutput: React.FC<EachOutputProps> = ({
           </View>
         ) : (
           filteredOutfits.map((wardrobeItem, index) => {
+            console.log('[EACH_OUTPUT] 🎨 Rendering item:', {
+              index,
+              wardrobeItemId: wardrobeItem.id,
+              tryOnId: wardrobeItem.try_on?.id,
+              resultImage: wardrobeItem.try_on?.result_image,
+              hasImage: !!wardrobeItem.try_on?.result_image
+            });
+            
             const tryOn = wardrobeItem.try_on;
-            if (!tryOn || !tryOn.result_image) return null;
+            if (!tryOn || !tryOn.result_image) {
+              console.log('[EACH_OUTPUT] ❌ Skipping item - missing tryOn or result_image');
+              return null;
+            }
 
-            const isHidden = hiddenItems.has(tryOn.id);
-
+            console.log('[EACH_OUTPUT] 🏗️ About to render item:', tryOn.id);
+            
             return (
-              <FadeTransition
+              <View
                 key={wardrobeItem.id}
-                visible={!isHidden}
-                duration={300}
-                exitDuration={200}
-                delay={index * 50}
-                className="w-full my-4"
+                style={{ 
+                  width: '100%', 
+                  marginVertical: 16,
+                  backgroundColor: 'white',
+                  borderRadius: 16,
+                  overflow: 'hidden'
+                }}
               >
-                <TouchableOpacity className="bg-white rounded-2xl overflow-hidden">
+                <TouchableOpacity style={{ backgroundColor: 'white' }}>
                   {/* Image Container */}
-                  <View className="relative">
+                  <View style={{ position: 'relative' }}>
                     <Image
-                      source={{ uri: tryOn.result_image }}
-                      className="w-full h-96 bg-gray-100"
+                      source={{ 
+                        uri: tryOn.result_image
+                      }}
+                      style={{ 
+                        width: '100%', 
+                        height: 384, // h-96 equivalent
+                        backgroundColor: '#f3f4f6' // bg-gray-100 equivalent
+                      }}
                       resizeMode="cover"
+                      onLoad={() => console.log('[EACH_OUTPUT] ✅ Image loaded:', tryOn.result_image)}
+                      onError={(error) => console.log('[EACH_OUTPUT] ❌ Image error:', error, tryOn.result_image)}
                     />
                     
                     {/* Favorite Heart */}
                     <AnimatedHeart
                       isLiked={wardrobeItem.liked}
-                      onToggle={() => toggleFavorite(tryOn.id, wardrobeItem.liked)}
+                      onToggle={() => toggleFavorite(tryOn.id)}
                       disabled={isTogglingLike}
                       hapticType="medium"
                     />
@@ -161,30 +160,10 @@ const EachOutput: React.FC<EachOutputProps> = ({
                           {formatDate(wardrobeItem.created_at)}
                         </Text>
                       </AnimatedView>
-
-                      {tryOn.product_url && (
-                        <AnimatedView
-                          animation="slideUp"
-                          delay={(index * 150) + 400}
-                        >
-                          <TouchableOpacity 
-                            className="flex-row items-center border-[1px] border-virtual-primary px-3 py-1 rounded-full"
-                            onPress={() => {
-                              // TODO: Open product URL
-                              console.log('Open product:', tryOn.product_url);
-                            }}
-                          >
-                            <ExternalLink size={12} color={Colors.mutedPink[500]} />
-                            <Text className="text-xs text-virtual-primary ml-1 font-medium">
-                              Shop
-                            </Text>
-                          </TouchableOpacity>
-                        </AnimatedView>
-                      )}
                     </View>
                   </View>
                 </TouchableOpacity>
-              </FadeTransition>
+              </View>
             );
           })
         )}

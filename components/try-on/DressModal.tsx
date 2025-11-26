@@ -2,19 +2,18 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { AnimatePresence, MotiView } from "moti";
 import DescriptionDressTab from "./tabs/DescriptionDressTab";
-import UploadDressTab from "./tabs/UploadDressTab";
+import UploadTab from "./tabs/UploadTab";
 import ChooseClothes from "./ChooseClothes";
-
 interface DressModalProps {
   onImageSelect: (imageUrl: string, description?: string) => void;
   selectedImage?: string;
   selectedDescription?: string;
 }
 
-const DressModal: React.FC<DressModalProps> = ({ 
-  onImageSelect, 
-  selectedImage, 
-  selectedDescription 
+const DressModal: React.FC<DressModalProps> = ({
+  onImageSelect,
+  selectedImage,
+  selectedDescription,
 }) => {
   const [activeTab, setActiveTab] = useState<
     "description" | "uploadDress" | "chooseDress"
@@ -79,17 +78,25 @@ const DressModal: React.FC<DressModalProps> = ({
           transition={{ type: "timing", duration: 200 }}
         >
           {activeTab === "description" ? (
-            <DescriptionDressTab 
-              onDescriptionChange={(description) => onImageSelect("", description)}
+            <DescriptionDressTab
+              onDescriptionChange={(description) =>
+                onImageSelect("", description)
+              }
               selectedDescription={selectedDescription}
             />
           ) : activeTab === "uploadDress" ? (
-            <UploadDressTab 
+            <UploadTab
               onImageSelect={onImageSelect}
               selectedImage={selectedImage}
+              title="Kıyafet yükle"
+              skeletonTitle="Kıyafet resmini yükless"
             />
           ) : (
-            <ChooseClothes 
+            // <UploadDressTab
+            //   onImageSelect={onImageSelect}
+            //   selectedImage={selectedImage}
+            // />
+            <ChooseClothes
               onImageSelect={onImageSelect}
               selectedImage={selectedImage}
             />

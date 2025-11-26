@@ -1,54 +1,53 @@
 import { useState, useEffect } from "react";
-import PersonModal from "@/components/try-on/PersonModal";
-import DressModal from "@/components/try-on/DressModal";
-import CreateButton from "@/components/try-on/CreateButton";
-import ResultModal from "@/components/try-on/ResultModal";
+import { View, Alert } from "react-native";
+import { AnimatePresence, MotiView } from "moti";
 import PageWrapper from "../../components/PageWrapper";
 import { SectionWrapper } from "@/components";
-import { ScrollView, Alert } from "react-native";
 import { Footer } from "../../components/Footer";
 import PageHeader from "@/components/PageHeader";
-import { storageService } from "@/services/storage";
-import type { TryOnData } from "@/services/storage";
+import { useAppStore } from '@/store/appStore';
+import { ArrowLeft } from 'lucide-react-native';
+// New Multi-Modal Components
+import WorkflowSelector from "@/components/try-on/WorkflowSelector";
+import ClassicTryOn from "@/components/try-on/workflows/ClassicTryOn";
+import ProductToModel from "@/components/try-on/workflows/ProductToModel";
+import TextToFashion from "@/components/try-on/workflows/TextToFashion";
+import AvatarTryOn from "@/components/try-on/workflows/AvatarTryOn";
+import ResultModal from "@/components/try-on/ResultModal";
+
+// Stores
+import { useWorkflowStore, WorkflowType } from "@/store/workflowStore";
 
 const TryOn = () => {
-  const [tryOnData, setTryOnData] = useState<TryOnData>({
-    selectedPersonImage: undefined,
-    selectedDressImage: undefined,
-    dressDescription: undefined,
-  });
+  const { activeWorkflow, resetCurrentWorkflow } = useWorkflowStore();
+  const { getLastActiveTryOn, removeActiveTryOn, addActiveTryOn } = useAppStore();
   
   const [showResultModal, setShowResultModal] = useState(false);
   const [currentTryOnId, setCurrentTryOnId] = useState<string | null>(null);
+  const [showWorkflowSelection, setShowWorkflowSelection] = useState(true);
 
   // Load saved data on mount
   useEffect(() => {
     const loadSavedData = async () => {
       try {
-        
-        // Load form data
-        const savedData = await storageService.loadTryOnData();
-        if (savedData) {
-          setTryOnData(savedData);
-        }
-        
         // Check for active try-ons
-        const activeTryOn = await storageService.getLastActiveTryOn();
+        const activeTryOn = getLastActiveTryOn();
         if (activeTryOn) {
           Alert.alert(
-            'Devam Eden İşlem',
-            'Daha önce başlatılan bir try-on işlemi var. Sonucunu görmek ister misiniz?',
+            'Continue Processing',
+            'You have an active try-on in progress. Would you like to see the result?',
             [
               {
-                text: 'Hayır',
-                onPress: () => storageService.removeActiveTryOn(activeTryOn.tryOnId),
+                text: 'Cancel',
+                onPress: () => removeActiveTryOn(activeTryOn.tryOnId),
                 style: 'cancel'
               },
               {
-                text: 'Evet',
+                text: 'View Result',
                 onPress: () => {
                   setCurrentTryOnId(activeTryOn.tryOnId);
                   setShowResultModal(true);
+                  setShowWorkflowSelection(false);
                 }
               }
             ]
@@ -62,38 +61,19 @@ const TryOn = () => {
     loadSavedData();
   }, []);
 
-  // Save data when it changes
-  useEffect(() => {
-    const saveData = async () => {
-      // Only save if we have some data
-      if (tryOnData.selectedPersonImage || tryOnData.selectedDressImage || tryOnData.dressDescription) {
-        try {
-          await storageService.saveTryOnData(tryOnData);
-        } catch (error) {
-          console.error('[TRY_ON] ❌ Error saving data:', error);
-        }
-      }
-    };
-    
-    saveData();
-  }, [tryOnData]);
-
-  const handlePersonImageSelect = (imageUrl: string) => {
-    setTryOnData(prev => ({ ...prev, selectedPersonImage: imageUrl }));
+  const handleWorkflowSelect = () => {
+    setShowWorkflowSelection(false);
   };
 
-  const handleDressImageSelect = (imageUrl: string, description?: string) => {
-    setTryOnData(prev => ({ 
-      ...prev, 
-      selectedDressImage: imageUrl,
-      dressDescription: description 
-    }));
+  const handleBackToWorkflowSelector = () => {
+    setShowWorkflowSelection(true);
+    resetCurrentWorkflow();
   };
 
   const handleTryOnCreate = async (tryOnId: string) => {
     try {
       // Save active try-on to storage
-      await storageService.saveActiveTryOn(tryOnId);
+      addActiveTryOn(tryOnId);
       
       setCurrentTryOnId(tryOnId);
       setShowResultModal(true);
@@ -105,11 +85,28 @@ const TryOn = () => {
     }
   };
 
+  const handleAvatarCreate = async (avatarId: string) => {
+    try {
+      console.log('[TRY_ON] 👤 Avatar created, showing progress modal:', avatarId);
+      
+      // For avatar creation, we use the avatar ID as try-on ID
+      // This allows ResultModal to track the avatar processing
+      setCurrentTryOnId(avatarId);
+      setShowResultModal(true);
+      setShowWorkflowSelection(false);
+    } catch (error) {
+      console.error('[TRY_ON] ❌ Error handling avatar creation:', error);
+      // Still show the modal even if saving fails
+      setCurrentTryOnId(avatarId);
+      setShowResultModal(true);
+    }
+  };
+
   const handleResultModalClose = async () => {
     try {
       // Remove from active try-ons when closing
       if (currentTryOnId) {
-        await storageService.removeActiveTryOn(currentTryOnId);
+        removeActiveTryOn(currentTryOnId);
       }
     } catch (error) {
       console.error('[TRY_ON] ❌ Error removing active try-on:', error);
@@ -123,7 +120,7 @@ const TryOn = () => {
     try {
       // Remove from active try-ons when retrying
       if (currentTryOnId) {
-        await storageService.removeActiveTryOn(currentTryOnId);
+        removeActiveTryOn(currentTryOnId);
       }
     } catch (error) {
       console.error('[TRY_ON] ❌ Error removing active try-on:', error);
@@ -134,63 +131,88 @@ const TryOn = () => {
     }
   };
 
-  // const handleClearForm = async () => {
-  //   try {
-  //     await storageService.clearTryOnData();
-  //     setTryOnData({
-  //       selectedPersonImage: undefined,
-  //       selectedDressImage: undefined,
-  //       dressDescription: undefined,
-  //     });
-  //   } catch (error) {
-  //     console.error('[TRY_ON] ❌ Error clearing form:', error);
-  //   }
-  // };
 
   const handleFormReset = () => {
-    // Reset the form state immediately
-    setTryOnData({
-      selectedPersonImage: undefined,
-      selectedDressImage: undefined,
-      dressDescription: undefined,
-    });
+    resetCurrentWorkflow();
+    setShowWorkflowSelection(true);
   };
 
-  const isReadyToCreate = !!(tryOnData.selectedPersonImage && 
-    (tryOnData.selectedDressImage || tryOnData.dressDescription));
+  const renderWorkflowContent = () => {
+    switch (activeWorkflow) {
+      case 'classic':
+        return <ClassicTryOn onTryOnCreate={handleTryOnCreate} />;
+      case 'product-to-model':
+        return <ProductToModel onTryOnCreate={handleTryOnCreate} />;
+      case 'text-to-fashion':
+        return <TextToFashion onTryOnCreate={handleTryOnCreate} />;
+      case 'avatar':
+        return <AvatarTryOn onTryOnCreate={handleTryOnCreate} onAvatarCreate={handleAvatarCreate} />;
+      default:
+        return <ClassicTryOn onTryOnCreate={handleTryOnCreate} />;
+    }
+  };
 
   return (
     <PageWrapper>
-      <ScrollView>
-        <SectionWrapper>
-          <PageHeader title="Virtual Try-On" subtitle="Upload your photo and see how clothes look on you before you buy!" />
-        </SectionWrapper>
-
-        <SectionWrapper className="p-6 bg-gray-100 my-8 mx-4 rounded-2xl">
-          <PersonModal 
-            onImageSelect={handlePersonImageSelect}
-            selectedImage={tryOnData.selectedPersonImage}
-          />
-        </SectionWrapper>
-
-        <SectionWrapper className="p-6 bg-gray-100 my-8 mx-4 rounded-2xl">
-          <DressModal 
-            onImageSelect={handleDressImageSelect}
-            selectedImage={tryOnData.selectedDressImage}
-            selectedDescription={tryOnData.dressDescription}
-          />
-        </SectionWrapper>
-
-        <SectionWrapper className="p-6">
-          <CreateButton 
-            isReady={isReadyToCreate}
-            tryOnData={tryOnData}
-            onTryOnCreate={handleTryOnCreate}
-          />
-        </SectionWrapper>
-        
-        <Footer />
-      </ScrollView>
+      <View className="flex-1">
+        {showWorkflowSelection ? (
+          // Workflow Selection Screen
+          <AnimatePresence>
+            <MotiView
+              key="workflow-selector"
+              from={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: 'timing', duration: 300 }}
+              className="flex-1"
+            >
+              <SectionWrapper>
+                <PageHeader 
+                  title="Multi-Modal AI Try-On" 
+                  subtitle="Choose from 4 powerful AI-powered fashion workflows" 
+                />
+              </SectionWrapper>
+              
+              <WorkflowSelector onWorkflowSelect={handleWorkflowSelect} />
+              
+            </MotiView>
+          </AnimatePresence>
+        ) : (
+          // Selected Workflow Screen
+          <AnimatePresence>
+            <MotiView
+              key={`workflow-${activeWorkflow}`}
+              from={{ opacity: 0, translateX: 50 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              exit={{ opacity: 0, translateX: -50 }}
+              transition={{ type: 'timing', duration: 300 }}
+              className="flex-1"
+            >
+              <SectionWrapper>
+                {/* Back Button - Top Left */}
+                <View className="px-4 ">
+                  <View 
+                    className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center self-start"
+                    onTouchEnd={handleBackToWorkflowSelector}
+                  >
+                    <ArrowLeft size={20} color="#374151" />
+                  </View>
+                </View>
+                
+                {/* Page Header - Centered */}
+                <PageHeader 
+                  title={`${activeWorkflow.charAt(0).toUpperCase() + activeWorkflow.slice(1).replace('-', ' ')} Workflow`}
+                />
+              </SectionWrapper>
+              
+              {/* Workflow Content */}
+              <View className="flex-1">
+                {renderWorkflowContent()}
+              </View>
+            </MotiView>
+          </AnimatePresence>
+        )}
+      </View>
 
       <ResultModal
         visible={showResultModal}
@@ -198,6 +220,8 @@ const TryOn = () => {
         onClose={handleResultModalClose}
         onRetry={handleRetry}
         onClearForm={handleFormReset}
+        isAvatarProcessing={activeWorkflow === 'avatar'}
+        isTextToFashionProcessing={activeWorkflow === 'text-to-fashion'}
       />
     </PageWrapper>
   );

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import i18n from '@/i18n'
 
 export interface AppSettings {
   // Theme
@@ -63,6 +64,9 @@ export const useSettingsStore = create<SettingsState>()(
       },
 
       updateLanguage: (language: AppSettings['language']) => {
+        // Update i18next language
+        i18n.changeLanguage(language)
+        // Update store
         set({ language })
       },
 
@@ -112,7 +116,13 @@ export const useSettingsStore = create<SettingsState>()(
         reducedAnimations: state.reducedAnimations,
         analyticsEnabled: state.analyticsEnabled,
         crashReportingEnabled: state.crashReportingEnabled,
-      })
+      }),
+      onRehydrateStorage: () => (state) => {
+        // Initialize i18n with persisted language on app start
+        if (state?.language) {
+          i18n.changeLanguage(state.language)
+        }
+      },
     }
   )
 )

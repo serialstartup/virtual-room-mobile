@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "../ui/ReusableButton";
 import { Crown, Smile, Pencil, User } from "lucide-react-native";
 import { useUser } from "@/hooks/useUser";
+import TokenPurchaseModal from "./TokenPurchaseModal";
+import { useTranslation } from "react-i18next";
 
 type FormValues = {
   name: string;
@@ -14,6 +16,7 @@ type FormValues = {
 
 const ProfileSettings = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [showTokenModal, setShowTokenModal] = useState(false);
   const { 
     user, 
     updateProfile, 
@@ -62,6 +65,38 @@ const ProfileSettings = () => {
     }
   };
 
+  const handleTokenPurchase = async (packageId: string, tokens: number) => {
+    try {
+      // TODO: RevenueCat entegrasyonu buraya gelecek
+      // Şimdilik mock implementation
+      console.log(`Purchasing package: ${packageId}, tokens: ${tokens}`);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // TODO: Backend'e token ekleme isteği
+      // await addTokensToUser(tokens);
+      
+      Alert.alert(
+        "Başarılı! 🎉",
+        `${tokens} token hesabınıza eklendi!`,
+        [{ text: "Tamam" }]
+      );
+      
+      // User cache'ini invalidate et (token güncellemesi için)
+      // queryClient.invalidateQueries(['user', 'profile']);
+      
+    } catch (error) {
+      console.error('Token purchase error:', error);
+      Alert.alert(
+        "Hata",
+        "Token satın alırken bir hata oluştu. Lütfen tekrar deneyin.",
+        [{ text: "Tamam" }]
+      );
+    }
+  };
+
+
   if (isUserLoading) {
     return (
       <AnimatedView animation="slideUp" className="bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden">
@@ -83,6 +118,7 @@ const ProfileSettings = () => {
   }
 
   return (
+    <>
     <AnimatedView
       animation="slideUp"
       className="bg-gray-100 border border-gray-100 rounded-2xl  overflow-hidden"
@@ -182,45 +218,62 @@ const ProfileSettings = () => {
         )}
 
         {/* Plan Section */}
-        <View className="mt-6 pt-6 border-t border-gray-200">
-          <Text className="text-gray-500 text-sm mb-3">Mevcut Plan</Text>
-          <View className="bg-gray-50 rounded-xl py-4 px-3 border border-gray-100">
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3 ">
-                <View
-                  className={`p-2 rounded-full border-2 ${
-                    user.premium_status
-                      ? "bg-gray-800 border-virtual-primary"
-                      : "bg-gray-400 border-gray-300"
-                  }`}
-                >
-                  {user.premium_status ? (
-                    <Crown color="white" size={20} />
-                  ) : (
-                    <Smile color="white" size={20} />
-                  )}
-                </View>
-                <View>
-                  <Text className="text-gray-800 font-semibold text-base">
-                    {user.premium_status ? "Premium Plan" : "Ücretsiz Plan"}
-                  </Text>
-                  <Text className="text-gray-500 text-sm">
-                    {user.premium_status ? "Tüm özelliklere erişim" : "Sınırlı özellikler"}
-                  </Text>
-                </View>
-              </View>
-              {!user.premium_status && (
-                <TouchableOpacity className="bg-virtual-primary px-6 py-2 rounded-lg">
-                  <Text className="text-white font-semibold text-sm">
-                    Yükselt
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </View>
-        </View>
+     <View className="mt-8 pb-6">
+  <Text className="text-gray-500 text-sm mb-3">Hesap Durumu</Text>
+
+  <View className="bg-white rounded-2xl p-5 border border-gray-100 ">
+
+    {/* Üst Kısım */}
+    <View className="flex-row items-center justify-between mb-4">
+      <View>
+        <Text className="text-lg font-bold text-gray-900">Token Bakiyesi</Text>
+        <Text className="text-gray-500 text-sm mt-1">
+          Toplam: {user?.token} • Kullanılan: {user?.total_tokens_used}
+        </Text>
+      </View>
+
+      {/* Token Badge */}
+      <View className="bg-virtual-primary/10 px-4 py-2 rounded-full">
+        <Text className="text-virtual-primary font-semibold">
+          {user?.token} Token
+        </Text>
+      </View>
+    </View>
+
+    {/* Progress Bar */}
+    <View className="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-5">
+      <View
+        style={{ width: `${(+user?.total_tokens_used / +(user?.token + user?.total_tokens_used)) * 100}%` }}
+        className="h-full bg-virtual-primary rounded-full"
+      />
+    </View>
+
+    {/* Alt Kısım */}
+    <View className="flex-row items-center justify-between">
+      <Text className="text-gray-500 text-sm">
+        Üretim için token kullanılır.
+      </Text>
+
+      <TouchableOpacity 
+        onPress={() => setShowTokenModal(true)}
+        className="bg-virtual-primary px-5 py-2.5 rounded-xl shadow-sm"
+      >
+        <Text className="text-white font-semibold text-sm">Token Satın Al</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+</View>
+
       </View>
     </AnimatedView>
+
+    {/* Token Purchase Modal */}
+    <TokenPurchaseModal
+      visible={showTokenModal}
+      onClose={() => setShowTokenModal(false)}
+      onPurchase={handleTokenPurchase}
+    />
+  </>
   );
 };
 

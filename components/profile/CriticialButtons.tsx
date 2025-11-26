@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import AnimatedView from "../ui/AnimatedView";
-import { Key, LogOut } from "lucide-react-native";
+import { Key, LogOut, ChevronRight } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -56,51 +56,62 @@ const CriticialButtons = () => {
       id: "forgot-password",
       title: "Şifremi Unuttum",
       subtitle: "E-posta ile şifre sıfırlama",
-      icon: <Key color="#6b7280" size={20} />,
+      icon: <Key color="#ffffffff" size={22} />,
       action: handleForgotPassword,
-      variant: "secondary" as const,
+      bgColor: "bg-white",
+      borderColor: "border-blue-200",
+      iconBg: "bg-blue-300",
     },
     {
       id: "logout",
       title: "Çıkış Yap",
       subtitle: "Hesabınızdan güvenli çıkış",
-      icon: <LogOut color="#6b7280" size={20} />,
+      icon: <LogOut color="#ef4444" size={22} />,
       action: handleLogout,
-      variant: "secondary" as const,
+      bgColor: "bg-red-50",
+      borderColor: "border-red-200",
+      iconBg: "bg-red-100",
     },
   ];
 
   return (
     <AnimatedView animation="slideUp">
-      <View className="">
-        {/* Critical Actions */}
-        <View className="p-4">
-          <View className="space-y-3">
-            {criticalActions.map((action, index) => (
-              <TouchableOpacity
-                key={action.id}
-                onPress={action.action}
-                className={`p-4 rounded-xl border my-2 ${"border-gray-200 bg-gray-50"} ${index === criticalActions.length - 1 ? "mb-0" : "mb-1"}`}
-                activeOpacity={0.7}
-              >
-                <View className="flex-row items-center gap-3">
-                  <View className={`p-2 rounded-full ${"bg-white"}`}>
+      <View className="px-4 py-2">
+        <Text className="text-gray-500 text-sm mb-3 px-1">Hesap İşlemleri</Text>
+        
+        <View className="space-y-3">
+          {criticalActions.map((action) => (
+            <TouchableOpacity
+              key={action.id}
+              onPress={action.action}
+              className={`p-4 rounded-2xl border-[1px] my-2 ${action.borderColor} ${action.bgColor}`}
+              activeOpacity={0.7}
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.05,
+                shadowRadius: 2,
+                elevation: 1,
+              }}
+            >
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center gap-3 flex-1">
+                  <View className={`p-3 rounded-xl ${action.iconBg}`}>
                     {action.icon}
                   </View>
                   <View className="flex-1">
-                    <Text
-                      className={`font-semibold text-base ${"text-gray-800"}`}
-                    >
+                    <Text className="font-semibold text-base text-gray-900">
                       {action.title}
                     </Text>
-                    <Text className={`text-sm mt-1 ${"text-gray-500"}`}>
+                    <Text className="text-sm mt-0.5 text-gray-700">
                       {action.subtitle}
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
-            ))}
-          </View>
+                <ChevronRight size={20} color="#9ca3af" />
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
     </AnimatedView>

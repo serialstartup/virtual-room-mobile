@@ -34,7 +34,16 @@ class ApiClient {
       try {
         // Dynamic import to avoid circular dependencies
         const { useAuthStore } = await import('@/store/authStore');
-        authToken = useAuthStore.getState().token;
+        const storeState = useAuthStore.getState();
+        authToken = storeState.token;
+        
+        console.log('[API] 🔑 Auth store state:', {
+          hasToken: !!authToken,
+          isAuthenticated: storeState.isAuthenticated,
+          hasUser: !!storeState.user,
+          userId: storeState.user?.id,
+          tokenPrefix: authToken ? authToken.substring(0, 20) + '...' : 'null'
+        });
       } catch (storeError) {
         console.warn('[API] ⚠️ Could not get token from store, falling back to AsyncStorage:', storeError);
       }
@@ -42,20 +51,32 @@ class ApiClient {
       // Fallback to AsyncStorage if store is not available
       if (!authToken) {
         const token = await AsyncStorage.getItem('virtual-room-auth');
+        console.log('[API] 📱 AsyncStorage auth check:', {
+          hasStoredAuth: !!token
+        });
+        
         if (token) {
           const authData = JSON.parse(token);
           // Zustand persist format: {state: {token, user, ...}}
           authToken = authData.state?.token;
+          console.log('[API] 📱 AsyncStorage auth data:', {
+            hasStateToken: !!authData.state?.token,
+            hasStateUser: !!authData.state?.user,
+            isStateAuthenticated: !!authData.state?.isAuthenticated
+          });
         } else {
+          console.warn('[API] 🚨 No auth token found in AsyncStorage');
         }
       }
       
       if (authToken) {
+        console.log('[API] ✅ Auth header created successfully');
         return {
           Authorization: `Bearer ${authToken}`,
         };
       }
       
+      console.error('[API] 🚨 No auth token available for request');
       return {};
     } catch (error) {
       console.error('[API] 🚨 Error getting auth header:', error);
@@ -110,8 +131,23 @@ class ApiClient {
     });
   }
 
-  async get<T = any>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, {
+  async get<T = any>(endpoint: string, options?: { params?: Record<string, any> }): Promise<T> {
+    let url = endpoint;
+    
+    if (options?.params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(options.params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value));
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url += (endpoint.includes('?') ? '&' : '?') + queryString;
+      }
+    }
+    
+    return this.request<T>(url, {
       method: 'GET',
     });
   }
@@ -123,8 +159,23 @@ class ApiClient {
     });
   }
 
-  async delete<T = any>(endpoint: string): Promise<T> {
-    return this.request<T>(endpoint, {
+  async delete<T = any>(endpoint: string, options?: { params?: Record<string, any> }): Promise<T> {
+    let url = endpoint;
+    
+    if (options?.params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(options.params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          searchParams.append(key, String(value));
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url += (endpoint.includes('?') ? '&' : '?') + queryString;
+      }
+    }
+    
+    return this.request<T>(url, {
       method: 'DELETE',
     });
   }

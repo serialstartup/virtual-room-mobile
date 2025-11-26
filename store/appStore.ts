@@ -2,6 +2,12 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+export interface ActiveTryOn {
+  tryOnId: string
+  timestamp: number
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+}
+
 export interface AppState {
   // UI Loading States
   isGlobalLoading: boolean
@@ -25,6 +31,7 @@ export interface AppState {
   // Try-On State
   selectedTryOnId: string | null
   processingTryOnId: string | null
+  activeTryOns: ActiveTryOn[]
   
   // Image Picker State
   selectedImages: string[]
@@ -57,6 +64,14 @@ export interface AppState {
   setSelectedTryOn: (id: string | null) => void
   setProcessingTryOnId: (id: string | null) => void
   
+  // Active try-on management (replaces storageService)
+  addActiveTryOn: (tryOnId: string) => void
+  removeActiveTryOn: (tryOnId: string) => void
+  updateActiveTryOnStatus: (tryOnId: string, status: ActiveTryOn['status']) => void
+  getActiveTryOns: () => ActiveTryOn[]
+  getLastActiveTryOn: () => ActiveTryOn | null
+  cleanupExpiredTryOns: () => void
+  
   // Image actions
   addSelectedImage: (image: string) => void
   removeSelectedImage: (image: string) => void
@@ -86,6 +101,7 @@ export const useAppStore = create<AppState>()(
       isImagePreviewModalOpen: false,
       selectedTryOnId: null,
       processingTryOnId: null,
+      activeTryOns: [],
       selectedImages: [],
       tempImages: [],
       appVersion: '1.0.0',
@@ -173,6 +189,76 @@ export const useAppStore = create<AppState>()(
         set({ processingTryOnId: id })
       },
 
+      // Active try-on management (replaces storageService)
+      addActiveTryOn: (tryOnId: string) => {
+        set((state) => {
+          // Remove any existing entry for this tryOnId
+          const filtered = state.activeTryOns.filter(t => t.tryOnId !== tryOnId)
+          
+          // Add new entry
+          const newTryOn: ActiveTryOn = {
+            tryOnId,
+            timestamp: Date.now(),
+            status: 'pending',
+          }
+          
+          return {
+            activeTryOns: [...filtered, newTryOn]
+          }
+        })
+      },
+
+      removeActiveTryOn: (tryOnId: string) => {
+        set((state) => ({
+          activeTryOns: state.activeTryOns.filter(t => t.tryOnId !== tryOnId)
+        }))
+      },
+
+      updateActiveTryOnStatus: (tryOnId: string, status: ActiveTryOn['status']) => {
+        set((state) => ({
+          activeTryOns: state.activeTryOns.map(t => 
+            t.tryOnId === tryOnId ? { ...t, status } : t
+          )
+        }))
+      },
+
+      getActiveTryOns: () => {
+        const state = get()
+        // Filter out old try-ons (older than 1 hour)
+        const now = Date.now()
+        const filtered = state.activeTryOns.filter(t => 
+          (now - t.timestamp) < 3600000 // 1 hour
+        )
+        
+        // Update state if we filtered any
+        if (filtered.length !== state.activeTryOns.length) {
+          set({ activeTryOns: filtered })
+        }
+        
+        return filtered
+      },
+
+      getLastActiveTryOn: () => {
+        const activeTryOns = get().getActiveTryOns()
+        
+        if (activeTryOns.length === 0) {
+          return null
+        }
+        
+        // Return the most recent one
+        const sorted = activeTryOns.sort((a, b) => b.timestamp - a.timestamp)
+        return sorted[0]
+      },
+
+      cleanupExpiredTryOns: () => {
+        const now = Date.now()
+        set((state) => ({
+          activeTryOns: state.activeTryOns.filter(t => 
+            (now - t.timestamp) < 3600000 // 1 hour
+          )
+        }))
+      },
+
       // Image actions
       addSelectedImage: (image: string) => {
         set((state) => ({
@@ -220,6 +306,7 @@ export const useAppStore = create<AppState>()(
           isImagePreviewModalOpen: false,
           selectedTryOnId: null,
           processingTryOnId: null,
+          activeTryOns: [],
           selectedImages: [],
           tempImages: [],
           lastOpenedAt: new Date().toISOString()
