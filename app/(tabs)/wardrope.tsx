@@ -6,8 +6,10 @@ import EachOutput from "@/components/wardrope/EachOutput";
 import PageHeader from "@/components/PageHeader";
 import { useWardrobe } from "@/hooks/useWardrobe";
 import { useAuthStore } from "@/store/authStore";
+import { useTranslation } from "react-i18next";
 
 const Wardrope = () => {
+  const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState<"all" | "liked">("all");
 
   const handleFilterChange = (filter: "all" | "liked") => {
@@ -23,14 +25,14 @@ const Wardrope = () => {
 
   // Debug logs
   useEffect(() => {
-    console.log('[WARDROBE_PAGE] 🔍 Debug Info:');
-    console.log('- isAuthenticated:', isAuthenticated);
-    console.log('- user:', user?.email);
-    console.log('- isLoading:', isLoading);
-    console.log('- error:', error);
-    console.log('- wardrobeItems length:', wardrobeItems?.length || 0);
-    console.log('- favorites length:', favorites?.length || 0);
-    console.log('- wardrobeItems sample:', wardrobeItems?.slice(0, 2));
+    console.log("[WARDROBE_PAGE] 🔍 Debug Info:");
+    console.log("- isAuthenticated:", isAuthenticated);
+    console.log("- user:", user?.email);
+    console.log("- isLoading:", isLoading);
+    console.log("- error:", error);
+    console.log("- wardrobeItems length:", wardrobeItems?.length || 0);
+    console.log("- favorites length:", favorites?.length || 0);
+    console.log("- wardrobeItems sample:", wardrobeItems?.slice(0, 2));
   }, [isAuthenticated, user, isLoading, error, wardrobeItems, favorites]);
 
   if (!isAuthenticated) {
@@ -39,7 +41,7 @@ const Wardrope = () => {
         <SectionWrapper>
           <View className="flex-1 justify-center items-center">
             <Text className="text-gray-500 text-center">
-              Please log in to view your wardrobe
+              {t("wardrobePage.loginRequired")}
             </Text>
           </View>
         </SectionWrapper>
@@ -52,12 +54,12 @@ const Wardrope = () => {
       <PageWrapper>
         <SectionWrapper>
           <PageHeader
-            title="My Wardrobe"
-            subtitle="Your saved outfits and try-ons"
+            title={t("wardrobePage.title")}
+            subtitle={t("wardrobePage.subtitle")}
           />
           <View className="flex-1 justify-center items-center">
             <Text className="text-gray-500 text-center">
-              Loading your wardrobe...
+              {t("wardrobePage.loading")}
             </Text>
           </View>
         </SectionWrapper>
@@ -70,12 +72,12 @@ const Wardrope = () => {
       <PageWrapper>
         <SectionWrapper>
           <PageHeader
-            title="My Wardrobe"
-            subtitle="Your saved outfits and try-ons"
+            title={t("wardrobePage.title")}
+            subtitle={t("wardrobePage.subtitle")}
           />
           <View className="flex-1 justify-center items-center">
             <Text className="text-red-500 text-center">
-              Unable to load wardrobe
+              {t("wardrobePage.error")}
             </Text>
           </View>
         </SectionWrapper>
@@ -86,8 +88,8 @@ const Wardrope = () => {
     <PageWrapper>
       <SectionWrapper>
         <PageHeader
-          title="My Wardrobe"
-          subtitle="Your saved outfits and try-ons"
+          title={t("wardrobePage.title")}
+          subtitle={t("wardrobePage.subtitle")}
         />
       </SectionWrapper>
 

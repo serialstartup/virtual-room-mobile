@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "@/components/ui/ReusableButton";
 import { Eye, EyeOff, Mail, Lock, Sparkles } from "lucide-react-native";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 type LoginFormValues = {
   email: string;
@@ -14,6 +15,7 @@ type LoginFormValues = {
 };
 
 const Login = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const { login, isLoginLoading, loginError } = useAuth();
 
@@ -29,7 +31,6 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
-    
     try {
       // Call real authentication service
       await login({
@@ -37,13 +38,16 @@ const Login = () => {
         password: data.password,
       });
 
-      Alert.alert("Başarılı!", "Giriş yapıldı", [
-        { text: "Tamam", onPress: () => router.replace("/(tabs)") },
+      Alert.alert(t("login.success.title"), t("login.success.message"), [
+        {
+          text: t("login.success.button"),
+          onPress: () => router.replace("/(tabs)"),
+        },
       ]);
     } catch (error: any) {
       console.error("Login form error:", error);
-      const errorMessage = error?.message || "Giriş yapılırken bir hata oluştu";
-      Alert.alert("Hata", errorMessage);
+      const errorMessage = error?.message || t("login.errors.loginError");
+      Alert.alert(t("login.errors.defaultError"), errorMessage);
     }
   };
 
@@ -56,10 +60,10 @@ const Login = () => {
             <Sparkles color="#ec4899" size={32} />
           </View>
           <Text className="text-3xl font-bold text-gray-800 mb-2">
-            Hoş Geldiniz
+            {t("login.title")}
           </Text>
           <Text className="text-gray-500 text-center">
-            Hesabınıza giriş yapın ve stilinizi keşfedin
+            {t("login.subtitle")}
           </Text>
         </View>
 
@@ -71,16 +75,16 @@ const Login = () => {
               <Input
                 name="email"
                 control={control}
-                placeholder="E-posta adresinizi girin"
-                label="E-posta"
+                placeholder={t("login.emailPlaceholder")}
+                label={t("auth.email")}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 error={errors.email}
                 rules={{
-                  required: "E-posta alanı zorunludur",
+                  required: t("login.errors.emailRequired"),
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Geçerli bir e-posta adresi girin",
+                    message: t("login.errors.emailInvalid"),
                   },
                 }}
                 leftIcon={<Mail color="#6b7280" size={20} />}
@@ -92,15 +96,15 @@ const Login = () => {
               <Input
                 name="password"
                 control={control}
-                placeholder="Şifrenizi girin"
-                label="Şifre"
+                placeholder={t("login.passwordPlaceholder")}
+                label={t("auth.password")}
                 secureTextEntry={!showPassword}
                 error={errors.password}
                 rules={{
-                  required: "Şifre alanı zorunludur",
+                  required: t("login.errors.passwordRequired"),
                   minLength: {
                     value: 6,
-                    message: "Şifre en az 6 karakter olmalıdır",
+                    message: t("login.errors.passwordMinLength"),
                   },
                 }}
                 leftIcon={<Lock color="#6b7280" size={20} />}
@@ -123,7 +127,7 @@ const Login = () => {
           {loginError && (
             <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <Text className="text-red-600 text-sm">
-                {loginError.message || "Giriş yapılırken bir hata oluştu"}
+                {loginError.message || t("login.errors.loginError")}
               </Text>
             </View>
           )}
@@ -131,13 +135,17 @@ const Login = () => {
           {/* Forgot Password */}
           <TouchableOpacity className="mb-6">
             <Text className="text-virtual-primary text-right font-medium">
-              Şifremi Unuttum
+              {t("login.forgotPassword")}
             </Text>
           </TouchableOpacity>
 
           {/* Login Button */}
           <ReusableButton
-            title={isLoginLoading ? "Giriş Yapılıyor..." : "Giriş Yap"}
+            title={
+              isLoginLoading
+                ? t("login.loginButtonLoading")
+                : t("login.loginButton")
+            }
             onPress={handleSubmit(onSubmit)}
             variant="filled"
             bgColor="bg-virtual-primary"
@@ -149,7 +157,7 @@ const Login = () => {
           {/* Divider */}
           <View className="flex-row items-center my-6">
             <View className="flex-1 h-px bg-gray-200" />
-            <Text className="mx-4 text-gray-500">veya</Text>
+            <Text className="mx-4 text-gray-500">{t("login.or")}</Text>
             <View className="flex-1 h-px bg-gray-200" />
           </View>
 
@@ -157,12 +165,12 @@ const Login = () => {
           <View className="space-y-3 my-4 gap-4">
             <ReusableButton
               bgColor="bg-blue-500"
-              title="Google ile Giriş Yap"
+              title={t("login.withGoogle")}
               onPress={() => {}}
               textColor="text-white"
             />
             <ReusableButton
-              title="Apple ile Giriş Yap"
+              title={t("login.withApple")}
               onPress={() => {}}
               bgColor="bg-black"
               textColor="text-white"
@@ -173,12 +181,12 @@ const Login = () => {
         {/* Sign Up Link */}
         <View className="items-center pb-4">
           <Text className="text-gray-500">
-            Hesabınız yok mu?{" "}
+            {t("login.noAccount")}{" "}
             <Link
               href="/(auth)/signup"
               className="text-virtual-primary font-semibold"
             >
-              Kayıt Olun
+              {t("login.registerLink")}
             </Link>
           </Text>
         </View>

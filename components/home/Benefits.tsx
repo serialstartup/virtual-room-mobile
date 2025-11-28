@@ -1,41 +1,44 @@
 import TitleSection from "../TitleSection";
-import { Sparkles, ShoppingBag, Heart,Share2 } from "lucide-react-native";
+import { Sparkles, ShoppingBag, Heart, Share2 } from "lucide-react-native";
 import AnimatedView from "../ui/AnimatedView";
 import { Text, View } from "react-native";
 import { Colors } from "@/constants";
-const whyUs = [
-  {
-    id: 1,
-    title: "AI-Powered Try-On",
-    description: "Experience virtual fitting with advanced AI technology.",
-    icon: <Sparkles color={Colors.mutedPink[900]} size={24} />,
-  },
-  {
-    id: 2,
-    title: "E-commerce Integration",
-    description:
-      "Try on real products from your favorite stores and save them.",
-    icon: <ShoppingBag color={Colors.mutedPink[900]} size={24} />,
-  },
-  {
-    id: 3,
-    title: "Save Your Favorites",
-    description: "Build your personal wardrobe collection within the app.",
-    icon: <Heart color={Colors.mutedPink[900]} size={24} />,
-  },
-    {
-    id: 4,
-    title: "Share & Discover",
-    description: "Share your looks and find similar products, create combinations easily.",
-    icon: <Share2 color={Colors.mutedPink[900]} size={24} />,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const Benefits = () => {
+  const { t } = useTranslation();
+
+  const whyUs = [
+    {
+      id: 1,
+      title: t("home.benefits.items.aiTryOn.title"),
+      description: t("home.benefits.items.aiTryOn.description"),
+      icon: <Sparkles color={Colors.mutedPink[900]} size={24} />,
+    },
+    {
+      id: 2,
+      title: t("home.benefits.items.ecommerce.title"),
+      description: t("home.benefits.items.ecommerce.description"),
+      icon: <ShoppingBag color={Colors.mutedPink[900]} size={24} />,
+    },
+    {
+      id: 3,
+      title: t("home.benefits.items.favorites.title"),
+      description: t("home.benefits.items.favorites.description"),
+      icon: <Heart color={Colors.mutedPink[900]} size={24} />,
+    },
+    {
+      id: 4,
+      title: t("home.benefits.items.share.title"),
+      description: t("home.benefits.items.share.description"),
+      icon: <Share2 color={Colors.mutedPink[900]} size={24} />,
+    },
+  ];
+
   return (
     <TitleSection
-      subtitle="Revolutionize your fashion shopping with cutting-edge AI technology"
-      title="Why Choose Our App?"
+      subtitle={t("home.benefits.subtitle")}
+      title={t("home.benefits.title")}
     >
       {whyUs.map((benefit) => {
         return (
@@ -47,9 +50,15 @@ const Benefits = () => {
             easing="easeInOut"
           >
             <View className="flex-col items-start justify-start gap-1 ">
-            <View className="bg-virtual-primary-light p-2 rounded-full ">{benefit.icon}</View>
-              <Text className="text-base font-semibold mt-4">{benefit.title}</Text>
-              <Text className="text-base text-virtual-text-muted-dark">{benefit.description}</Text>
+              <View className="bg-virtual-primary-light p-2 rounded-full ">
+                {benefit.icon}
+              </View>
+              <Text className="text-base font-semibold mt-4">
+                {benefit.title}
+              </Text>
+              <Text className="text-base text-virtual-text-muted-dark">
+                {benefit.description}
+              </Text>
             </View>
           </AnimatedView>
         );

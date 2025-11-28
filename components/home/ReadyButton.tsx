@@ -1,8 +1,11 @@
 import { View, Text } from "react-native";
 import GradientView from "../GradientView";
 import ReusableButton from "../ui/ReusableButton";
+import { useTranslation } from "react-i18next";
 
 const ReadyButton = () => {
+  const { t } = useTranslation();
+
   return (
     <View className="my-6">
       <GradientView
@@ -12,16 +15,15 @@ const ReadyButton = () => {
       >
         <View className="flex-col items-center justify-center py-8 px-10 gap-4">
           <Text className="text-center text-white font-semibold text-3xl">
-            Ready to Transform your shopping experience?
+            {t("home.readySection.title")}
           </Text>
           <Text className=" text-center text-white mb-6">
-            Join thounsands of users who have discovered the future of fashion
-            with Virtual Room.
+            {t("home.readySection.subtitle")}
           </Text>
           <ReusableButton
             textColor="text-virtual-primary-dark"
             padding="py-2 px-10"
-            title="Get started now"
+            title={t("home.readySection.button")}
             buttonShadow={true}
             onPress={() => {}}
           />

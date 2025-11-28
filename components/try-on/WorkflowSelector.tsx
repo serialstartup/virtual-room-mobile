@@ -4,6 +4,7 @@ import { MotiView } from "moti";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useWorkflowStore, WorkflowType } from "@/store/workflowStore";
+import { useTranslation } from "react-i18next";
 
 interface WorkflowOption {
   type: WorkflowType;
@@ -16,43 +17,6 @@ interface WorkflowOption {
   isNew?: boolean;
 }
 
-const workflowOptions: WorkflowOption[] = [
-  {
-    type: "classic",
-    title: "Classic Try-On",
-    subtitle: "Upload your photo and try on clothes",
-    description: "See how clothes look on you before you buy",
-    icon: "camera-outline",
-    demoImage: require("@/assets/images/try-on-model.png"),
-    isPopular: true,
-  },
-  {
-    type: "avatar",
-    title: "Avatar Try-On",
-    subtitle: "Use your AI avatar for consistent looks",
-    description: "Create once, try on everything with your avatar",
-    icon: "person-outline",
-    demoImage: require("@/assets/images/avatar-model.png"),
-  },
-  {
-    type: "product-to-model",
-    title: "Product to Model",
-    subtitle: "Generate model wearing your product",
-    description: "Perfect for showcasing your business products",
-    icon: "bag-outline",
-    demoImage: require("@/assets/images/product-model.png"),
-  },
-  {
-    type: "text-to-fashion",
-    title: "Text to Fashion",
-    subtitle: "Create fashion from text description",
-    description: "Describe your dream outfit and see it come to life",
-    icon: "create-outline",
-    demoImage: require("@/assets/images/fashion-model.png"),
-    isNew: true,
-  },
-];
-
 interface WorkflowSelectorProps {
   onWorkflowSelect: (workflow: WorkflowType) => void;
 }
@@ -60,7 +24,49 @@ interface WorkflowSelectorProps {
 const WorkflowSelector: React.FC<WorkflowSelectorProps> = ({
   onWorkflowSelect,
 }) => {
+  const { t } = useTranslation();
   const { activeWorkflow, setActiveWorkflow } = useWorkflowStore();
+
+  const workflowOptions: WorkflowOption[] = [
+    {
+      type: "classic",
+      title: t("tryOn.workflowSelector.options.classic.title"),
+      subtitle: t("tryOn.workflowSelector.options.classic.subtitle"),
+      description: t("tryOn.workflowSelector.options.classic.description"),
+      icon: "camera-outline",
+      demoImage: require("@/assets/images/try-on-model.png"),
+      isPopular: true,
+    },
+    {
+      type: "avatar",
+      title: t("tryOn.workflowSelector.options.avatar.title"),
+      subtitle: t("tryOn.workflowSelector.options.avatar.subtitle"),
+      description: t("tryOn.workflowSelector.options.avatar.description"),
+      icon: "person-outline",
+      demoImage: require("@/assets/images/avatar-model.png"),
+    },
+    {
+      type: "product-to-model",
+      title: t("tryOn.workflowSelector.options.productToModel.title"),
+      subtitle: t("tryOn.workflowSelector.options.productToModel.subtitle"),
+      description: t(
+        "tryOn.workflowSelector.options.productToModel.description"
+      ),
+      icon: "bag-outline",
+      demoImage: require("@/assets/images/product-model.png"),
+    },
+    {
+      type: "text-to-fashion",
+      title: t("tryOn.workflowSelector.options.textToFashion.title"),
+      subtitle: t("tryOn.workflowSelector.options.textToFashion.subtitle"),
+      description: t(
+        "tryOn.workflowSelector.options.textToFashion.description"
+      ),
+      icon: "create-outline",
+      demoImage: require("@/assets/images/fashion-model.png"),
+      isNew: true,
+    },
+  ];
 
   const handleWorkflowSelect = (workflowType: WorkflowType) => {
     setActiveWorkflow(workflowType);
@@ -148,13 +154,11 @@ const WorkflowSelector: React.FC<WorkflowSelectorProps> = ({
               color="#6B7280"
             />
             <Text className="text-lg font-semibold text-gray-900 ml-3">
-              How it works
+              {t("tryOn.workflowSelector.howItWorks")}
             </Text>
           </View>
           <Text className="text-gray-600 leading-relaxed">
-            Each workflow uses advanced AI to create stunning fashion visuals.
-            Processing time varies from 2-15 minutes depending on complexity.
-            All results are saved to your wardrobe for future reference.
+            {t("tryOn.workflowSelector.howItWorksDesc")}
           </Text>
         </View>
       </ScrollView>

@@ -9,6 +9,7 @@ import DescriptionDressTab from "../tabs/DescriptionDressTab";
 import ReusableButton from "@/components/ui/ReusableButton";
 import UploadTab from "../tabs/UploadTab";
 import { UserAvatar } from "@/hooks/useUserAvatars";
+import { analytics } from "@/services/analytics";
 
 interface ClassicTryOnProps {
   onTryOnCreate: (tryOnId: string) => void;
@@ -33,7 +34,6 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
   const [activeTab, setActiveTab] = useState<"image" | "description">("image");
 
   const classicData = workflowData.classic;
-  
 
   const handlePersonImageSelect = (imageUrl: string) => {
     setClassicSelfImage(imageUrl);
@@ -92,11 +92,16 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
     }
 
     if (!hasCredits) {
+      analytics.trackOutOfCredits("classic_try_on");
       Alert.alert("No Credits", "You need credits to create a try-on.");
       return;
     }
 
     try {
+      // Track start
+      analytics.trackTryOnStarted("classic");
+      const startTime = Date.now();
+
       const tryOnData = {
         self_image:
           classicData.selectedAvatar?.avatar_image_url ||
@@ -108,8 +113,15 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       };
 
       const newTryOn = await createTryOn(tryOnData);
+
+      // Track completion and credit usage
+      const processingTime = Date.now() - startTime;
+      analytics.trackTryOnCompleted("classic", 1, processingTime);
+      analytics.trackCreditUsed(1, "classic_try_on");
+
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
+      analytics.trackTryOnFailed("classic", err.message || "Unknown error");
       Alert.alert("Error", err.message || "Failed to create try-on");
     }
   };
@@ -371,22 +383,22 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
               onPress={previousStep}
               disabled={currentStep === 1}
               className={`flex-row items-center justify-center px-5 py-3.5 rounded-xl border-2 ${
-                currentStep === 1 
-                  ? "bg-gray-50 border-gray-200" 
+                currentStep === 1
+                  ? "bg-gray-50 border-gray-200"
                   : "bg-white border-gray-300"
               }`}
               style={{
-                shadowColor: currentStep === 1 ? 'transparent' : '#000',
+                shadowColor: currentStep === 1 ? "transparent" : "#000",
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.05,
                 shadowRadius: 2,
                 elevation: currentStep === 1 ? 0 : 1,
               }}
             >
-              <Ionicons 
-                name="chevron-back" 
-                size={18} 
-                color={currentStep === 1 ? "#9CA3AF" : "#374151"} 
+              <Ionicons
+                name="chevron-back"
+                size={18}
+                color={currentStep === 1 ? "#9CA3AF" : "#374151"}
               />
               <Text
                 className={`font-semibold ml-1 ${
@@ -402,29 +414,27 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
               onPress={handleNext}
               disabled={!isCurrentStepValid()}
               className={`flex-1 flex-row items-center justify-center px-5 py-3.5 rounded-xl ${
-                isCurrentStepValid() 
-                  ? "bg-virtual-primary" 
-                  : "bg-gray-300"
+                isCurrentStepValid() ? "bg-virtual-primary" : "bg-gray-300"
               }`}
               style={{
-                shadowColor: isCurrentStepValid() ? '#ec4899' : 'transparent',
+                shadowColor: isCurrentStepValid() ? "#ec4899" : "transparent",
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.2,
                 shadowRadius: 4,
                 elevation: isCurrentStepValid() ? 3 : 0,
               }}
             >
-              <Text className={`font-semibold mr-1 ${
-                isCurrentStepValid() 
-                  ? "text-white" 
-                  : "text-gray-500"
-              }`}>
+              <Text
+                className={`font-semibold mr-1 ${
+                  isCurrentStepValid() ? "text-white" : "text-gray-500"
+                }`}
+              >
                 Next
               </Text>
-              <Ionicons 
-                name="chevron-forward" 
-                size={18} 
-                color={isCurrentStepValid() ? "#FFFFFF" : "#6B7280"} 
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={isCurrentStepValid() ? "#FFFFFF" : "#6B7280"}
               />
             </TouchableOpacity>
           </View>

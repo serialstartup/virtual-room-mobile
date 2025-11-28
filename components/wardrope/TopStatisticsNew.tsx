@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
+import { useTranslation } from "react-i18next";
 
 interface TopStatisticsNewProps {
   totalOutfits: number;
@@ -13,16 +14,18 @@ const TopStatisticsNew: React.FC<TopStatisticsNewProps> = ({
   activeFilter = "all",
   onFilterChange,
 }) => {
+  const { t } = useTranslation();
+
   const statistics = [
     {
       id: "all" as const,
-      title: "Total Outfits",
+      title: t("wardrobePage.statistics.totalOutfits"),
       value: totalOutfits,
       color: "#6366f1",
     },
     {
       id: "liked" as const,
-      title: "Favorites",
+      title: t("wardrobePage.statistics.favorites"),
       value: favoritesCount,
       color: "#ec4899",
     },

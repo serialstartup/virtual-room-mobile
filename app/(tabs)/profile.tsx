@@ -5,14 +5,18 @@ import ProfileSettings from "@/components/profile/ProfileSettings";
 import PremiumCard from "@/components/profile/PremiumCard";
 import GeneralSettings from "@/components/profile/GeneralSettings";
 import CriticialButtons from "@/components/profile/CriticialButtons";
+import { useTranslation } from "react-i18next";
+
 const Profile = () => {
+  const { t } = useTranslation();
+
   return (
-    <PageWrapper >
+    <PageWrapper>
       <ScrollView>
         <SectionWrapper>
           <PageHeader
-            title="Profile"
-            subtitle="Manage your account and preferences"
+            title={t("profile.pageHeaderTitle")}
+            subtitle={t("profile.pageHeaderSubtitle")}
           />
         </SectionWrapper>
 

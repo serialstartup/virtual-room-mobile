@@ -38,6 +38,41 @@
   "tryOn": {
     "title": "Multi-Modal AI Try-On",
     "subtitle": "4 güçlü AI destekli moda workflow'undan birini seçin",
+    "pageHeaderTitle": "Çok Modlu AI Deneme",
+    "pageHeaderSubtitle": "4 güçlü AI destekli moda iş akışından birini seçin",
+    "continueProcessing": {
+      "title": "İşleme Devam Et",
+      "message": "Devam eden aktif bir denemeniz var. Sonucu görmek ister misiniz?",
+      "cancel": "İptal",
+      "viewResult": "Sonucu Gör"
+    },
+    "workflow": "İş Akışı",
+    "workflowSelector": {
+      "howItWorks": "Nasıl çalışır",
+      "howItWorksDesc": "Her iş akışı, çarpıcı moda görselleri oluşturmak için gelişmiş AI kullanır. İşlem süresi karmaşıklığa bağlı olarak 2-15 dakika arasında değişir. Tüm sonuçlar gelecekte başvurmak üzere gardırobunuza kaydedilir.",
+      "options": {
+        "classic": {
+          "title": "Klasik Deneme",
+          "subtitle": "Fotoğrafınızı yükleyin ve kıyafet deneyin",
+          "description": "Satın almadan önce kıyafetlerin üzerinizde nasıl durduğunu görün"
+        },
+        "avatar": {
+          "title": "Avatar Deneme",
+          "subtitle": "Tutarlı görünümler için AI avatarınızı kullanın",
+          "description": "Bir kez oluşturun, avatarınızla her şeyi deneyin"
+        },
+        "productToModel": {
+          "title": "Ürün → Model",
+          "subtitle": "Ürününüzü giyen model oluşturun",
+          "description": "İşletme ürünlerinizi sergilemek için mükemmel"
+        },
+        "textToFashion": {
+          "title": "Metin → Moda",
+          "subtitle": "Metin açıklamasından moda oluşturun",
+          "description": "Hayalinizdeki kıyafeti tarif edin ve hayata geçmesini izleyin"
+        }
+      }
+    },
     "workflows": {
       "classic": "Klasik Deneme",
       "productToModel": "Ürün → Model",
@@ -110,7 +145,28 @@
       "likeError": "Favori durumu güncellenirken bir hata oluştu"
     }
   },
+  "wardrobePage": {
+    "title": "Gardırobum",
+    "subtitle": "Kaydedilen kıyafetleriniz ve denemeleriniz",
+    "loginRequired": "Gardırobunuzu görüntülemek için lütfen giriş yapın",
+    "loading": "Gardırobunuz yükleniyor...",
+    "error": "Gardırop yüklenemedi",
+    "statistics": {
+      "totalOutfits": "Toplam Kıyafet",
+      "favorites": "Favoriler"
+    },
+    "messages": {
+      "noFavorites": "Henüz favori yok - Kıyafetleri deneyin ve beğenin!",
+      "noTryOns": "Henüz gardıropta deneme yok - Sanal deneme oluşturmaya başlayın!",
+      "likeError": "Favori durumu güncellenirken bir hata oluştu",
+      "virtualTryOnResult": "Sanal Deneme Sonucu",
+      "completed": "Tamamlandı",
+      "processing": "İşleniyor"
+    }
+  },
   "profile": {
+    "pageHeaderTitle": "Profil",
+    "pageHeaderSubtitle": "Hesabınızı ve tercihlerinizi ayarlayın",
     "title": "Profil",
     "settings": "Ayarlar",
     "general": "Genel",
@@ -127,6 +183,7 @@
     "buyTokens": "Token Satın Al",
     "upgrade": "Yükselt",
     "accountActions": "Hesap İşlemleri",
+    "accountStatus": "Hesap Durumu",
     "forgotPasswordTitle": "Şifremi Unuttum",
     "forgotPasswordDesc": "E-posta ile şifre sıfırlama",
     "logoutTitle": "Çıkış Yap",
@@ -142,7 +199,7 @@
         "title": "Bildirimler",
         "push": "Push Bildirimleri",
         "pushDesc": "Yeni denemeler ve güncellemeler",
-        "email": "E-posta Bildirimleri", 
+        "email": "E-posta Bildirimleri",
         "emailDesc": "Önemli duyurular ve kampanyalar",
         "features": "Yeni Özellikler",
         "featuresDesc": "Ön izleme ve beta özellikleri"
@@ -166,6 +223,64 @@
       "settingsLoading": "Ayarlar yükleniyor...",
       "settingUpdateError": "Ayar güncellenirken bir hata oluştu",
       "languageUpdated": "Dil ayarınız güncellendi"
+    }
+  },
+  "login": {
+    "title": "Hoş Geldiniz",
+    "subtitle": "Hesabınıza giriş yapın ve stilinizi keşfedin",
+    "emailPlaceholder": "E-posta adresinizi girin",
+    "passwordPlaceholder": "Şifrenizi girin",
+    "forgotPassword": "Şifremi Unuttum",
+    "loginButton": "Giriş Yap",
+    "loginButtonLoading": "Giriş Yapılıyor...",
+    "or": "veya",
+    "withGoogle": "Google ile Giriş Yap",
+    "withApple": "Apple ile Giriş Yap",
+    "noAccount": "Hesabınız yok mu?",
+    "registerLink": "Kayıt Olun",
+    "errors": {
+      "emailRequired": "E-posta alanı zorunludur",
+      "emailInvalid": "Geçerli bir e-posta adresi girin",
+      "passwordRequired": "Şifre alanı zorunludur",
+      "passwordMinLength": "Şifre en az 6 karakter olmalıdır",
+      "loginError": "Giriş yapılırken bir hata oluştu",
+      "defaultError": "Hata"
+    },
+    "success": {
+      "title": "Başarılı!",
+      "message": "Giriş yapıldı",
+      "button": "Tamam"
+    }
+  },
+  "signup": {
+    "title": "Hesap Oluşturun",
+    "subtitle": "Virtual Room'a katılın ve stilinizi keşfedin",
+    "emailPlaceholder": "E-posta adresinizi girin",
+    "passwordPlaceholder": "Şifrenizi girin",
+    "termsText": "Hesap oluşturarak",
+    "termsLink": "Kullanım Koşulları",
+    "and": "ve",
+    "privacyLink": "Gizlilik Politikası",
+    "privacyEnd": "'nı kabul etmiş olursunuz.",
+    "createAccountButton": "Hesap Oluştur",
+    "createAccountButtonLoading": "Hesap Oluşturuluyor...",
+    "or": "veya",
+    "withGoogle": "Google ile Kayıt Ol",
+    "withApple": "Apple ile Kayıt Ol",
+    "hasAccount": "Zaten hesabınız var mı?",
+    "loginLink": "Giriş Yapın",
+    "errors": {
+      "emailRequired": "E-posta alanı zorunludur",
+      "emailInvalid": "Geçerli bir e-posta adresi girin",
+      "passwordRequired": "Şifre alanı zorunludur",
+      "passwordMinLength": "Şifre en az 6 karakter olmalıdır",
+      "createError": "Hesap oluşturulurken bir hata oluştu",
+      "defaultError": "Hata"
+    },
+    "success": {
+      "title": "Başarılı!",
+      "message": "Hesabınız oluşturuldu",
+      "button": "Tamam"
     }
   },
   "tokens": {
@@ -212,8 +327,75 @@
     "cta": {
       "getStarted": "Başlayın",
       "tryNow": "Şimdi Deneyin"
+    },
+    "hero": {
+      "title": "Tarzınız, Yeniden!",
+      "subtitle": "Kıyafetleri ve kombinleri saniyeler içinde üzerinde gör",
+      "photo": "Fotoğraf",
+      "garment": "Kıyafet",
+      "result": "Sonuç 🎉",
+      "generatedByAi": "Saniyeler içinde AI ile oluşturuldu",
+      "tryNow": "Şimdi Dene"
+    },
+    "benefits": {
+      "title": "Neden Bizi Seçmelisiniz?",
+      "subtitle": "En son AI teknolojisi ile moda alışverişinizde devrim yaratın",
+      "items": {
+        "aiTryOn": {
+          "title": "AI Destekli Deneme",
+          "description": "Gelişmiş AI teknolojisi ile sanal deneme deneyimi yaşayın."
+        },
+        "ecommerce": {
+          "title": "E-ticaret Entegrasyonu",
+          "description": "Favori mağazalarınızdan gerçek ürünleri deneyin ve kaydedin."
+        },
+        "favorites": {
+          "title": "Favorilerinizi Kaydedin",
+          "description": "Uygulama içinde kişisel gardırop koleksiyonunuzu oluşturun."
+        },
+        "share": {
+          "title": "Paylaş & Keşfet",
+          "description": "Görünümlerinizi paylaşın ve benzer ürünleri bulun, kolayca kombinler oluşturun."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Nasıl Çalışır?",
+      "subtitle": "Uygulamayı nasıl kullanacağınızı ve ondan en iyi şekilde nasıl yararlanacağınızı öğrenin!",
+      "steps": {
+        "step1": {
+          "title": "Kendini Tanıt",
+          "description": "Fotoğrafını yükle veya hazır bir model seç. Stilini göstermek için sahne senin!"
+        },
+        "step2": {
+          "title": "Giysini Anlat",
+          "description": "Uzun kırmızı bir elbise mi? Oversize bir gömlek mi? Sadece tarif et — biz giydirelim!"
+        },
+        "step3": {
+          "title": "Görsel Yükle",
+          "description": "Beğendiğin bir kıyafetin ya da tasarımın varsa, fotoğrafını yükle. AI senin için üstüne uygulasın."
+        },
+        "step4": {
+          "title": "Linkini Paylaş",
+          "description": "Bir e-ticaret sitesinde kıyafet gördün mü? Linki yapıştır, biz onu senin üstünde gösterelim."
+        },
+        "step5": {
+          "title": "Kendini Gör",
+          "description": "Yapay zeka kıyafeti senin üstüne yerleştirir. Tarzının nasıl göründüğünü anında keşfet!"
+        },
+        "step6": {
+          "title": "Wardrobe'ına Ekle",
+          "description": "Favori görünümlerini kaydet, kombinler oluştur ve kendi dijital gardırobunu yarat."
+        }
+      }
+    },
+    "readySection": {
+      "title": "Alışveriş deneyiminizi dönüştürmeye hazır mısınız?",
+      "subtitle": "Virtual Room ile modanın geleceğini keşfeden binlerce kullanıcıya katılın.",
+      "button": "Şimdi Başlayın"
     }
   },
+
   "errors": {
     "networkError": "İnternet bağlantısını kontrol edin",
     "serverError": "Sunucu hatası, lütfen daha sonra tekrar deneyin",

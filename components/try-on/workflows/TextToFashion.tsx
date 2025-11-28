@@ -1,52 +1,61 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
-import { MotiView } from 'moti';
-import { Ionicons } from '@expo/vector-icons';
-import { useWorkflowStore } from '@/store/workflowStore';
-import { useTextToFashion } from '@/hooks/useMultiModalTryOn';
-import ReusableButton from '@/components/ui/ReusableButton';
+import React from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from "react-native";
+import { MotiView } from "moti";
+import { Ionicons } from "@expo/vector-icons";
+import { useWorkflowStore } from "@/store/workflowStore";
+import { useTextToFashion } from "@/hooks/useMultiModalTryOn";
+import ReusableButton from "@/components/ui/ReusableButton";
+import { analytics } from "@/services/analytics";
 
 interface TextToFashionProps {
   onTryOnCreate: (tryOnId: string) => void;
 }
 
 const fashionPromptExamples = [
-  'Elegant black evening dress with silver accessories',
-  'Casual summer outfit with denim jacket and white sneakers',
-  'Professional business suit with modern cut',
-  'Bohemian style maxi dress with floral patterns',
-  'Streetwear outfit with oversized hoodie and cargo pants',
-  'Vintage 90s grunge look with flannel shirt',
+  "Elegant black evening dress with silver accessories",
+  "Casual summer outfit with denim jacket and white sneakers",
+  "Professional business suit with modern cut",
+  "Bohemian style maxi dress with floral patterns",
+  "Streetwear outfit with oversized hoodie and cargo pants",
+  "Vintage 90s grunge look with flannel shirt",
 ];
 
 const scenePromptExamples = [
-  'Luxurious hotel lobby with marble floors',
-  'Modern urban street at sunset',
-  'Minimalist studio with soft lighting',
-  'Parisian café terrace',
-  'Fashion runway with dramatic lighting',
-  'Rooftop garden with city skyline',
+  "Luxurious hotel lobby with marble floors",
+  "Modern urban street at sunset",
+  "Minimalist studio with soft lighting",
+  "Parisian café terrace",
+  "Fashion runway with dramatic lighting",
+  "Rooftop garden with city skyline",
 ];
 
 const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
-  const { 
-    workflowData, 
-    currentStep, 
-    nextStep, 
+  const {
+    workflowData,
+    currentStep,
+    nextStep,
     previousStep,
     setFashionDescription,
     setFashionScenePrompt,
     isCurrentWorkflowValid,
-    getWorkflowProgress
+    getWorkflowProgress,
   } = useWorkflowStore();
 
-  const { createTextToFashion, isCreating, error, hasCredits } = useTextToFashion();
-  
+  const { createTextToFashion, isCreating, error, hasCredits } =
+    useTextToFashion();
+
   const textToFashionData = workflowData.textToFashion;
 
   const handleNext = () => {
     if (currentStep === 1 && !textToFashionData.fashionDescription.trim()) {
-      Alert.alert('Missing Description', 'Please describe your fashion idea.');
+      Alert.alert("Missing Description", "Please describe your fashion idea.");
       return;
     }
     nextStep();
@@ -54,25 +63,40 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
   const handleCreateTextToFashion = async () => {
     if (!isCurrentWorkflowValid()) {
-      Alert.alert('Incomplete Data', 'Please complete all required steps.');
+      Alert.alert("Incomplete Data", "Please complete all required steps.");
       return;
     }
 
     if (!hasCredits) {
-      Alert.alert('No Credits', 'You need credits to create a fashion design.');
+      analytics.trackOutOfCredits("text_to_fashion");
+      Alert.alert("No Credits", "You need credits to create a fashion design.");
       return;
     }
 
     try {
+      // Track start
+      analytics.trackTryOnStarted("text_to_fashion");
+      const startTime = Date.now();
+
       const textToFashionRequestData = {
         fashion_description: textToFashionData.fashionDescription,
-        scene_prompt: textToFashionData.scenePrompt || 'modern urban setting',
+        scene_prompt: textToFashionData.scenePrompt || "modern urban setting",
       };
 
       const newTryOn = await createTextToFashion(textToFashionRequestData);
+
+      // Track completion and credit usage
+      const processingTime = Date.now() - startTime;
+      analytics.trackTryOnCompleted("text_to_fashion", 2, processingTime);
+      analytics.trackCreditUsed(2, "text_to_fashion");
+
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
-      Alert.alert('Error', err.message || 'Failed to create fashion design');
+      analytics.trackTryOnFailed(
+        "text_to_fashion",
+        err.message || "Unknown error"
+      );
+      Alert.alert("Error", err.message || "Failed to create fashion design");
     }
   };
 
@@ -83,7 +107,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
           <MotiView
             from={{ opacity: 0, translateX: 50 }}
             animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: 'timing', duration: 300 }}
+            transition={{ type: "timing", duration: 300 }}
           >
             <View className="p-6 bg-gray-50 rounded-3xl">
               <View className="flex-row items-center mb-6">
@@ -91,14 +115,20 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                   <Ionicons name="create-outline" size={24} color="white" />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">Step 1</Text>
-                  <Text className="text-lg text-gray-600">Describe Your Fashion Idea</Text>
+                  <Text className="text-2xl font-bold text-gray-900">
+                    Step 1
+                  </Text>
+                  <Text className="text-lg text-gray-600">
+                    Describe Your Fashion Idea
+                  </Text>
                 </View>
               </View>
 
               {/* Fashion Description */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">Fashion Description *</Text>
+                <Text className="text-lg font-semibold text-gray-900 mb-3">
+                  Fashion Description *
+                </Text>
                 <TextInput
                   className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900 min-h-[120px]"
                   placeholder="Describe your dream outfit in detail... Include style, colors, materials, accessories, and overall look."
@@ -115,8 +145,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
               {/* Examples */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">Example Ideas</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-2">
+                <Text className="text-lg font-semibold text-gray-900 mb-3">
+                  Example Ideas
+                </Text>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  className="-mx-2"
+                >
                   {fashionPromptExamples.map((example, index) => (
                     <TouchableOpacity
                       key={index}
@@ -134,12 +170,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                 <View className="flex-row items-start">
                   <Ionicons name="bulb-outline" size={20} color="#F97316" />
                   <View className="ml-3 flex-1">
-                    <Text className="font-semibold text-orange-900 mb-2">Tips for Better Results</Text>
+                    <Text className="font-semibold text-orange-900 mb-2">
+                      Tips for Better Results
+                    </Text>
                     <Text className="text-orange-800 text-sm leading-relaxed">
-                      • Be specific about colors, styles, and materials{"\n"}
-                      • Include details about accessories and shoes{"\n"}
-                      • Mention the overall vibe (casual, formal, edgy, elegant){"\n"}
-                      • Specify gender if important for the design
+                      • Be specific about colors, styles, and materials{"\n"}•
+                      Include details about accessories and shoes{"\n"}• Mention
+                      the overall vibe (casual, formal, edgy, elegant){"\n"}•
+                      Specify gender if important for the design
                     </Text>
                   </View>
                 </View>
@@ -153,22 +191,30 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
           <MotiView
             from={{ opacity: 0, translateX: 50 }}
             animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: 'timing', duration: 300 }}
+            transition={{ type: "timing", duration: 300 }}
           >
             <View className="p-6 bg-gray-50 rounded-3xl">
               <View className="flex-row items-center mb-6">
                 <View className="w-12 h-12 bg-orange-500 rounded-2xl items-center justify-center mr-4">
-                  <Ionicons name="checkmark-circle-outline" size={24} color="white" />
+                  <Ionicons
+                    name="checkmark-circle-outline"
+                    size={24}
+                    color="white"
+                  />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">Step 2</Text>
+                  <Text className="text-2xl font-bold text-gray-900">
+                    Step 2
+                  </Text>
                   <Text className="text-lg text-gray-600">Ready to Create</Text>
                 </View>
               </View>
 
               {/* Scene Setting (Optional) */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">Scene Setting (Optional)</Text>
+                <Text className="text-lg font-semibold text-gray-900 mb-3">
+                  Scene Setting (Optional)
+                </Text>
                 <TextInput
                   className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900 min-h-[100px]"
                   placeholder="Describe the setting where this outfit will be showcased (e.g. modern urban street, elegant ballroom, cozy café)"
@@ -185,8 +231,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
               {/* Scene Examples */}
               <View className="mb-6">
-                <Text className="text-base font-medium text-gray-900 mb-3">Scene Ideas</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-2">
+                <Text className="text-base font-medium text-gray-900 mb-3">
+                  Scene Ideas
+                </Text>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  className="-mx-2"
+                >
                   {scenePromptExamples.map((example, index) => (
                     <TouchableOpacity
                       key={index}
@@ -201,22 +253,37 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
               {/* Summary */}
               <View className="bg-white rounded-2xl p-4 mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-4">Summary</Text>
-                
+                <Text className="text-lg font-semibold text-gray-900 mb-4">
+                  Summary
+                </Text>
+
                 <View className="flex-row items-start mb-3">
-                  <Ionicons name="shirt-outline" size={20} color="#6B7280" style={{ marginTop: 2 }} />
+                  <Ionicons
+                    name="shirt-outline"
+                    size={20}
+                    color="#6B7280"
+                    style={{ marginTop: 2 }}
+                  />
                   <Text className="text-gray-700 ml-3 flex-1">
-                    Fashion: {textToFashionData.fashionDescription || 'No description provided'}
+                    Fashion:{" "}
+                    {textToFashionData.fashionDescription ||
+                      "No description provided"}
                   </Text>
                 </View>
-                
+
                 <View className="flex-row items-start mb-3">
-                  <Ionicons name="location-outline" size={20} color="#6B7280" style={{ marginTop: 2 }} />
+                  <Ionicons
+                    name="location-outline"
+                    size={20}
+                    color="#6B7280"
+                    style={{ marginTop: 2 }}
+                  />
                   <Text className="text-gray-700 ml-3 flex-1">
-                    Scene: {textToFashionData.scenePrompt || 'Modern urban setting'}
+                    Scene:{" "}
+                    {textToFashionData.scenePrompt || "Modern urban setting"}
                   </Text>
                 </View>
-                
+
                 <View className="flex-row items-center">
                   <Ionicons name="time-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 ml-3">
@@ -226,17 +293,27 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
               </View>
 
               <ReusableButton
-                title={isCreating ? 'Creating Fashion...' : 'Create Fashion Design'}
+                title={
+                  isCreating ? "Creating Fashion..." : "Create Fashion Design"
+                }
                 onPress={handleCreateTextToFashion}
-                disabled={!isCurrentWorkflowValid() || isCreating || !hasCredits}
-                bgColor={isCurrentWorkflowValid() && hasCredits ? 'bg-orange-500' : 'bg-gray-400'}
+                disabled={
+                  !isCurrentWorkflowValid() || isCreating || !hasCredits
+                }
+                bgColor={
+                  isCurrentWorkflowValid() && hasCredits
+                    ? "bg-orange-500"
+                    : "bg-gray-400"
+                }
                 textColor="text-white"
                 variant="filled"
                 buttonShadow
               />
-              
+
               {error && (
-                <Text className="text-red-500 text-center mt-4">{error.message}</Text>
+                <Text className="text-red-500 text-center mt-4">
+                  {error.message}
+                </Text>
               )}
             </View>
           </MotiView>
@@ -259,21 +336,19 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
             {getWorkflowProgress()}% Complete
           </Text>
         </View>
-        
+
         <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <MotiView
             className="h-full bg-orange-500"
-            from={{ width: '0%' }}
+            from={{ width: "0%" }}
             animate={{ width: `${getWorkflowProgress()}%` }}
-            transition={{ type: 'timing', duration: 300 }}
+            transition={{ type: "timing", duration: 300 }}
           />
         </View>
       </View>
 
       {/* Step Content */}
-      <View className="flex-1 px-6">
-        {renderStepContent()}
-      </View>
+      <View className="flex-1 px-6">{renderStepContent()}</View>
 
       {/* Navigation Buttons */}
       {currentStep < 2 && (
@@ -282,12 +357,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
             onPress={previousStep}
             disabled={currentStep === 1}
             className={`px-6 py-3 rounded-2xl ${
-              currentStep === 1 ? 'bg-gray-200' : 'bg-gray-100'
+              currentStep === 1 ? "bg-gray-200" : "bg-gray-100"
             }`}
           >
-            <Text className={`font-semibold ${
-              currentStep === 1 ? 'text-gray-400' : 'text-gray-700'
-            }`}>
+            <Text
+              className={`font-semibold ${
+                currentStep === 1 ? "text-gray-400" : "text-gray-700"
+              }`}
+            >
               Previous
             </Text>
           </TouchableOpacity>

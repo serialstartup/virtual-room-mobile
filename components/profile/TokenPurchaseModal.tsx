@@ -1,8 +1,17 @@
-import { View, Text, Modal, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import { X, Zap, Check, Sparkles } from 'lucide-react-native';
-import { useState } from 'react';
-import { MotiView } from 'moti';
-import { useTranslation } from 'react-i18next';
+import {
+  View,
+  Text,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  Platform,
+} from "react-native";
+import { X, Zap, Check, Sparkles } from "lucide-react-native";
+import { useState, useEffect } from "react";
+import { MotiView } from "moti";
+import { useTranslation } from "react-i18next";
+import Purchases, { PurchasesPackage } from "react-native-purchases";
 
 interface TokenPackage {
   id: string;
@@ -17,7 +26,7 @@ interface TokenPackage {
 interface TokenPurchaseModalProps {
   visible: boolean;
   onClose: () => void;
-  onPurchase: (packageId: string, tokens: number) => Promise<void>;
+  onPurchase: (packageId: string, transactionId: string) => Promise<void>;
 }
 
 // Dimensions available if needed in the future
@@ -34,42 +43,93 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
 
   const tokenPackages: TokenPackage[] = [
     {
-      id: 'token_50',
+      id: "token_50",
       tokens: 50,
-      price: '$4.99',
+      price: "$4.99",
       priceValue: 4.99,
     },
     {
-      id: 'token_100',
+      id: "token_100",
       tokens: 100,
-      price: '$8.99',
+      price: "$8.99",
       priceValue: 8.99,
       popular: true,
-      discount: `10% ${t('tokens.packages.save')}`,
-      badge: t('tokens.packages.mostPopular'),
+      discount: `10% ${t("tokens.packages.save")}`,
+      badge: t("tokens.packages.mostPopular"),
     },
     {
-      id: 'token_250',
+      id: "token_250",
       tokens: 250,
-      price: '$19.99',
+      price: "$19.99",
       priceValue: 19.99,
-      discount: `20% ${t('tokens.packages.save')}`,
-      badge: t('tokens.packages.bestValue'),
+      discount: `20% ${t("tokens.packages.save")}`,
+      badge: t("tokens.packages.bestValue"),
     },
   ];
+
+  const [offerings, setOfferings] = useState<PurchasesPackage[]>([]);
+
+  useEffect(() => {
+    const fetchOfferings = async () => {
+      try {
+        const offerings = await Purchases.getOfferings();
+        if (
+          offerings.current &&
+          offerings.current.availablePackages.length !== 0
+        ) {
+          setOfferings(offerings.current.availablePackages);
+        }
+      } catch (e) {
+        console.error("Error fetching offerings:", e);
+      }
+    };
+
+    if (visible) {
+      fetchOfferings();
+    }
+  }, [visible]);
+
+  // Merge hardcoded packages with RC packages if available
+  // For now, we'll stick to hardcoded UI but map to RC packages when purchasing
+  // In a real app, you'd generate the UI from `offerings`
 
   const handlePurchase = async () => {
     if (!selectedPackage) return;
 
-    const pkg = tokenPackages.find((p) => p.id === selectedPackage);
-    if (!pkg) return;
-
     setIsPurchasing(true);
     try {
-      await onPurchase(pkg.id, pkg.tokens);
+      // Find the RC package that matches the selected ID
+      // Assuming RC product IDs match our IDs (token_50, token_100, etc.)
+      const rcPackage = offerings.find(
+        (p) => p.product.identifier === selectedPackage
+      );
+
+      let transactionId = "";
+
+      if (rcPackage) {
+        const { customerInfo, productIdentifier, transaction } =
+          await Purchases.purchasePackage(rcPackage);
+        transactionId = transaction?.transactionIdentifier || "";
+      } else {
+        // Fallback for testing/dev without RC setup
+        console.warn("RevenueCat package not found, simulating purchase");
+        transactionId = "simulated_" + Date.now();
+        // In production, you might want to block this
+        if (!__DEV__) {
+          throw new Error("Package not available");
+        }
+      }
+
+      await onPurchase(selectedPackage, transactionId);
       onClose();
-    } catch (error) {
-      console.error('Purchase error:', error);
+    } catch (error: any) {
+      if (!error.userCancelled) {
+        console.error("Purchase error:", error);
+        Alert.alert(
+          t("common.error"),
+          error.message || t("tokens.purchase.failed")
+        );
+      }
     } finally {
       setIsPurchasing(false);
     }
@@ -95,9 +155,11 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                 <Zap size={24} color="#ec4899" fill="#ec4899" />
               </View>
               <View>
-                <Text className="text-2xl font-bold text-gray-900">{t('tokens.title')}</Text>
+                <Text className="text-2xl font-bold text-gray-900">
+                  {t("tokens.title")}
+                </Text>
                 <Text className="text-sm text-gray-500 mt-0.5">
-                  {t('tokens.subtitle')}
+                  {t("tokens.subtitle")}
                 </Text>
               </View>
             </View>
@@ -114,14 +176,14 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
           {/* Benefits Section */}
           <View className="px-6 py-6 bg-gradient-to-b from-virtual-primary/5 to-transparent">
             <Text className="text-lg font-semibold text-gray-900 mb-4">
-              {t('tokens.benefits.title')}
+              {t("tokens.benefits.title")}
             </Text>
             <View className="space-y-3">
               {[
-                t('tokens.benefits.aiTryOn'),
-                t('tokens.benefits.productShowcase'),
-                t('tokens.benefits.textToFashion'),
-                t('tokens.benefits.avatarCreation'),
+                t("tokens.benefits.aiTryOn"),
+                t("tokens.benefits.productShowcase"),
+                t("tokens.benefits.textToFashion"),
+                t("tokens.benefits.avatarCreation"),
               ].map((benefit, index) => (
                 <View key={index} className="flex-row items-center gap-3">
                   <View className="bg-green-100 p-1.5 rounded-full">
@@ -136,7 +198,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
           {/* Token Packages */}
           <View className="px-6 py-6">
             <Text className="text-lg font-semibold text-gray-900 mb-4">
-              {t('tokens.packages.title')}
+              {t("tokens.packages.title")}
             </Text>
             <View className="space-y-4">
               {tokenPackages.map((pkg, index) => (
@@ -144,17 +206,22 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                   key={pkg.id}
                   from={{ opacity: 0, translateY: 20 }}
                   animate={{ opacity: 1, translateY: 0 }}
-                  transition={{ type: 'timing', duration: 300, delay: index * 100 }}
+                  transition={{
+                    type: "timing",
+                    duration: 300,
+                    delay: index * 100,
+                  }}
                 >
                   <TouchableOpacity
                     onPress={() => setSelectedPackage(pkg.id)}
                     className={`relative p-5 rounded-2xl border-2 my-4 ${
                       selectedPackage === pkg.id
-                        ? 'border-virtual-primary bg-virtual-primary/5'
-                        : 'border-gray-200 bg-white'
+                        ? "border-virtual-primary bg-virtual-primary/5"
+                        : "border-gray-200 bg-white"
                     }`}
                     style={{
-                      shadowColor: selectedPackage === pkg.id ? '#ec4899' : '#000',
+                      shadowColor:
+                        selectedPackage === pkg.id ? "#ec4899" : "#000",
                       shadowOffset: { width: 0, height: 2 },
                       shadowOpacity: selectedPackage === pkg.id ? 0.15 : 0.05,
                       shadowRadius: 4,
@@ -177,19 +244,21 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                         <View className="flex-row items-center gap-2 mb-2">
                           <Sparkles
                             size={20}
-                            color={selectedPackage === pkg.id ? '#ec4899' : '#6b7280'}
+                            color={
+                              selectedPackage === pkg.id ? "#ec4899" : "#6b7280"
+                            }
                           />
                           <Text
                             className={`text-2xl font-bold ${
                               selectedPackage === pkg.id
-                                ? 'text-virtual-primary'
-                                : 'text-gray-900'
+                                ? "text-virtual-primary"
+                                : "text-gray-900"
                             }`}
                           >
-                            {pkg.tokens} {t('tokens.packages.tokens')}
+                            {pkg.tokens} {t("tokens.packages.tokens")}
                           </Text>
                         </View>
-                        
+
                         {pkg.discount && (
                           <View className="bg-green-100 px-2 py-1 rounded-md self-start mb-2">
                             <Text className="text-green-700 text-xs font-semibold">
@@ -199,7 +268,8 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                         )}
 
                         <Text className="text-gray-500 text-sm">
-                          {t('tokens.packages.perToken')} ${getPricePerToken(pkg)}
+                          {t("tokens.packages.perToken")} $
+                          {getPricePerToken(pkg)}
                         </Text>
                       </View>
 
@@ -208,13 +278,15 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                         <Text
                           className={`text-3xl font-bold ${
                             selectedPackage === pkg.id
-                              ? 'text-virtual-primary'
-                              : 'text-gray-900'
+                              ? "text-virtual-primary"
+                              : "text-gray-900"
                           }`}
                         >
                           {pkg.price}
                         </Text>
-                        <Text className="text-gray-500 text-sm mt-1">{t('tokens.packages.oneTime')}</Text>
+                        <Text className="text-gray-500 text-sm mt-1">
+                          {t("tokens.packages.oneTime")}
+                        </Text>
                       </View>
                     </View>
 
@@ -234,10 +306,10 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
           <View className="px-6 pb-6">
             <View className="bg-blue-50 rounded-2xl p-4 border border-blue-100">
               <Text className="text-blue-900 font-semibold mb-2">
-                {t('tokens.info.title')}
+                {t("tokens.info.title")}
               </Text>
               <Text className="text-blue-800 text-sm leading-relaxed">
-                {t('tokens.info.description')}
+                {t("tokens.info.description")}
               </Text>
             </View>
           </View>
@@ -250,11 +322,12 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
             disabled={!selectedPackage || isPurchasing}
             className={`py-4 rounded-2xl ${
               selectedPackage && !isPurchasing
-                ? 'bg-virtual-primary'
-                : 'bg-gray-300'
+                ? "bg-virtual-primary"
+                : "bg-gray-300"
             }`}
             style={{
-              shadowColor: selectedPackage && !isPurchasing ? '#ec4899' : 'transparent',
+              shadowColor:
+                selectedPackage && !isPurchasing ? "#ec4899" : "transparent",
               shadowOffset: { width: 0, height: 4 },
               shadowOpacity: 0.3,
               shadowRadius: 8,
@@ -264,15 +337,15 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
           >
             <Text className="text-white text-center font-bold text-lg">
               {isPurchasing
-                ? t('tokens.purchase.processing')
+                ? t("tokens.purchase.processing")
                 : selectedPackage
-                ? `${t('tokens.purchase.pay')} ${tokenPackages.find((p) => p.id === selectedPackage)?.price}`
-                : t('tokens.purchase.selectPackage')}
+                  ? `${t("tokens.purchase.pay")} ${tokenPackages.find((p) => p.id === selectedPackage)?.price}`
+                  : t("tokens.purchase.selectPackage")}
             </Text>
           </TouchableOpacity>
 
           <Text className="text-center text-gray-500 text-xs mt-3">
-            {t('tokens.purchase.securePayment')}
+            {t("tokens.purchase.securePayment")}
           </Text>
         </View>
       </View>

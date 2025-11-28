@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "@/components/ui/ReusableButton";
 import { Eye, EyeOff, Mail, Lock, Sparkles } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 
 type SignupFormValues = {
   name: string;
@@ -15,6 +16,7 @@ type SignupFormValues = {
 };
 
 const Signup = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,11 +44,18 @@ const Signup = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       // Simulate signup success
-      Alert.alert("Başarılı!", "Hesabınız oluşturuldu", [
-        { text: "Tamam", onPress: () => router.replace("/(tabs)") },
+      Alert.alert(t("signup.success.title"), t("signup.success.message"), [
+        {
+          text: t("signup.success.button"),
+          onPress: () => router.replace("/(tabs)"),
+        },
       ]);
     } catch (error) {
-      Alert.alert("Hata", "Hesap oluşturulurken bir hata oluştu",error);
+      Alert.alert(
+        t("signup.errors.defaultError"),
+        t("signup.errors.createError"),
+        [{ text: t("common.ok") }]
+      );
     } finally {
       setIsLoading(false);
     }
@@ -61,33 +70,32 @@ const Signup = () => {
             <Sparkles color="#ec4899" size={32} />
           </View>
           <Text className="text-3xl font-bold text-gray-800 mb-2">
-            Hesap Oluşturun
+            {t("signup.title")}
           </Text>
           <Text className="text-gray-500 text-center">
-            Virtual Room`$apos;`` a katılın ve stilinizi keşfedin
+            {t("signup.subtitle")}
           </Text>
         </View>
 
         {/* Signup Form */}
         <View className="flex-1">
           <View className="space-y-4 mb-6">
-
             {/* Email Input */}
             <View>
               <Input
                 name="email"
                 control={control}
-                placeholder="E-posta adresinizi girin"
-                label="E-posta"
+                placeholder={t("signup.emailPlaceholder")}
+                label={t("auth.email")}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 error={errors.email}
                 rules={{
-                  required: "E-posta alanı zorunludur",
+                  required: t("signup.errors.emailRequired"),
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Geçerli bir e-posta adresi girin"
-                  }
+                    message: t("signup.errors.emailInvalid"),
+                  },
                 }}
                 leftIcon={<Mail color="#6b7280" size={20} />}
               />
@@ -98,16 +106,16 @@ const Signup = () => {
               <Input
                 name="password"
                 control={control}
-                placeholder="Şifrenizi girin"
-                label="Şifre"
+                placeholder={t("signup.passwordPlaceholder")}
+                label={t("auth.password")}
                 secureTextEntry={!showPassword}
                 error={errors.password}
                 rules={{
-                  required: "Şifre alanı zorunludur",
+                  required: t("signup.errors.passwordRequired"),
                   minLength: {
                     value: 6,
-                    message: "Şifre en az 6 karakter olmalıdır"
-                  }
+                    message: t("signup.errors.passwordMinLength"),
+                  },
                 }}
                 leftIcon={<Lock color="#6b7280" size={20} />}
                 rightIcon={
@@ -128,21 +136,25 @@ const Signup = () => {
           {/* Terms Agreement */}
           <View className="mb-6">
             <Text className="text-gray-500 text-center text-sm leading-5">
-              Hesap oluşturarak{" "}
+              {t("signup.termsText")}{" "}
               <Text className="text-virtual-primary font-medium">
-                Kullanım Koşulları
+                {t("signup.termsLink")}
               </Text>{" "}
-              ve{" "}
+              {t("signup.and")}{" "}
               <Text className="text-virtual-primary font-medium">
-                Gizlilik Politikası
+                {t("signup.privacyLink")}
               </Text>
-&apos;nı kabul etmiş olursunuz.
+              {t("signup.privacyEnd")}
             </Text>
           </View>
 
           {/* Signup Button */}
           <ReusableButton
-            title={isLoading ? "Hesap Oluşturuluyor..." : "Hesap Oluştur"}
+            title={
+              isLoading
+                ? t("signup.createAccountButtonLoading")
+                : t("signup.createAccountButton")
+            }
             onPress={handleSubmit(onSubmit)}
             variant="filled"
             bgColor="bg-virtual-primary"
@@ -154,7 +166,7 @@ const Signup = () => {
           {/* Divider */}
           <View className="flex-row items-center my-6">
             <View className="flex-1 h-px bg-gray-200" />
-            <Text className="mx-4 text-gray-500">veya</Text>
+            <Text className="mx-4 text-gray-500">{t("signup.or")}</Text>
             <View className="flex-1 h-px bg-gray-200" />
           </View>
 
@@ -162,12 +174,12 @@ const Signup = () => {
           <View className="space-y-3 my-4 gap-4">
             <ReusableButton
               bgColor="bg-blue-500"
-              title="Google ile Kayıt Ol"
+              title={t("signup.withGoogle")}
               onPress={() => {}}
               textColor="text-white"
             />
             <ReusableButton
-              title="Apple ile Kayıt Ol"
+              title={t("signup.withApple")}
               onPress={() => {}}
               bgColor="bg-black"
               textColor="text-white"
@@ -178,12 +190,12 @@ const Signup = () => {
         {/* Login Link */}
         <View className="items-center pb-4">
           <Text className="text-gray-500">
-            Zaten hesabınız var mı?{" "}
+            {t("signup.hasAccount")}{" "}
             <Link
               href="/(auth)/login"
               className="text-virtual-primary font-semibold"
             >
-              Giriş Yapın
+              {t("signup.loginLink")}
             </Link>
           </Text>
         </View>

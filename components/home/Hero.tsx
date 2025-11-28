@@ -4,8 +4,11 @@ import AnimatedText from "../ui/AnimatedText";
 import ReusableButton from "../ui/ReusableButton";
 import { Plus, ArrowRight } from "lucide-react-native";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
+
   const handleTryNow = () => {
     router.push("/(tabs)/try-on");
   };
@@ -24,18 +27,18 @@ const Hero = () => {
           delay={200}
           duration={500}
           easing="easeOut"
-          className="text-3xl font-bold text-gray-900 text-center mb-3"
+          className="font-outfit text-4xl font-bold text-gray-900 text-center mb-3"
         >
-          Your Fit, Reimagined!
+          {t("home.hero.title")}
         </AnimatedText>
         <AnimatedText
           animation="slideUp"
           delay={400}
           duration={500}
           easing="easeOut"
-          className="text-base text-gray-600 text-center px-10"
+          className="font-outfit text-base text-gray-600 text-center px-10"
         >
-          Kıyafetleri ve kombinleri saniyeler içinde üzerinde gör
+          {t("home.hero.subtitle")}
         </AnimatedText>
       </AnimatedView>
 
@@ -47,7 +50,7 @@ const Hero = () => {
           delay={600}
           duration={600}
           easing="easeOut"
-          className="flex-1 items-center"
+          className="font-outfit flex-1 items-center"
         >
           <View className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-gray-50 shadow-lg">
             <Image
@@ -60,9 +63,9 @@ const Hero = () => {
             animation="slideUp"
             delay={800}
             duration={400}
-            className="text-sm font-semibold text-gray-700 mt-3 text-center"
+            className="font-outfit text-sm font-semibold text-gray-700 mt-3 text-center"
           >
-            Fotoğraf
+            {t("home.hero.photo")}
           </AnimatedText>
         </AnimatedView>
 
@@ -96,9 +99,10 @@ const Hero = () => {
             animation="slideUp"
             delay={1400}
             duration={400}
-            className="text-sm font-semibold text-gray-700 mt-3 text-center"
+            className="text-sm font-outfit font-semibold text-gray-700 mt-3 text-center"
+            // className="text-sm font-outfit-medium text-gray-700 mt-3 text-center"
           >
-            Kıyafet
+            {t("home.hero.garment")}
           </AnimatedText>
         </AnimatedView>
       </View>
@@ -137,7 +141,7 @@ const Hero = () => {
           duration={400}
           className="text-lg font-bold text-virtual-primary mt-4 text-center"
         >
-          Sonuç 🎉
+          {t("home.hero.result")}
         </AnimatedText>
         <AnimatedText
           animation="slideUp"
@@ -145,7 +149,7 @@ const Hero = () => {
           duration={400}
           className="text-xs text-gray-600 mt-2 text-center"
         >
-          Saniyeler içinde AI ile oluşturuldu
+          {t("home.hero.generatedByAi")}
         </AnimatedText>
       </AnimatedView>
 
@@ -158,7 +162,7 @@ const Hero = () => {
         className="mt-10 gap-4"
       >
         <ReusableButton
-          title="Şimdi Dene"
+          title={t("home.hero.tryNow")}
           onPress={handleTryNow}
           variant="filled"
           bgColor="bg-virtual-primary"

@@ -7,6 +7,7 @@ import { useProductToModel } from "@/hooks/useMultiModalTryOn";
 import UploadTab from "../tabs/UploadTab";
 import ReusableButton from "@/components/ui/ReusableButton";
 import { UserAvatar } from "@/hooks/useUserAvatars";
+import { analytics } from "@/services/analytics";
 
 interface ProductToModelProps {
   onTryOnCreate: (tryOnId: string) => void;
@@ -53,8 +54,15 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
       Alert.alert("Missing Image", "Please upload your product image first.");
       return;
     }
-    if (currentStep === 2 && !productData.modelImage && !productData.selectedAvatar) {
-      Alert.alert("Missing Model", "Please upload a model image or select an avatar.");
+    if (
+      currentStep === 2 &&
+      !productData.modelImage &&
+      !productData.selectedAvatar
+    ) {
+      Alert.alert(
+        "Missing Model",
+        "Please upload a model image or select an avatar."
+      );
       return;
     }
     if (currentStep === 3 && !productData.productName.trim()) {
@@ -85,6 +93,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
     }
 
     if (!hasCredits) {
+      analytics.trackOutOfCredits("product_to_model");
       Alert.alert(
         "No Credits",
         "You need credits to create a product showcase."
@@ -93,14 +102,26 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
     }
 
     try {
+      // Track start
+      analytics.trackProductToModelStarted();
+      const startTime = Date.now();
+
       const productToModelData = {
         product_image: productData.productImage!,
-        model_image: productData.selectedAvatar?.avatar_image_url || productData.modelImage!,
+        model_image:
+          productData.selectedAvatar?.avatar_image_url ||
+          productData.modelImage!,
         product_name: productData.productName,
         scene_prompt: productData.scenePrompt || "professional studio setting",
       };
 
       const newTryOn = await createProductToModel(productToModelData);
+
+      // Track completion and credit usage
+      const processingTime = Date.now() - startTime;
+      analytics.trackProductToModelCompleted(newTryOn.id, processingTime);
+      analytics.trackCreditUsed(1, "product_to_model");
+
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
       Alert.alert("Error", err.message || "Failed to create product showcase");
@@ -163,7 +184,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   <Text className="text-lg text-gray-600">Select Model</Text>
                 </View>
               </View>
-              
+
               <UploadTab
                 onImageSelect={handleModelImageSelect}
                 selectedImage={productData.modelImage || undefined}
@@ -296,11 +317,11 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="person-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 ml-3">
-                    {productData.modelImage 
-                      ? 'Model image uploaded ✓' 
-                      : productData.selectedAvatar 
-                        ? `Avatar selected: ${productData.selectedAvatar.name || 'Unnamed'} ✓` 
-                        : 'No model selected'}
+                    {productData.modelImage
+                      ? "Model image uploaded ✓"
+                      : productData.selectedAvatar
+                        ? `Avatar selected: ${productData.selectedAvatar.name || "Unnamed"} ✓`
+                        : "No model selected"}
                   </Text>
                 </View>
 
@@ -401,22 +422,22 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
               onPress={previousStep}
               disabled={currentStep === 1}
               className={`flex-row items-center justify-center px-5 py-3.5 rounded-xl border-2 ${
-                currentStep === 1 
-                  ? "bg-gray-50 border-gray-200" 
+                currentStep === 1
+                  ? "bg-gray-50 border-gray-200"
                   : "bg-white border-gray-300"
               }`}
               style={{
-                shadowColor: currentStep === 1 ? 'transparent' : '#000',
+                shadowColor: currentStep === 1 ? "transparent" : "#000",
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.05,
                 shadowRadius: 2,
                 elevation: currentStep === 1 ? 0 : 1,
               }}
             >
-              <Ionicons 
-                name="chevron-back" 
-                size={18} 
-                color={currentStep === 1 ? "#9CA3AF" : "#374151"} 
+              <Ionicons
+                name="chevron-back"
+                size={18}
+                color={currentStep === 1 ? "#9CA3AF" : "#374151"}
               />
               <Text
                 className={`font-semibold ml-1 ${
@@ -432,29 +453,27 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
               onPress={handleNext}
               disabled={!isCurrentStepValid()}
               className={`flex-1 flex-row items-center justify-center px-5 py-3.5 rounded-xl ${
-                isCurrentStepValid() 
-                  ? "bg-green-500" 
-                  : "bg-gray-300"
+                isCurrentStepValid() ? "bg-green-500" : "bg-gray-300"
               }`}
               style={{
-                shadowColor: isCurrentStepValid() ? '#22c55e' : 'transparent',
+                shadowColor: isCurrentStepValid() ? "#22c55e" : "transparent",
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.2,
                 shadowRadius: 4,
                 elevation: isCurrentStepValid() ? 3 : 0,
               }}
             >
-              <Text className={`font-semibold mr-1 ${
-                isCurrentStepValid() 
-                  ? "text-white" 
-                  : "text-gray-500"
-              }`}>
+              <Text
+                className={`font-semibold mr-1 ${
+                  isCurrentStepValid() ? "text-white" : "text-gray-500"
+                }`}
+              >
                 Next
               </Text>
-              <Ionicons 
-                name="chevron-forward" 
-                size={18} 
-                color={isCurrentStepValid() ? "#FFFFFF" : "#6B7280"} 
+              <Ionicons
+                name="chevron-forward"
+                size={18}
+                color={isCurrentStepValid() ? "#FFFFFF" : "#6B7280"}
               />
             </TouchableOpacity>
           </View>

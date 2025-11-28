@@ -7,7 +7,7 @@ import en from './locales/en.json';
 i18n
   .use(initReactI18next)
   .init({
-    compatibilityJSON: 'v4',
+    compatibilityJSON: 'v3',
     resources: {
       tr: { translation: tr },
       en: { translation: en },

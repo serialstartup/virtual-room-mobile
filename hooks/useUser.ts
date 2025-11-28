@@ -1,20 +1,28 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '@/store/authStore';
-import { userService, UpdateUserRequest, UpdateUserSettingsRequest } from '@/services/user';
-import { User, UserSettings } from '@/types/database';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/store/authStore";
+import {
+  userService,
+  UpdateUserRequest,
+  UpdateUserSettingsRequest,
+} from "@/services/user";
+import { User, UserSettings } from "@/types/database";
 
 export const useUser = () => {
   const queryClient = useQueryClient();
-  const { user: authUser, isAuthenticated, updateUser: updateAuthUser } = useAuthStore();
+  const {
+    user: authUser,
+    isAuthenticated,
+    updateUser: updateAuthUser,
+  } = useAuthStore();
 
   // Get current user profile
   const {
     data: currentUser,
     isLoading: isUserLoading,
     error: userError,
-    refetch: refetchUser
+    refetch: refetchUser,
   } = useQuery({
-    queryKey: ['user', 'profile'],
+    queryKey: ["user", "profile"],
     queryFn: userService.getCurrentUser,
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 10, // 10 minutes
@@ -26,9 +34,9 @@ export const useUser = () => {
     data: userSettings,
     isLoading: isSettingsLoading,
     error: settingsError,
-    refetch: refetchSettings
+    refetch: refetchSettings,
   } = useQuery({
-    queryKey: ['user', 'settings'],
+    queryKey: ["user", "settings"],
     queryFn: userService.getUserSettings,
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -39,9 +47,9 @@ export const useUser = () => {
     data: notificationSettings,
     isLoading: isNotificationsLoading,
     error: notificationsError,
-    refetch: refetchNotifications
+    refetch: refetchNotifications,
   } = useQuery({
-    queryKey: ['user', 'notifications'],
+    queryKey: ["user", "notifications"],
     queryFn: userService.getNotificationSettings,
     enabled: isAuthenticated,
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -53,36 +61,37 @@ export const useUser = () => {
     onSuccess: (updatedUser: User) => {
       // Update auth store
       updateAuthUser(updatedUser);
-      
+
       // Update query cache
-      queryClient.setQueryData(['user', 'profile'], updatedUser);
-      
+      queryClient.setQueryData(["user", "profile"], updatedUser);
+
       // Invalidate related queries
-      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {
-      console.error('Update user error:', error);
-    }
+      console.error("Update user error:", error);
+    },
   });
 
   // Update user settings mutation
   const updateSettingsMutation = useMutation({
-    mutationFn: (updates: UpdateUserSettingsRequest) => userService.updateUserSettings(updates),
+    mutationFn: (updates: UpdateUserSettingsRequest) =>
+      userService.updateUserSettings(updates),
     onSuccess: (updatedSettings: UserSettings) => {
       // Update query cache
-      queryClient.setQueryData(['user', 'settings'], updatedSettings);
-      
+      queryClient.setQueryData(["user", "settings"], updatedSettings);
+
       // Update notification cache if notification settings changed
       const notificationData = {
         push_notifications: updatedSettings.push_notifications,
         email_notifications: updatedSettings.email_notifications,
         new_features: updatedSettings.new_features,
       };
-      queryClient.setQueryData(['user', 'notifications'], notificationData);
+      queryClient.setQueryData(["user", "notifications"], notificationData);
     },
     onError: (error) => {
-      console.error('Update settings error:', error);
-    }
+      console.error("Update settings error:", error);
+    },
   });
 
   // Delete user account mutation
@@ -94,8 +103,8 @@ export const useUser = () => {
       useAuthStore.getState().logout();
     },
     onError: (error) => {
-      console.error('Delete user error:', error);
-    }
+      console.error("Delete user error:", error);
+    },
   });
 
   // Actions
@@ -111,6 +120,22 @@ export const useUser = () => {
     return deleteUserMutation.mutateAsync();
   };
 
+  const verifyPurchase = async (
+    appUserId: string,
+    platform: string,
+    productId: string,
+    transactionId: string
+  ) => {
+    await userService.verifyPurchase(
+      appUserId,
+      platform,
+      productId,
+      transactionId
+    );
+    // Refresh user data to show new token balance
+    refetchUser();
+  };
+
   const refreshUserData = () => {
     refetchUser();
     refetchSettings();
@@ -122,7 +147,7 @@ export const useUser = () => {
     user: currentUser,
     userSettings,
     notificationSettings,
-    
+
     // Loading states
     isUserLoading,
     isSettingsLoading,
@@ -130,16 +155,17 @@ export const useUser = () => {
     isUpdateUserLoading: updateUserMutation.isPending,
     isUpdateSettingsLoading: updateSettingsMutation.isPending,
     isDeleteUserLoading: deleteUserMutation.isPending,
-    
+
     // Actions
     updateProfile,
     updateSettings,
     deleteAccount,
+    verifyPurchase,
     refreshUserData,
     refetchUser,
     refetchSettings,
     refetchNotifications,
-    
+
     // Errors
     userError,
     settingsError,
@@ -147,7 +173,7 @@ export const useUser = () => {
     updateUserError: updateUserMutation.error,
     updateSettingsError: updateSettingsMutation.error,
     deleteUserError: deleteUserMutation.error,
-    
+
     // Computed values
     isLoading: isUserLoading || isSettingsLoading || isNotificationsLoading,
     hasError: !!userError || !!settingsError || !!notificationsError,

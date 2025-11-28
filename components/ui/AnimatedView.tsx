@@ -4,11 +4,14 @@ import { ViewProps } from 'react-native'
 
 interface AnimatedViewProps extends ViewProps {
   children: ReactNode
-  animation?: 'fadeIn' | 'slideUp' | 'slideDown' | 'scale' | 'crossfade' | 'none'
+  animation?: 'fadeIn' | 'slideUp' | 'slideDown' | 'scale' | 'crossfade' | 'rotate' | 'bounce' | 'rotateScale' | 'none'
   delay?: number
   duration?: number
   className?: string
-  easing?: 'ease' | 'easeIn' | 'easeOut' | 'easeInOut' | 'spring'
+  easing?: 'ease' | 'easeIn' | 'easeOut' | 'easeInOut' | 'spring' | 'bounce'
+  rotateFrom?: string
+  rotateTo?: string
+  stagger?: number
 }
 
 const AnimatedView = ({
@@ -18,6 +21,9 @@ const AnimatedView = ({
   duration = 800,
   className = '',
   easing = 'easeInOut',
+  rotateFrom = '0deg',
+  rotateTo = '360deg',
+  stagger = 0,
   ...props
 }: AnimatedViewProps) => {
   const getAnimationConfig = () => {
@@ -35,6 +41,21 @@ const AnimatedView = ({
       case 'scale':
         return {
           from: { opacity: 0, scale: 0.8 },
+          animate: { opacity: 1, scale: 1 }
+        }
+      case 'rotate':
+        return {
+          from: { opacity: 0.5, rotate: rotateFrom },
+          animate: { opacity: 1, rotate: rotateTo }
+        }
+      case 'rotateScale':
+        return {
+          from: { opacity: 0, scale: 0.5, rotate: rotateFrom },
+          animate: { opacity: 1, scale: 1, rotate: rotateTo }
+        }
+      case 'bounce':
+        return {
+          from: { opacity: 0, scale: 0.3 },
           animate: { opacity: 1, scale: 1 }
         }
       case 'fadeIn':
@@ -58,9 +79,29 @@ const AnimatedView = ({
   const config = getAnimationConfig()
 
   const getTransition = () => {
+    const finalDelay = delay + stagger
     const baseTransition = {
       duration,
-      delay
+      delay: finalDelay
+    }
+
+    // Special cases for specific animations
+    if (animation === 'bounce') {
+      return {
+        type: 'spring' as const,
+        damping: 8,
+        stiffness: 200,
+        delay: finalDelay
+      }
+    }
+
+    if (animation === 'rotateScale' || animation === 'rotate') {
+      return {
+        type: 'spring' as const,
+        damping: 12,
+        stiffness: 100,
+        delay: finalDelay
+      }
     }
 
     switch (easing) {
@@ -69,23 +110,18 @@ const AnimatedView = ({
           type: 'spring' as const,
           damping: 15,
           stiffness: 150,
-          delay
+          delay: finalDelay
+        }
+      case 'bounce':
+        return {
+          type: 'spring' as const,
+          damping: 8,
+          stiffness: 200,
+          delay: finalDelay
         }
       case 'ease':
-        return {
-          type: 'timing' as const,
-          ...baseTransition
-        }
       case 'easeIn':
-        return {
-          type: 'timing' as const,
-          ...baseTransition
-        }
       case 'easeOut':
-        return {
-          type: 'timing' as const,
-          ...baseTransition
-        }
       case 'easeInOut':
       default:
         return {
