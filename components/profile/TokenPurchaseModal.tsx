@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  Platform,
 } from "react-native";
 import { X, Zap, Check, Sparkles } from "lucide-react-native";
 import { useState, useEffect } from "react";
@@ -107,8 +106,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
       let transactionId = "";
 
       if (rcPackage) {
-        const { customerInfo, productIdentifier, transaction } =
-          await Purchases.purchasePackage(rcPackage);
+        const { transaction } = await Purchases.purchasePackage(rcPackage);
         transactionId = transaction?.transactionIdentifier || "";
       } else {
         // Fallback for testing/dev without RC setup

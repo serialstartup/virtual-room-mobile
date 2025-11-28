@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { View, Alert } from "react-native";
 import { AnimatePresence, MotiView } from "moti";
 import PageWrapper from "../../components/PageWrapper";
@@ -61,7 +61,7 @@ const TryOn = () => {
     };
 
     loadSavedData();
-  }, [getLastActiveTryOn, removeActiveTryOn]);
+  }, [getLastActiveTryOn, removeActiveTryOn, t]);
 
   const handleWorkflowSelect = () => {
     setShowWorkflowSelection(false);

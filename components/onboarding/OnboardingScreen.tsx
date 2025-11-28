@@ -99,6 +99,20 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
     []
   );
 
+  const handleComplete = useCallback(async () => {
+    if (state !== "idle") return;
+
+    setState("completing");
+    try {
+      analytics.trackOnboardingCompleted();
+      await onboardingStorage.markOnboardingComplete();
+    } catch (error) {
+      console.error("[ONBOARDING] Error during completion:", error);
+    } finally {
+      onComplete();
+    }
+  }, [onComplete, state]);
+
   const handleNext = useCallback(() => {
     if (state !== "idle") return;
 
@@ -123,20 +137,6 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
     }
   }, [currentPage, onComplete, state]);
 
-  const handleComplete = useCallback(async () => {
-    if (state !== "idle") return;
-
-    setState("completing");
-    try {
-      analytics.trackOnboardingCompleted();
-      await onboardingStorage.markOnboardingComplete();
-    } catch (error) {
-      console.error("[ONBOARDING] Error during completion:", error);
-    } finally {
-      onComplete();
-    }
-  }, [onComplete, state]);
-
   // Track onboarding started only once
   React.useEffect(() => {
     if (!hasStartedTracking) {
@@ -150,7 +150,6 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
   React.useEffect(() => {
     if (currentPage < slides.length - 1) {
       // Preload next slide icon if it's an image
-      const nextSlide = slides[currentPage + 1];
       // This is a simple preload hint for potential optimizations
     }
   }, [currentPage]);

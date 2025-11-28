@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Alert, Platform } from "react-native";
 import { useEffect, useState } from "react";
 import AnimatedView from "../ui/AnimatedView";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -8,7 +8,6 @@ import { Pencil, User } from "lucide-react-native";
 import { useUser } from "@/hooks/useUser";
 import TokenPurchaseModal from "./TokenPurchaseModal";
 import Purchases from "react-native-purchases";
-import { Platform } from "react-native";
 import { analytics } from "@/services/analytics";
 import { useTranslation } from "react-i18next";
 

@@ -1,4 +1,4 @@
-import { View, Text, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import { useState } from "react";
 import ReusableButton from "../ui/ReusableButton";
 import { useTryOn } from "@/hooks/useTryOn";
@@ -59,23 +59,24 @@ const CreateButton: React.FC<CreateButtonProps> = ({
         createRequest.dress_description = tryOnData.dressDescription;
       }
 
-      console.log('[CREATE_BUTTON] 📤 Sending request:', createRequest);
-      
+      console.log("[CREATE_BUTTON] 📤 Sending request:", createRequest);
+
       const newTryOn = await createTryOn(createRequest);
-      console.log('[CREATE_BUTTON] ✅ Try-on created successfully:', newTryOn);
+      console.log("[CREATE_BUTTON] ✅ Try-on created successfully:", newTryOn);
       onTryOnCreate(newTryOn.id);
     } catch (error: any) {
-      console.error('[CREATE_BUTTON] ❌ Try-on creation error:', error);
-      console.error('[CREATE_BUTTON] ❌ Error details:', {
+      console.error("[CREATE_BUTTON] ❌ Try-on creation error:", error);
+      console.error("[CREATE_BUTTON] ❌ Error details:", {
         message: error.message,
         response: error.response,
         data: error.data,
-        status: error.status
+        status: error.status,
       });
-      
+
       Alert.alert(
         "Hata",
-        error.message || "Try-on oluşturulurken hata oluştu. Lütfen internet bağlantınızı kontrol edin."
+        error.message ||
+          "Try-on oluşturulurken hata oluştu. Lütfen internet bağlantınızı kontrol edin."
       );
     } finally {
       setIsCreating(false);

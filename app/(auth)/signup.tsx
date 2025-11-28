@@ -50,7 +50,7 @@ const Signup = () => {
           onPress: () => router.replace("/(tabs)"),
         },
       ]);
-    } catch (error) {
+    } catch {
       Alert.alert(
         t("signup.errors.defaultError"),
         t("signup.errors.createError"),
