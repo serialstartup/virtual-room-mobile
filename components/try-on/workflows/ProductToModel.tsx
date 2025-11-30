@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { MotiView } from "moti";
 import { Ionicons } from "@expo/vector-icons";
 import { useWorkflowStore } from "@/store/workflowStore";
@@ -165,112 +172,118 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
           </MotiView>
         );
 
+      // case 2:
+      //   return (
+      //     <ScrollView>
+      //       <MotiView
+      //         from={{ opacity: 0, translateX: 50 }}
+      //         animate={{ opacity: 1, translateX: 0 }}
+      //         transition={{ type: "timing", duration: 300 }}
+      //       >
+      //         <View className="p-6 bg-gray-50 rounded-3xl">
+      //           <View className="flex-row items-center mb-6">
+      //             <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
+      //               <Ionicons name="person-outline" size={24} color="white" />
+      //             </View>
+      //             <View>
+      //               <Text className="text-2xl font-bold text-gray-900">
+      //                 Step 2
+      //               </Text>
+      //               <Text className="text-lg text-gray-600">Select Model</Text>
+      //             </View>
+      //           </View>
+
+      //           <UploadTab
+      //             onImageSelect={handleModelImageSelect}
+      //             selectedImage={productData.modelImage || undefined}
+      //             title="Model ekle"
+      //             skeletonTitle="Model seçmek için tıkla"
+      //             enableAvatarSelection={true}
+      //             onAvatarSelect={handleAvatarSelect}
+      //             selectedAvatar={productData.selectedAvatar}
+      //           />
+      //         </View>
+      //       </MotiView>
+      //     </ScrollView>
+      //   );
+
       case 2:
         return (
-          <MotiView
-            from={{ opacity: 0, translateX: 50 }}
-            animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: "timing", duration: 300 }}
-          >
-            <View className="p-6 bg-gray-50 rounded-3xl">
-              <View className="flex-row items-center mb-6">
-                <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
-                  <Ionicons name="person-outline" size={24} color="white" />
-                </View>
-                <View>
-                  <Text className="text-2xl font-bold text-gray-900">
-                    Step 2
-                  </Text>
-                  <Text className="text-lg text-gray-600">Select Model</Text>
-                </View>
-              </View>
-
-              <UploadTab
-                onImageSelect={handleModelImageSelect}
-                selectedImage={productData.modelImage || undefined}
-                title="Model ekle"
-                skeletonTitle="Model seçmek için tıkla"
-                enableAvatarSelection={true}
-                onAvatarSelect={handleAvatarSelect}
-                selectedAvatar={productData.selectedAvatar}
-              />
-            </View>
-          </MotiView>
-        );
-
-      case 3:
-        return (
-          <MotiView
-            from={{ opacity: 0, translateX: 50 }}
-            animate={{ opacity: 1, translateX: 0 }}
-            transition={{ type: "timing", duration: 300 }}
-          >
-            <View className="p-6 bg-gray-50 rounded-3xl">
-              <View className="flex-row items-center mb-6">
-                <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
-                  <Ionicons name="create-outline" size={24} color="white" />
-                </View>
-                <View>
-                  <Text className="text-2xl font-bold text-gray-900">
-                    Step 3
-                  </Text>
-                  <Text className="text-lg text-gray-600">Product Details</Text>
-                </View>
-              </View>
-
-              {/* Product Name */}
-              <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">
-                  Product Name *
-                </Text>
-                <TextInput
-                  className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900"
-                  placeholder="e.g. Nike Air Max Sneakers"
-                  value={productData.productName}
-                  onChangeText={setProductName}
-                  multiline={false}
-                  maxLength={100}
-                />
-              </View>
-
-              {/* Scene Prompt */}
-              <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">
-                  Scene Setting
-                </Text>
-                <TextInput
-                  className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900 min-h-[120px]"
-                  placeholder="Describe the setting for your product showcase (e.g. modern urban street, luxurious hotel lobby, minimalist studio)"
-                  value={productData.scenePrompt}
-                  onChangeText={setProductScenePrompt}
-                  multiline
-                  textAlignVertical="top"
-                  maxLength={300}
-                />
-                <Text className="text-sm text-gray-500 mt-2">
-                  {productData.scenePrompt.length}/300 characters
-                </Text>
-              </View>
-
-              {/* Tips */}
-              <View className="bg-blue-50 rounded-2xl p-4">
-                <View className="flex-row items-start">
-                  <Ionicons name="bulb-outline" size={20} color="#3B82F6" />
-                  <View className="ml-3 flex-1">
-                    <Text className="font-semibold text-blue-900 mb-2">
-                      Tips for Better Results
+          <ScrollView>
+            <MotiView
+              from={{ opacity: 0, translateX: 50 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              transition={{ type: "timing", duration: 300 }}
+            >
+              <View className="p-6 bg-gray-50 rounded-3xl">
+                <View className="flex-row items-center mb-6">
+                  <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
+                    <Ionicons name="create-outline" size={24} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-2xl font-bold text-gray-900">
+                      Step 3
                     </Text>
-                    <Text className="text-blue-800 text-sm leading-relaxed">
-                      • Use descriptive scene settings for more engaging
-                      showcases{"\n"}• Specify lighting preferences (natural,
-                      studio, dramatic){"\n"}• Mention the target audience or
-                      use case
+                    <Text className="text-lg text-gray-600">
+                      Product Details
                     </Text>
                   </View>
                 </View>
+
+                {/* Product Name */}
+                <View className="mb-6">
+                  <Text className="text-lg font-semibold text-gray-900 mb-3">
+                    Product Name *
+                  </Text>
+                  <TextInput
+                    className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900"
+                    placeholder="e.g. Nike Air Max Sneakers"
+                    value={productData.productName}
+                    onChangeText={setProductName}
+                    multiline={false}
+                    maxLength={100}
+                  />
+                </View>
+
+                {/* Scene Prompt */}
+                <View className="mb-6">
+                  <Text className="text-lg font-semibold text-gray-900 mb-3">
+                    Scene Setting
+                  </Text>
+                  <TextInput
+                    className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900 min-h-[120px]"
+                    placeholder="Describe the setting for your product showcase (e.g. modern urban street, luxurious hotel lobby, minimalist studio)"
+                    value={productData.scenePrompt}
+                    onChangeText={setProductScenePrompt}
+                    multiline
+                    textAlignVertical="top"
+                    maxLength={300}
+                  />
+                  <Text className="text-sm text-gray-500 mt-2">
+                    {productData.scenePrompt.length}/300 characters
+                  </Text>
+                </View>
+
+                {/* Tips */}
+                <View className="bg-blue-50 rounded-2xl p-4">
+                  <View className="flex-row items-start">
+                    <Ionicons name="bulb-outline" size={20} color="#3B82F6" />
+                    <View className="ml-3 flex-1">
+                      <Text className="font-semibold text-blue-900 mb-2">
+                        Tips for Better Results
+                      </Text>
+                      <Text className="text-blue-800 text-sm leading-relaxed">
+                        • Use descriptive scene settings for more engaging
+                        showcases{"\n"}• Specify lighting preferences (natural,
+                        studio, dramatic){"\n"}• Mention the target audience or
+                        use case
+                      </Text>
+                    </View>
+                  </View>
+                </View>
               </View>
-            </View>
-          </MotiView>
+            </MotiView>
+          </ScrollView>
         );
 
       case 4:

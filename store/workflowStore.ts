@@ -1,9 +1,13 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserAvatar } from '@/hooks/useUserAvatars';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserAvatar } from "@/hooks/useUserAvatars";
 
-export type WorkflowType = 'classic' | 'product-to-model' | 'text-to-fashion' | 'avatar';
+export type WorkflowType =
+  | "classic"
+  | "product-to-model"
+  | "text-to-fashion"
+  | "avatar";
 
 export interface WorkflowData {
   // Classic Try-On Data
@@ -14,7 +18,7 @@ export interface WorkflowData {
     dressDescription: string | null;
     selectedAvatar: UserAvatar | null;
   };
-  
+
   // Product to Model Data
   productToModel: {
     productImage: string | null;
@@ -23,103 +27,103 @@ export interface WorkflowData {
     modelImage: string | null;
     selectedAvatar: UserAvatar | null;
   };
-  
+
   // Text to Fashion Data
   textToFashion: {
     fashionDescription: string;
     scenePrompt: string;
   };
-  
+
   // Avatar Try-On Data
   avatar: {
     avatarId: string | null;
     garmentImageUrl: string | null;
     garmentDescription: string | null;
-    tryOnType: 'classic' | 'text-to-fashion';
+    tryOnType: "classic" | "text-to-fashion";
   };
 }
 
 export interface WorkflowState {
   // Current workflow
   activeWorkflow: WorkflowType;
-  
+
   // Workflow data
   workflowData: WorkflowData;
-  
+
   // UI states
   currentStep: number;
   totalSteps: number;
   isWorkflowComplete: boolean;
   showWorkflowSelector: boolean;
-  
+
   // Processing states
   isProcessing: boolean;
   currentTryOnId: string | null;
-  
+
   // Actions - Workflow Management
   setActiveWorkflow: (workflow: WorkflowType) => void;
   resetCurrentWorkflow: () => void;
   resetAllWorkflows: () => void;
-  
+
   // Actions - Classic Try-On
   setClassicSelfImage: (image: string | null) => void;
   setClassicModelImage: (image: string | null) => void;
   setClassicDressImage: (image: string | null) => void;
   setClassicDressDescription: (description: string | null) => void;
   setClassicSelectedAvatar: (avatar: UserAvatar | null) => void;
-  
+
   // Actions - Product to Model
   setProductImage: (image: string | null) => void;
   setProductName: (name: string) => void;
   setProductScenePrompt: (prompt: string) => void;
   setProductModelImage: (image: string | null) => void;
   setProductSelectedAvatar: (avatar: UserAvatar | null) => void;
-  
+
   // Actions - Text to Fashion
   setFashionDescription: (description: string) => void;
   setFashionScenePrompt: (prompt: string) => void;
-  
+
   // Actions - Avatar Try-On
   setAvatarId: (avatarId: string | null) => void;
   setAvatarGarmentImage: (image: string | null) => void;
   setAvatarGarmentDescription: (description: string | null) => void;
-  setAvatarTryOnType: (type: 'classic' | 'text-to-fashion') => void;
-  
+  setAvatarTryOnType: (type: "classic" | "text-to-fashion") => void;
+
   // Actions - Step Management
   setCurrentStep: (step: number) => void;
   nextStep: () => void;
   previousStep: () => void;
   setTotalSteps: (total: number) => void;
-  
+
   // Actions - UI Management
   setWorkflowComplete: (complete: boolean) => void;
   showWorkflowSelectorModal: () => void;
   hideWorkflowSelectorModal: () => void;
-  
+
   // Actions - Processing Management
   setProcessing: (processing: boolean) => void;
   setCurrentTryOnId: (tryOnId: string | null) => void;
-  
+
   // Validation helpers
   isClassicWorkflowValid: () => boolean;
   isProductToModelWorkflowValid: () => boolean;
   isTextToFashionWorkflowValid: () => boolean;
   isAvatarWorkflowValid: () => boolean;
   isCurrentWorkflowValid: () => boolean;
-  
+
   // Data getters
   getCurrentWorkflowData: () => any;
   getWorkflowProgress: () => number;
-  
+
   // Temporary form data management (replaces storageService)
   getTryOnFormData: () => {
     selectedPersonImage?: string;
-    selectedDressImage?: string; 
+    selectedDressImage?: string;
     dressDescription?: string;
     timestamp?: number;
   } | null;
   clearExpiredData: () => void;
-  
+
   // Reset
   resetWorkflowStore: () => void;
 }
@@ -134,20 +138,20 @@ const initialWorkflowData: WorkflowData = {
   },
   productToModel: {
     productImage: null,
-    productName: '',
-    scenePrompt: 'professional studio setting',
+    productName: "",
+    scenePrompt: "professional studio setting",
     modelImage: null,
     selectedAvatar: null,
   },
   textToFashion: {
-    fashionDescription: '',
-    scenePrompt: 'modern urban setting',
+    fashionDescription: "",
+    scenePrompt: "modern urban setting",
   },
   avatar: {
     avatarId: null,
     garmentImageUrl: null,
     garmentDescription: null,
-    tryOnType: 'classic',
+    tryOnType: "classic",
   },
 };
 
@@ -155,7 +159,7 @@ export const useWorkflowStore = create<WorkflowState>()(
   persist(
     (set, get) => ({
       // Initial state
-      activeWorkflow: 'classic',
+      activeWorkflow: "classic",
       workflowData: initialWorkflowData,
       currentStep: 1,
       totalSteps: 3,
@@ -166,24 +170,24 @@ export const useWorkflowStore = create<WorkflowState>()(
 
       // Workflow Management Actions
       setActiveWorkflow: (workflow: WorkflowType) => {
-        set({ 
+        set({
           activeWorkflow: workflow,
           currentStep: 1,
           isWorkflowComplete: false,
         });
-        
+
         // Set appropriate total steps based on workflow
         switch (workflow) {
-          case 'classic':
+          case "classic":
             set({ totalSteps: 3 }); // Select person, select dress, create
             break;
-          case 'product-to-model':
-            set({ totalSteps: 4 }); // Upload product, set scene, create
+          case "product-to-model":
+            set({ totalSteps: 3 }); // Upload product, set scene, create
             break;
-          case 'text-to-fashion':
+          case "text-to-fashion":
             set({ totalSteps: 2 }); // Enter description, create
             break;
-          case 'avatar':
+          case "avatar":
             set({ totalSteps: 4 }); // Select avatar, choose type, select/describe garment, create
             break;
         }
@@ -194,7 +198,7 @@ export const useWorkflowStore = create<WorkflowState>()(
         set((state) => ({
           workflowData: {
             ...state.workflowData,
-            [activeWorkflow]: { ...initialWorkflowData[activeWorkflow] }
+            [activeWorkflow]: { ...initialWorkflowData[activeWorkflow] },
           },
           currentStep: 1,
           isWorkflowComplete: false,
@@ -222,8 +226,8 @@ export const useWorkflowStore = create<WorkflowState>()(
               ...state.workflowData.classic,
               selfImage: image,
               modelImage: image ? null : state.workflowData.classic.modelImage, // Clear model image if self image is set
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -235,8 +239,8 @@ export const useWorkflowStore = create<WorkflowState>()(
               ...state.workflowData.classic,
               modelImage: image,
               selfImage: image ? null : state.workflowData.classic.selfImage, // Clear self image if model image is set
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -247,9 +251,11 @@ export const useWorkflowStore = create<WorkflowState>()(
             classic: {
               ...state.workflowData.classic,
               dressImage: image,
-              dressDescription: image ? null : state.workflowData.classic.dressDescription, // Clear description if image is set
-            }
-          }
+              dressDescription: image
+                ? null
+                : state.workflowData.classic.dressDescription, // Clear description if image is set
+            },
+          },
         }));
       },
 
@@ -260,9 +266,11 @@ export const useWorkflowStore = create<WorkflowState>()(
             classic: {
               ...state.workflowData.classic,
               dressDescription: description,
-              dressImage: description ? null : state.workflowData.classic.dressImage, // Clear image if description is set
-            }
-          }
+              dressImage: description
+                ? null
+                : state.workflowData.classic.dressImage, // Clear image if description is set
+            },
+          },
         }));
       },
 
@@ -272,9 +280,9 @@ export const useWorkflowStore = create<WorkflowState>()(
             ...state.workflowData,
             classic: {
               ...state.workflowData.classic,
-              selectedAvatar: avatar
-            }
-          }
+              selectedAvatar: avatar,
+            },
+          },
         }));
       },
 
@@ -286,8 +294,8 @@ export const useWorkflowStore = create<WorkflowState>()(
             productToModel: {
               ...state.workflowData.productToModel,
               productImage: image,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -298,8 +306,8 @@ export const useWorkflowStore = create<WorkflowState>()(
             productToModel: {
               ...state.workflowData.productToModel,
               productName: name,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -310,8 +318,8 @@ export const useWorkflowStore = create<WorkflowState>()(
             productToModel: {
               ...state.workflowData.productToModel,
               scenePrompt: prompt,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -322,9 +330,11 @@ export const useWorkflowStore = create<WorkflowState>()(
             productToModel: {
               ...state.workflowData.productToModel,
               modelImage: image,
-              selectedAvatar: image ? null : state.workflowData.productToModel.selectedAvatar, // Clear avatar if model image is set
-            }
-          }
+              selectedAvatar: image
+                ? null
+                : state.workflowData.productToModel.selectedAvatar, // Clear avatar if model image is set
+            },
+          },
         }));
       },
 
@@ -335,9 +345,11 @@ export const useWorkflowStore = create<WorkflowState>()(
             productToModel: {
               ...state.workflowData.productToModel,
               selectedAvatar: avatar,
-              modelImage: avatar ? null : state.workflowData.productToModel.modelImage, // Clear model image if avatar is selected
-            }
-          }
+              modelImage: avatar
+                ? null
+                : state.workflowData.productToModel.modelImage, // Clear model image if avatar is selected
+            },
+          },
         }));
       },
 
@@ -349,8 +361,8 @@ export const useWorkflowStore = create<WorkflowState>()(
             textToFashion: {
               ...state.workflowData.textToFashion,
               fashionDescription: description,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -361,8 +373,8 @@ export const useWorkflowStore = create<WorkflowState>()(
             textToFashion: {
               ...state.workflowData.textToFashion,
               scenePrompt: prompt,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -374,8 +386,8 @@ export const useWorkflowStore = create<WorkflowState>()(
             avatar: {
               ...state.workflowData.avatar,
               avatarId,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -386,9 +398,11 @@ export const useWorkflowStore = create<WorkflowState>()(
             avatar: {
               ...state.workflowData.avatar,
               garmentImageUrl: image,
-              garmentDescription: image ? null : state.workflowData.avatar.garmentDescription, // Clear description if image is set
-            }
-          }
+              garmentDescription: image
+                ? null
+                : state.workflowData.avatar.garmentDescription, // Clear description if image is set
+            },
+          },
         }));
       },
 
@@ -399,21 +413,23 @@ export const useWorkflowStore = create<WorkflowState>()(
             avatar: {
               ...state.workflowData.avatar,
               garmentDescription: description,
-              garmentImageUrl: description ? null : state.workflowData.avatar.garmentImageUrl, // Clear image if description is set
-            }
-          }
+              garmentImageUrl: description
+                ? null
+                : state.workflowData.avatar.garmentImageUrl, // Clear image if description is set
+            },
+          },
         }));
       },
 
-      setAvatarTryOnType: (type: 'classic' | 'text-to-fashion') => {
+      setAvatarTryOnType: (type: "classic" | "text-to-fashion") => {
         set((state) => ({
           workflowData: {
             ...state.workflowData,
             avatar: {
               ...state.workflowData.avatar,
               tryOnType: type,
-            }
-          }
+            },
+          },
         }));
       },
 
@@ -465,25 +481,37 @@ export const useWorkflowStore = create<WorkflowState>()(
       // Validation Helpers
       isClassicWorkflowValid: () => {
         const { classic } = get().workflowData;
-        const hasPersonImage = classic.selfImage || classic.modelImage || classic.selectedAvatar;
-        const hasDress = classic.dressImage || (classic.dressDescription && classic.dressDescription.trim());
+        const hasPersonImage =
+          classic.selfImage || classic.modelImage || classic.selectedAvatar;
+        const hasDress =
+          classic.dressImage ||
+          (classic.dressDescription && classic.dressDescription.trim());
         return !!(hasPersonImage && hasDress);
       },
 
       isProductToModelWorkflowValid: () => {
         const { productToModel } = get().workflowData;
-        return !!(productToModel.productImage && productToModel.productName && productToModel.productName.trim());
+        return !!(
+          productToModel.productImage &&
+          productToModel.productName &&
+          productToModel.productName.trim()
+        );
       },
 
       isTextToFashionWorkflowValid: () => {
         const { textToFashion } = get().workflowData;
-        return !!(textToFashion.fashionDescription && textToFashion.fashionDescription.trim());
+        return !!(
+          textToFashion.fashionDescription &&
+          textToFashion.fashionDescription.trim()
+        );
       },
 
       isAvatarWorkflowValid: () => {
         const { avatar } = get().workflowData;
         const hasAvatar = !!avatar.avatarId;
-        const hasGarment = avatar.garmentImageUrl || (avatar.garmentDescription && avatar.garmentDescription.trim());
+        const hasGarment =
+          avatar.garmentImageUrl ||
+          (avatar.garmentDescription && avatar.garmentDescription.trim());
         return !!(hasAvatar && hasGarment);
       },
 
@@ -491,8 +519,8 @@ export const useWorkflowStore = create<WorkflowState>()(
         const { activeWorkflow } = get();
         const validators = {
           classic: get().isClassicWorkflowValid,
-          'product-to-model': get().isProductToModelWorkflowValid,
-          'text-to-fashion': get().isTextToFashionWorkflowValid,
+          "product-to-model": get().isProductToModelWorkflowValid,
+          "text-to-fashion": get().isTextToFashionWorkflowValid,
           avatar: get().isAvatarWorkflowValid,
         };
         return validators[activeWorkflow]();
@@ -512,12 +540,18 @@ export const useWorkflowStore = create<WorkflowState>()(
       // Temporary form data management (replaces storageService)
       getTryOnFormData: () => {
         const { classic } = get().workflowData;
-        if (!classic.selfImage && !classic.modelImage && !classic.dressImage && !classic.dressDescription) {
+        if (
+          !classic.selfImage &&
+          !classic.modelImage &&
+          !classic.dressImage &&
+          !classic.dressDescription
+        ) {
           return null;
         }
-        
+
         return {
-          selectedPersonImage: classic.selfImage || classic.modelImage || undefined,
+          selectedPersonImage:
+            classic.selfImage || classic.modelImage || undefined,
           selectedDressImage: classic.dressImage || undefined,
           dressDescription: classic.dressDescription || undefined,
           timestamp: Date.now(), // Always current time since data is fresh
@@ -532,7 +566,7 @@ export const useWorkflowStore = create<WorkflowState>()(
       // Reset
       resetWorkflowStore: () => {
         set({
-          activeWorkflow: 'classic',
+          activeWorkflow: "classic",
           workflowData: initialWorkflowData,
           currentStep: 1,
           totalSteps: 3,
@@ -544,7 +578,7 @@ export const useWorkflowStore = create<WorkflowState>()(
       },
     }),
     {
-      name: 'virtual-room-workflow',
+      name: "virtual-room-workflow",
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         // Persist workflow data and some UI state, but not processing states
@@ -552,7 +586,7 @@ export const useWorkflowStore = create<WorkflowState>()(
         workflowData: state.workflowData,
         currentStep: state.currentStep,
         totalSteps: state.totalSteps,
-      })
+      }),
     }
   )
 );

@@ -331,6 +331,116 @@
         }
       }
     },
+    "workflowShowcase": {
+      "sectionTitle": "Explore Our AI Workflows",
+      "sectionSubtitle": "Choose the perfect workflow for your needs",
+      "tryNow": "Try Now",
+      "nextStep": "Next Step",
+      "classic": {
+        "title": "Classic Try-On",
+        "subtitle": "See clothes on yourself instantly with AI",
+        "steps": {
+          "step1": {
+            "title": "Upload Your Photo",
+            "description": "Choose a clear, full-body photo for best results",
+            "badge": "Step 1"
+          },
+          "step2": {
+            "title": "Select Garment",
+            "description": "Pick from catalog or upload your own clothing image",
+            "badge": "Step 2"
+          },
+          "step3": {
+            "title": "AI Processing",
+            "description": "Watch the magic happen in just 30 seconds",
+            "badge": "Step 3"
+          },
+          "step4": {
+            "title": "View & Save Result",
+            "description": "See yourself in the outfit and save to wardrobe",
+            "badge": "Step 4"
+          }
+        }
+      },
+      "avatar": {
+        "title": "Avatar Try-On",
+        "subtitle": "Create your AI avatar and try unlimited outfits",
+        "steps": {
+          "step1": {
+            "title": "Create Your Avatar",
+            "description": "Generate your personalized AI avatar once",
+            "badge": "Step 1"
+          },
+          "step2": {
+            "title": "Browse Styles",
+            "description": "Try unlimited outfits without uploading photos",
+            "badge": "Step 2"
+          },
+          "step3": {
+            "title": "Instant Results",
+            "description": "No photo needed each time, instant try-on",
+            "badge": "Step 3"
+          },
+          "step4": {
+            "title": "Build Collection",
+            "description": "Save favorites and build your virtual wardrobe",
+            "badge": "Step 4"
+          }
+        }
+      },
+      "productToModel": {
+        "title": "Product to Model",
+        "subtitle": "Showcase products on professional AI models",
+        "steps": {
+          "step1": {
+            "title": "Upload Product",
+            "description": "Photo of your clothing item or design",
+            "badge": "Step 1"
+          },
+          "step2": {
+            "title": "Choose Model",
+            "description": "Select from diverse, professional AI models",
+            "badge": "Step 2"
+          },
+          "step3": {
+            "title": "AI Generation",
+            "description": "Professional showcase created in seconds",
+            "badge": "Step 3"
+          },
+          "step4": {
+            "title": "Download & Share",
+            "description": "Perfect for e-commerce and marketing",
+            "badge": "Step 4"
+          }
+        }
+      },
+      "textToFashion": {
+        "title": "Text to Fashion",
+        "subtitle": "Describe your vision and see it come to life",
+        "steps": {
+          "step1": {
+            "title": "Describe Outfit",
+            "description": "Write what you imagine in natural language",
+            "badge": "Step 1"
+          },
+          "step2": {
+            "title": "AI Interprets",
+            "description": "Advanced text understanding creates design",
+            "badge": "Step 2"
+          },
+          "step3": {
+            "title": "Generate Design",
+            "description": "See your vision materialize instantly",
+            "badge": "Step 3"
+          },
+          "step4": {
+            "title": "Refine & Save",
+            "description": "Adjust details until perfect, then save",
+            "badge": "Step 4"
+          }
+        }
+      }
+    },
     "readySection": {
       "title": "Ready to Transform your shopping experience?",
       "subtitle": "Join thounsands of users who have discovered the future of fashion with Virtual Room.",

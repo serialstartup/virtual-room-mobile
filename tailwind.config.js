@@ -6,7 +6,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        outfit: ["OutfitRegular"], // default font
+        outfit: ["OutfitRegular"],
+        "outfit-medium": ["OutfitMedium"],
+        "outfit-semibold": ["OutfitSemiBold"],
+        "outfit-bold": ["OutfitBold"],
         sans: ["OutfitRegular"],
       },
       // fontFamily: {

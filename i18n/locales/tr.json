@@ -389,6 +389,101 @@
         }
       }
     },
+    "workflowShowcase": {
+      "sectionTitle": "AI İş Akışlarımızı Keşfedin",
+      "sectionSubtitle": "İhtiyacınıza uygun iş akışını seçin",
+      "tryNow": "Şimdi Dene",
+      "nextStep": "Sonraki Adım",
+      "classic": {
+        "title": "Klasik Deneme",
+        "subtitle": "AI ile kıyafetleri anında üzerinizde görün",
+        "steps": {
+          "step1": {
+            "title": "Kıyafet Seçin",
+            "description": "Birtane kıyafet görseli yükleyin",
+            "badge": "Adım 2"
+          },
+          "step2": {
+            "title": "Fotoğrafınızı Yükleyin",
+            "description": "En iyi sonuç için net bir fotoğraf yükleyin",
+            "badge": "Adım 1"
+          },
+          "step3": {
+            "title": "AI İşleme",
+            "description": "Sadece 15 saniyede büyüyü izleyin",
+            "badge": "Adım 3"
+          },
+          "step4": {
+            "title": "Sonucu Görün ve Kaydedin",
+            "description": "Kıyafeti üzerinizde görün ve gardırobunuza kaydedin",
+            "badge": "Adım 4"
+          }
+        }
+      },
+      "avatar": {
+        "title": "Avatar Deneme",
+        "subtitle": "AI avatarınızı oluşturun ve sınırsız kıyafet deneyin",
+        "steps": {
+          "step1": {
+            "title": "Bir yüz fotoğrafı yükleyin",
+            "description": "Vücüt fotoğrafı oluşturmak için bir tane selfie yükleyin",
+            "badge": "Adım 1"
+          },
+          "step2": {
+            "title": "AI İşleme",
+            "description": "Sadece 15 saniyede büyüyü izleyin",
+            "badge": "Adım 2"
+          },
+          "step3": {
+            "title": "Anında Sonuçlar",
+            "description": "Eklenen yüz fotoğrafı ile bir model oluşturun",
+            "badge": "Adım 3"
+          }
+        }
+      },
+      "productToModel": {
+        "title": "Ürün → Model",
+        "subtitle": "Ürünleri profesyonel AI modellerde sergileyin",
+        "steps": {
+          "step1": {
+            "title": "Ürünü Yükleyin",
+            "description": "Kıyafet ürününüzün veya tasarımınızın fotoğrafı",
+            "badge": "Adım 1"
+          },
+          "step2": {
+            "title": "AI Üretimi",
+            "description": "Saniyeler içinde profesyonel vitrin oluşturuldu",
+            "badge": "Adım 2"
+          },
+          "step3": {
+            "title": "İndirin ve Paylaşın",
+            "description": "E-ticaret ve pazarlama için mükemmel",
+            "badge": "Adım 3"
+          }
+        }
+      },
+      "textToFashion": {
+        "title": "Metin → Moda",
+        "subtitle": "Vizyonunuzu tanımlayın ve hayata geçmesini izleyin",
+        "steps": {
+          "step1": {
+            "title": "Kıyafeti Tanımlayın",
+            "description": "Hayal ettiğinizi doğal dilde yazın",
+            "badge": "Adım 1"
+          },
+          "step2": {
+            "title": "AI Yorumlar",
+            "description": "Gelişmiş metin anlama tasarım oluşturur",
+            "badge": "Adım 2"
+          },
+          "step3": {
+            "title": "Tasarım Üretin",
+            "description": "Vizyonunuzun anında somutlaşmasını görün",
+            "badge": "Adım 3"
+          }
+        }
+      }
+    },
     "readySection": {
       "title": "Alışveriş deneyiminizi dönüştürmeye hazır mısınız?",
       "subtitle": "Virtual Room ile modanın geleceğini keşfeden binlerce kullanıcıya katılın.",

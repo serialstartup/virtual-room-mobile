@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  Text {
+    @apply font-outfit;
+  }
+}
+
 /* Custom color palette */
 :root {
   /* Muted Pink Colors */
