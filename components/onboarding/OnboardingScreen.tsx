@@ -1,21 +1,20 @@
-import React, { useRef, useState, useCallback, useMemo } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import {
   View,
   TouchableOpacity,
-  Dimensions,
   StatusBar,
-  Platform,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
 } from "react-native";
+import { Image } from "expo-image";
 import PagerView from "react-native-pager-view";
-import {
-  Sparkles,
-  User,
-  Camera,
-  Wand2,
-  UserCircle,
-  ArrowRight,
-  X,
-} from "lucide-react-native";
+import Animated, {
+  useHandler,
+  useEvent,
+  useSharedValue,
+} from "react-native-reanimated";
+import { ArrowRight } from "lucide-react-native";
 import AnimatedView from "@/components/ui/AnimatedView";
 import AnimatedText from "@/components/ui/AnimatedText";
 import { LinearGradient } from "expo-linear-gradient";
@@ -24,7 +23,29 @@ import { onboardingStorage } from "@/services/onboardingStorage";
 import "../../global.css";
 
 const { height } = Dimensions.get("window");
-const isSmallScreen = height < 700;
+
+// 1. Define the handler (from PagerView docs for Reanimated integration)
+function usePageScrollHandler(
+  handlers: { onPageScroll: (e: any, context: any) => void },
+  dependencies?: any[]
+) {
+  const { context, doDependenciesDiffer } = useHandler(handlers, dependencies);
+  const subscribeForEvents = ["onPageScroll"];
+
+  return useEvent(
+    (event) => {
+      "worklet";
+      const { onPageScroll } = handlers;
+      if (onPageScroll && event.eventName.endsWith("onPageScroll")) {
+        onPageScroll(event, context);
+      }
+    },
+    subscribeForEvents,
+    doDependenciesDiffer
+  );
+}
+
+const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
 interface OnboardingScreenProps {
   onComplete: () => void;
@@ -34,11 +55,9 @@ interface Slide {
   readonly id: number;
   readonly title: string;
   readonly description: string;
-  readonly icon: React.ReactNode;
-  readonly gradient: readonly [string, string];
+  readonly image: string;
+  readonly color: string;
 }
-
-type OnboardingState = "idle" | "completing" | "skipping";
 
 const slides: readonly Slide[] = [
   {
@@ -46,40 +65,45 @@ const slides: readonly Slide[] = [
     title: "Welcome to Virtual Room",
     description:
       "Your AI-powered fashion companion. Try on clothes, create looks, and explore fashion in a whole new way.",
-    icon: <Sparkles size={80} color="#fff" fill="#fff" />,
-    gradient: ["#ec4899", "#8b5cf6"],
+    image:
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop",
+    color: "#ec4899",
   },
   {
     id: 1,
     title: "Virtual Try-On",
     description:
       "See how clothes look on you instantly. Upload your photo and any garment to create realistic try-ons.",
-    icon: <User size={80} color="#fff" />,
-    gradient: ["#8b5cf6", "#6366f1"],
+    image:
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop",
+    color: "#ec4899",
   },
   {
     id: 2,
     title: "Professional Showcases",
     description:
       "Transform product photos into professional model shots. Perfect for e-commerce and social media.",
-    icon: <Camera size={80} color="#fff" />,
-    gradient: ["#6366f1", "#3b82f6"],
+    image:
+      "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1000&auto=format&fit=crop",
+    color: "#ec4899",
   },
   {
     id: 3,
     title: "AI Fashion Designer",
     description:
       "Describe your dream outfit and watch AI bring it to life. Create unique fashion designs from text.",
-    icon: <Wand2 size={80} color="#fff" />,
-    gradient: ["#3b82f6", "#06b6d4"],
+    image:
+      "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop",
+    color: "#ec4899",
   },
   {
     id: 4,
     title: "Your Digital Twin",
     description:
       "Create a personalized avatar for private try-ons. Your face, your style, your privacy.",
-    icon: <UserCircle size={80} color="#fff" />,
-    gradient: ["#06b6d4", "#10b981"],
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop",
+    color: "#ec4899",
   },
 ];
 
@@ -87,13 +111,27 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
   const pagerRef = useRef<PagerView>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [hasStartedTracking, setHasStartedTracking] = useState<boolean>(false);
-  const [state, setState] = useState<OnboardingState>("idle");
+  const [state, setState] = useState<"idle" | "completing" | "skipping">(
+    "idle"
+  );
+
+  const { width, height } = Dimensions.get("screen");
+  const offset = useSharedValue(0);
+
+  const pageScrollHandler = usePageScrollHandler(
+    {
+      onPageScroll: (e: any) => {
+        "worklet";
+        offset.value = e.offset;
+      },
+    },
+    []
+  );
 
   const handlePageSelected = useCallback(
     (e: { nativeEvent: { position: number } }) => {
       const page = e.nativeEvent.position;
       setCurrentPage(page);
-
       analytics.trackOnboardingSlideViewed(page, slides[page].title);
     },
     []
@@ -123,20 +161,6 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
     }
   }, [currentPage, state, handleComplete]);
 
-  const handleSkip = useCallback(async () => {
-    if (state !== "idle") return;
-
-    setState("skipping");
-    try {
-      analytics.trackOnboardingSkipped(currentPage);
-      await onboardingStorage.markOnboardingComplete();
-    } catch (error) {
-      console.error("[ONBOARDING] Error during skip:", error);
-    } finally {
-      onComplete();
-    }
-  }, [currentPage, onComplete, state]);
-
   // Track onboarding started only once
   React.useEffect(() => {
     if (!hasStartedTracking) {
@@ -146,199 +170,194 @@ const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onComplete }) => {
     }
   }, [hasStartedTracking]);
 
-  // Preload next slide for smoother experience
-  React.useEffect(() => {
-    if (currentPage < slides.length - 1) {
-      // Preload next slide icon if it's an image
-      // This is a simple preload hint for potential optimizations
-    }
-  }, [currentPage]);
-
-  const currentSlide = useMemo(() => slides[currentPage], [currentPage]);
-
   return (
-    <View className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white">
       <StatusBar
-        barStyle="light-content"
+        barStyle="dark-content"
         backgroundColor="transparent"
         translucent
       />
 
-      {/* Skip Button */}
-      {currentPage < slides.length - 1 && (
-        <AnimatedView
+      {/* Top Header */}
+      {/* <View className="items-center pt-4 pb-2">
+        <AnimatedText
           animation="fadeIn"
-          easing="spring"
-          delay={1000}
-          className={`absolute ${Platform.OS === "ios" ? "top-15" : "top-12"} right-5 z-10`}
+          delay={300}
+          className="text-xl font-outfit-bold text-virtual-primary tracking-wider uppercase"
         >
-          <TouchableOpacity
-            onPress={handleSkip}
-            className="w-11 h-11 justify-center items-center rounded-full bg-black/30 backdrop-blur-sm border border-white/20 shadow-lg"
-            activeOpacity={0.7}
-            accessibilityLabel="Skip onboarding"
-            accessibilityRole="button"
-            disabled={state !== "idle"}
-          >
-            <X size={22} color="#fff" strokeWidth={2.5} />
-          </TouchableOpacity>
-        </AnimatedView>
-      )}
+          Virtual Room
+        </AnimatedText>
+      </View> */}
 
-      {/* Pager */}
-      <PagerView
-        ref={pagerRef}
-        className="flex-1"
-        initialPage={0}
-        onPageSelected={handlePageSelected}
-      >
-        {slides.map((slide, index) => (
-          <View key={slide.id} className="flex-1">
-            <LinearGradient
-              colors={slide.gradient}
-              className="flex-1 justify-center items-center px-10"
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
+      {/* Main Content */}
+      <View className="flex-1">
+        <AnimatedPagerView
+          ref={pagerRef}
+          style={styles.pagerView}
+          initialPage={0}
+          onPageSelected={handlePageSelected}
+          onPageScroll={pageScrollHandler}
+        >
+          {slides.map((slide, index) => (
+            <View
+              key={slide.id}
+              collapsable={false}
+              style={{
+                width: "100%",
+                height: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingHorizontal: 24,
+              }}
             >
-              <AnimatedView
-                animation="slideUp"
-                easing="spring"
-                stagger={index * 100}
-                duration={600}
-                className="items-center max-w-sm"
+              {/* Visual Area - Top Half */}
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                }}
               >
-                {/* Icon with Animation */}
                 <AnimatedView
-                  animation="rotateScale"
-                  rotateFrom="0deg"
-                  rotateTo="360deg"
-                  stagger={400 + index * 100}
+                  animation="scale"
                   duration={800}
-                  className={`${isSmallScreen ? "mb-7" : "mb-10"} w-30 h-30 justify-center items-center rounded-full bg-white/10 border-2 border-white/20 shadow-2xl`}
+                  delay={index === 0 ? 200 : 0}
+                  style={{
+                    position: "relative",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    height: "80%",
+                  }}
                 >
-                  {slide.icon}
+                  <Image
+                    source={{ uri: slide.image }}
+                    style={{
+                      width: width * 0.9,
+                      height: height * 0.6,
+                      borderRadius: 20,
+                      marginVertical: 10,
+                    }}
+                    contentFit="cover"
+                    transition={1000}
+                  />
                 </AnimatedView>
+              </View>
 
-                {/* Title with Stagger */}
+              {/* Text Area - Bottom Half */}
+              <View
+                className="mt-4"
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  paddingBottom: 40,
+                }}
+              >
                 <AnimatedText
                   animation="slideUp"
-                  easing="spring"
-                  stagger={600 + index * 100}
-                  duration={500}
-                  className={`${isSmallScreen ? "text-3xl mb-4" : "text-4xl mb-5"} font-black text-white text-center tracking-tight`}
-                  style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.3)",
-                    textShadowOffset: { width: 0, height: 2 },
-                    textShadowRadius: 4,
-                  }}
+                  delay={300}
+                  className="text-3xl font-outfit-bold text-slate-900 text-center mb-4 leading-tight"
                 >
                   {slide.title}
                 </AnimatedText>
 
-                {/* Description with Stagger */}
                 <AnimatedText
-                  animation="slideUp"
-                  easing="spring"
-                  stagger={800 + index * 100}
-                  duration={500}
-                  className={`${isSmallScreen ? "text-base leading-6" : "text-lg leading-7"} text-white/95 text-center font-medium tracking-wide`}
-                  style={{
-                    textShadowColor: "rgba(0, 0, 0, 0.2)",
-                    textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 2,
-                  }}
+                  animation="fadeIn"
+                  delay={500}
+                  className="text-base font-outfit text-slate-500 text-center leading-6 px-4"
                 >
                   {slide.description}
                 </AnimatedText>
-              </AnimatedView>
-            </LinearGradient>
-          </View>
-        ))}
-      </PagerView>
+              </View>
+            </View>
+          ))}
+        </AnimatedPagerView>
+      </View>
 
-      {/* Bottom Section */}
-      <View
-        className={`px-7 ${Platform.OS === "ios" ? "pb-12" : "pb-10"} pt-7 bg-white rounded-t-3xl shadow-2xl`}
-      >
-        {/* Progress Dots */}
-        <View className="flex-row justify-center items-center mb-7">
+      {/* Bottom Controls */}
+      <View className="px-8 pb-4 pt-4 flex-row justify-between items-center ">
+        {/* Back Button */}
+        <View className="w-20 items-start">
+          <TouchableOpacity
+            onPress={() => pagerRef.current?.setPage(currentPage - 1)}
+            className="p-2"
+            disabled={currentPage === 0 || state !== "idle"}
+            style={{ opacity: currentPage > 0 ? 1 : 0 }}
+          >
+            <AnimatedText className="text-slate-400 font-outfit-medium text-base">
+              Back
+            </AnimatedText>
+          </TouchableOpacity>
+        </View>
+
+        {/* Pagination Dots */}
+        <View className="flex-row justify-center items-center gap-2">
           {slides.map((_, index) => (
             <AnimatedView
-              key={`dot-${index}-${currentPage}`}
-              animation={index === currentPage ? "bounce" : "scale"}
-              easing="spring"
-              stagger={index * 50}
+              key={`dot-${index}`}
+              animation={index === currentPage ? "scale" : "fadeIn"}
               duration={300}
             >
               <View
-                className={`w-2.5 h-2.5 rounded-full mx-1.5 border ${
+                className={`h-2 rounded-full transition-all duration-300 ${
                   index === currentPage
-                    ? "w-7 bg-pink-500 border-pink-500 shadow-lg shadow-pink-500/30"
-                    : "bg-gray-200 border-gray-300"
+                    ? "w-6 bg-virtual-primary"
+                    : "w-2 bg-slate-200"
                 }`}
               />
             </AnimatedView>
           ))}
         </View>
 
-        {/* Next/Get Started Button */}
-        <AnimatedView
-          animation={currentPage === slides.length - 1 ? "bounce" : "scale"}
-          easing="spring"
-          delay={100}
-          className="rounded-2xl overflow-hidden shadow-xl shadow-black/20"
-        >
-          <TouchableOpacity
-            onPress={handleNext}
-            activeOpacity={0.8}
-            accessibilityLabel={
-              currentPage === slides.length - 1
-                ? "Get started with Virtual Room"
-                : "Next slide"
-            }
-            accessibilityRole="button"
-            disabled={state !== "idle"}
-          >
-            <LinearGradient
-              colors={currentSlide.gradient}
-              className="flex-row justify-center items-center py-5 px-9 gap-2.5 min-h-14"
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
+        {/* Next / Get Started Button */}
+        <View className="w-24 items-end">
+          <AnimatedView animation="slideUp" delay={600}>
+            <TouchableOpacity
+              onPress={handleNext}
+              activeOpacity={0.9}
+              disabled={state !== "idle"}
+              style={{
+                shadowColor: "#ec4899",
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.3,
+                shadowRadius: 8,
+                elevation: 5,
+              }}
             >
-              <AnimatedText
-                animation="typewriter"
-                easing="spring"
-                delay={200}
-                className="text-white text-lg font-bold tracking-wide"
+              <LinearGradient
+                colors={["#ec4899", "#db2777"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
                 style={{
-                  textShadowColor: "rgba(0, 0, 0, 0.2)",
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 2,
+                  height: 48,
+                  borderRadius: 24,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: currentPage === slides.length - 1 ? 24 : 0,
+                  width: currentPage === slides.length - 1 ? undefined : 48,
                 }}
               >
-                {state === "completing" && currentPage === slides.length - 1
-                  ? "Starting..."
-                  : state === "skipping"
-                    ? "Skipping..."
-                    : currentPage === slides.length - 1
-                      ? "Get Started"
-                      : "Next"}
-              </AnimatedText>
-              <AnimatedView
-                animation={
-                  currentPage === slides.length - 1 ? "fadeIn" : "fadeIn"
-                }
-                easing="spring"
-                delay={300}
-              >
-                <ArrowRight size={20} color="#fff" strokeWidth={2.5} />
-              </AnimatedView>
-            </LinearGradient>
-          </TouchableOpacity>
-        </AnimatedView>
+                {currentPage === slides.length - 1 ? (
+                  <AnimatedText className="text-white font-outfit-bold text-sm whitespace-nowrap">
+                    {state === "completing" ? "..." : "Start"}
+                  </AnimatedText>
+                ) : (
+                  <ArrowRight size={20} color="white" strokeWidth={2.5} />
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+          </AnimatedView>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  pagerView: {
+    flex: 1,
+  },
+});
 
 export default OnboardingScreen;

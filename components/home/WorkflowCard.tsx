@@ -41,7 +41,7 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.7}
-        className="w-[280px] bg-white rounded-2xl overflow-hidden border border-gray-100"
+        className="w-[320px] h-[280px] bg-white rounded-2xl overflow-hidden border border-gray-100"
         style={{
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 2 },
@@ -51,15 +51,35 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
         }}
       >
         {/* Image Section */}
-        <View className="relative h-[160px] bg-gray-50">
+        <View className="relative h-[180px] bg-gray-50">
           {image ? (
-            <Image
-              source={image}
-              className="w-full h-full"
-              resizeMode="contain"
-            />
+            <View className="w-full h-full relative overflow-hidden">
+              {/* Blurred Background */}
+              <Image
+                source={image}
+                className="absolute w-full h-full opacity-50"
+                resizeMode="cover"
+                blurRadius={15}
+              />
+              {/* Main Image */}
+              <Image
+                source={image}
+                className="w-full h-full"
+                resizeMode="contain"
+              />
+            </View>
           ) : (
-            <Text>{text}</Text>
+            <View
+              className="w-full h-full items-center justify-center"
+              style={{ backgroundColor: accentColor + "10" }}
+            >
+              <Text
+                className="text-4xl font-bold opacity-20"
+                style={{ color: accentColor }}
+              >
+                {text || "?"}
+              </Text>
+            </View>
           )}
 
           {/* Step Badge */}

@@ -6,11 +6,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        outfit: ["OutfitRegular"],
-        "outfit-medium": ["OutfitMedium"],
-        "outfit-semibold": ["OutfitSemiBold"],
-        "outfit-bold": ["OutfitBold"],
-        sans: ["OutfitRegular"],
+        outfit: ["OutfitRegular", "system-ui", "sans-serif"],
+        "outfit-medium": ["OutfitMedium", "system-ui", "sans-serif"],
+        "outfit-semibold": ["OutfitSemiBold", "system-ui", "sans-serif"],
+        "outfit-bold": ["OutfitBold", "system-ui", "sans-serif"],
+        sans: ["OutfitRegular", "system-ui", "sans-serif"],
       },
       // fontFamily: {
       //   sans: ['Outfit_400Regular'],

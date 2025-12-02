@@ -23,7 +23,9 @@ export const useAvatar = () => {
     onSuccess: (newAvatar) => {
       // Add the new avatar to the cache
       queryClient.setQueryData<Avatar[]>(['avatars'], (old) => {
-        return old ? [newAvatar, ...old] : [newAvatar];
+        // Ensure old is an array before spreading
+        const oldArray = Array.isArray(old) ? old : [];
+        return [newAvatar, ...oldArray];
       });
       
       // Invalidate to ensure consistency
@@ -150,9 +152,11 @@ export const useAvatarById = (avatarId: string) => {
       
       // Update the avatars list cache
       queryClient.setQueryData<Avatar[]>(['avatars'], (old) => {
-        return old?.map(item => 
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map(item => 
           item.id === avatarId ? updatedAvatar : item
-        ) || [];
+        );
       });
       
       // Call the callback with the updated avatar

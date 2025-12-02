@@ -53,10 +53,10 @@ export const useWardrobe = () => {
 
       // Update try-ons cache to include wardrobe info
       queryClient.setQueryData<TryOnWithWardrobe[]>(["tryOns"], (old) => {
-        return (
-          old?.map((item) =>
-            item.id === tryOnId ? { ...item, wardrobe: newItem } : item
-          ) || []
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map((item) =>
+          item.id === tryOnId ? { ...item, wardrobe: newItem } : item
         );
       });
     },
@@ -78,10 +78,10 @@ export const useWardrobe = () => {
 
       // Update try-ons cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(["tryOns"], (old) => {
-        return (
-          old?.map((item) =>
-            item.id === tryOnId ? { ...item, wardrobe: updatedItem } : item
-          ) || []
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map((item) =>
+          item.id === tryOnId ? { ...item, wardrobe: updatedItem } : item
         );
       });
     },
@@ -100,10 +100,10 @@ export const useWardrobe = () => {
 
       // Update try-ons cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(["tryOns"], (old) => {
-        return (
-          old?.map((item) =>
-            item.id === tryOnId ? { ...item, wardrobe: null } : item
-          ) || []
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map((item) =>
+          item.id === tryOnId ? { ...item, wardrobe: null } : item
         );
       });
     },
@@ -119,10 +119,10 @@ export const useWardrobe = () => {
 
       // Update try-ons cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(["tryOns"], (old) => {
-        return (
-          old?.map((item) =>
-            item.id === tryOnId ? { ...item, wardrobe: updatedItem } : item
-          ) || []
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map((item) =>
+          item.id === tryOnId ? { ...item, wardrobe: updatedItem } : item
         );
       });
     },

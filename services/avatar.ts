@@ -107,8 +107,14 @@ export class AvatarService {
     avatarId: string, 
     callback: (avatar: Avatar) => void
   ): () => void {
+    if (!avatarId) {
+      console.error('[AVATAR_SERVICE] ❌ Cannot subscribe without avatarId');
+      return () => {}; // Return empty unsubscribe function
+    }
+
     let isSubscribed = true;
     let lastStatus: Avatar['status'] | null = null;
+    let pollTimeout: ReturnType<typeof setTimeout> | null = null;
     
     const poll = async () => {
       if (!isSubscribed) return;
@@ -116,20 +122,23 @@ export class AvatarService {
       try {
         const avatar = await this.getAvatar(avatarId);
         
-        if (avatar.status !== lastStatus) {
+        if (avatar && avatar.status !== lastStatus) {
+          console.log(`[AVATAR_SERVICE] 🔄 Avatar ${avatarId} status: ${lastStatus} -> ${avatar.status}`);
           callback(avatar);
           lastStatus = avatar.status;
         }
         
         // Continue polling if still processing  
-        if (avatar.status === 'processing') {
-          setTimeout(poll, 3000); // Poll every 3 seconds for avatars
+        if (avatar && avatar.status === 'processing' && isSubscribed) {
+          pollTimeout = setTimeout(poll, 3000); // Poll every 3 seconds for avatars
+        } else {
+          console.log(`[AVATAR_SERVICE] ⏹️ Stopped polling for avatar ${avatarId}, final status: ${avatar?.status}`);
         }
       } catch (error) {
         console.error('[AVATAR_SERVICE] ❌ Error polling avatar status:', error);
         // Retry after a longer delay on error
         if (isSubscribed) {
-          setTimeout(poll, 8000);
+          pollTimeout = setTimeout(poll, 8000);
         }
       }
     };
@@ -139,7 +148,12 @@ export class AvatarService {
     
     // Return unsubscribe function
     return () => {
+      console.log(`[AVATAR_SERVICE] 🛑 Unsubscribing from avatar ${avatarId} updates`);
       isSubscribed = false;
+      if (pollTimeout) {
+        clearTimeout(pollTimeout);
+        pollTimeout = null;
+      }
     };
   }
 }

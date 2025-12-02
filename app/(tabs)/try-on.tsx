@@ -113,11 +113,15 @@ const TryOn = () => {
       if (currentTryOnId) {
         removeActiveTryOn(currentTryOnId);
       }
+      
+      // Reset current workflow to clear form data
+      resetCurrentWorkflow();
     } catch (error) {
       console.error("[TRY_ON] ❌ Error removing active try-on:", error);
     } finally {
       setShowResultModal(false);
       setCurrentTryOnId(null);
+      setShowWorkflowSelection(true); // Return to workflow selector
     }
   };
 
@@ -127,12 +131,15 @@ const TryOn = () => {
       if (currentTryOnId) {
         removeActiveTryOn(currentTryOnId);
       }
+      
+      // Reset current workflow to clear form data
+      resetCurrentWorkflow();
     } catch (error) {
       console.error("[TRY_ON] ❌ Error removing active try-on:", error);
     } finally {
       setShowResultModal(false);
       setCurrentTryOnId(null);
-      // Keep the form data for retry
+      setShowWorkflowSelection(true); // Return to workflow selector for fresh start
     }
   };
 

@@ -1,37 +1,34 @@
-import { ScrollView } from 'react-native'
-import PageWrapper from '../../components/PageWrapper'
-import { Footer } from '../../components/Footer'
-import Hero from '@/components/home/Hero'
-import Benefits from '@/components/home/Benefits'
-import ReadyButton from '@/components/home/ReadyButton'
-import HowItsWorks from '@/components/home/HowItsWorks'
-import { SectionWrapper } from '@/components'
+import { ScrollView } from "react-native";
+import PageWrapper from "../../components/PageWrapper";
+import { Footer } from "../../components/Footer";
+import Hero from "@/components/home/Hero";
+import Benefits from "@/components/home/Benefits";
+import ReadyButton from "@/components/home/ReadyButton";
+import HowItsWorks from "@/components/home/HowItsWorks";
+import { SectionWrapper } from "@/components";
 const Home = () => {
-
   return (
     <PageWrapper>
       <ScrollView>
-        <SectionWrapper >
-            <Hero />
+        <SectionWrapper>
+          <Hero />
         </SectionWrapper>
 
-         <SectionWrapper>
-            <HowItsWorks />
+        <SectionWrapper>
+          <HowItsWorks />
         </SectionWrapper>
 
-
-         <SectionWrapper>
-            <Benefits />
+        <SectionWrapper>
+          <Benefits />
         </SectionWrapper>
 
-
-         <SectionWrapper>
-            <ReadyButton />
+        <SectionWrapper>
+          <ReadyButton />
         </SectionWrapper>
-        <Footer  />
+        <Footer />
       </ScrollView>
     </PageWrapper>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

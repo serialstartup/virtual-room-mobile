@@ -41,6 +41,12 @@ export interface WorkflowData {
     garmentDescription: string | null;
     tryOnType: "classic" | "text-to-fashion";
   };
+
+  // Avatar Creation Data
+  avatarCreation: {
+    faceImage: string | null;
+    avatarName: string;
+  };
 }
 
 export interface WorkflowState {
@@ -88,6 +94,10 @@ export interface WorkflowState {
   setAvatarGarmentImage: (image: string | null) => void;
   setAvatarGarmentDescription: (description: string | null) => void;
   setAvatarTryOnType: (type: "classic" | "text-to-fashion") => void;
+
+  // Actions - Avatar Creation
+  setAvatarCreationFaceImage: (image: string | null) => void;
+  setAvatarCreationName: (name: string) => void;
 
   // Actions - Step Management
   setCurrentStep: (step: number) => void;
@@ -152,6 +162,10 @@ const initialWorkflowData: WorkflowData = {
     garmentImageUrl: null,
     garmentDescription: null,
     tryOnType: "classic",
+  },
+  avatarCreation: {
+    faceImage: null,
+    avatarName: "",
   },
 };
 
@@ -428,6 +442,31 @@ export const useWorkflowStore = create<WorkflowState>()(
             avatar: {
               ...state.workflowData.avatar,
               tryOnType: type,
+            },
+          },
+        }));
+      },
+
+      // Avatar Creation Actions
+      setAvatarCreationFaceImage: (image: string | null) => {
+        set((state) => ({
+          workflowData: {
+            ...state.workflowData,
+            avatarCreation: {
+              ...state.workflowData.avatarCreation,
+              faceImage: image,
+            },
+          },
+        }));
+      },
+
+      setAvatarCreationName: (name: string) => {
+        set((state) => ({
+          workflowData: {
+            ...state.workflowData,
+            avatarCreation: {
+              ...state.workflowData.avatarCreation,
+              avatarName: name,
             },
           },
         }));

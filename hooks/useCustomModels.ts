@@ -29,7 +29,9 @@ export const useCustomModels = () => {
     onSuccess: (newModel) => {
       // Add the new model to the cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old ? [newModel, ...old] : [newModel];
+        // Ensure old is an array before spreading
+        const oldArray = Array.isArray(old) ? old : [];
+        return [newModel, ...oldArray];
       });
       
       // Invalidate to ensure consistency
@@ -46,7 +48,9 @@ export const useCustomModels = () => {
     onSuccess: (newModel) => {
       // Add the new model to the cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old ? [newModel, ...old] : [newModel];
+        // Ensure old is an array before spreading
+        const oldArray = Array.isArray(old) ? old : [];
+        return [newModel, ...oldArray];
       });
       
       // Invalidate to ensure consistency
@@ -63,7 +67,9 @@ export const useCustomModels = () => {
     onSuccess: (newModel) => {
       // Add the new model to the cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old ? [newModel, ...old] : [newModel];
+        // Ensure old is an array before spreading
+        const oldArray = Array.isArray(old) ? old : [];
+        return [newModel, ...oldArray];
       });
       
       // Invalidate to ensure consistency
@@ -81,9 +87,11 @@ export const useCustomModels = () => {
     onSuccess: (updatedModel, { modelId }) => {
       // Update the specific model in cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old?.map(model => 
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map(model => 
           model.id === modelId ? updatedModel : model
-        ) || [];
+        );
       });
       
       // Update single model cache if it exists
@@ -97,9 +105,11 @@ export const useCustomModels = () => {
     onSuccess: (updatedModel, modelId) => {
       // Update the specific model in cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old?.map(model => 
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map(model => 
           model.id === modelId ? updatedModel : model
-        ) || [];
+        );
       });
       
       // Update single model cache
@@ -113,7 +123,9 @@ export const useCustomModels = () => {
     onSuccess: (_, modelId) => {
       // Remove from cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old?.filter(model => model.id !== modelId) || [];
+        // Ensure old is an array before filtering
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.filter(model => model.id !== modelId);
       });
       
       // Remove single model cache
@@ -210,9 +222,11 @@ export const useCustomModelById = (modelId: string) => {
       
       // Update the models list cache
       queryClient.setQueryData<CustomModel[]>(['customModels'], (old) => {
-        return old?.map(item => 
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map(item => 
           item.id === modelId ? updatedModel : item
-        ) || [];
+        );
       });
       
       // Call the callback with the updated model

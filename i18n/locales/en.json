@@ -331,8 +331,9 @@
         }
       }
     },
+
     "workflowShowcase": {
-      "sectionTitle": "Explore Our AI Workflows",
+      "sectionTitle": "Discover Our AI Workflows",
       "sectionSubtitle": "Choose the perfect workflow for your needs",
       "tryNow": "Try Now",
       "nextStep": "Next Step",

@@ -172,42 +172,42 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
           </MotiView>
         );
 
-      // case 2:
-      //   return (
-      //     <ScrollView>
-      //       <MotiView
-      //         from={{ opacity: 0, translateX: 50 }}
-      //         animate={{ opacity: 1, translateX: 0 }}
-      //         transition={{ type: "timing", duration: 300 }}
-      //       >
-      //         <View className="p-6 bg-gray-50 rounded-3xl">
-      //           <View className="flex-row items-center mb-6">
-      //             <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
-      //               <Ionicons name="person-outline" size={24} color="white" />
-      //             </View>
-      //             <View>
-      //               <Text className="text-2xl font-bold text-gray-900">
-      //                 Step 2
-      //               </Text>
-      //               <Text className="text-lg text-gray-600">Select Model</Text>
-      //             </View>
-      //           </View>
-
-      //           <UploadTab
-      //             onImageSelect={handleModelImageSelect}
-      //             selectedImage={productData.modelImage || undefined}
-      //             title="Model ekle"
-      //             skeletonTitle="Model seçmek için tıkla"
-      //             enableAvatarSelection={true}
-      //             onAvatarSelect={handleAvatarSelect}
-      //             selectedAvatar={productData.selectedAvatar}
-      //           />
-      //         </View>
-      //       </MotiView>
-      //     </ScrollView>
-      //   );
-
       case 2:
+        return (
+          <ScrollView>
+            <MotiView
+              from={{ opacity: 0, translateX: 50 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              transition={{ type: "timing", duration: 300 }}
+            >
+              <View className="p-6 bg-gray-50 rounded-3xl">
+                <View className="flex-row items-center mb-6">
+                  <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
+                    <Ionicons name="person-outline" size={24} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-2xl font-bold text-gray-900">
+                      Step 2
+                    </Text>
+                    <Text className="text-lg text-gray-600">Select Model</Text>
+                  </View>
+                </View>
+
+                <UploadTab
+                  onImageSelect={handleModelImageSelect}
+                  selectedImage={productData.modelImage || undefined}
+                  title="Model ekle"
+                  skeletonTitle="Model seçmek için tıkla"
+                  enableAvatarSelection={true}
+                  onAvatarSelect={handleAvatarSelect}
+                  selectedAvatar={productData.selectedAvatar}
+                />
+              </View>
+            </MotiView>
+          </ScrollView>
+        );
+
+      case 3: // This was previously case 2, now it's case 3
         return (
           <ScrollView>
             <MotiView

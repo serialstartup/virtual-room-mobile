@@ -23,7 +23,9 @@ export const useTryOn = () => {
     onSuccess: (newTryOn) => {
       // Add the new try-on to the cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(['tryOns'], (old) => {
-        return old ? [{ ...newTryOn, wardrobe: null }, ...old] : [{ ...newTryOn, wardrobe: null }]
+        // Ensure old is an array before spreading
+        const oldArray = Array.isArray(old) ? old : [];
+        return [{ ...newTryOn, wardrobe: null }, ...oldArray];
       })
       
       // Invalidate to ensure consistency
@@ -38,11 +40,13 @@ export const useTryOn = () => {
     onSuccess: (updatedTryOn, { tryOnId }) => {
       // Update the specific try-on in cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(['tryOns'], (old) => {
-        return old?.map(item => 
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map(item => 
           item.id === tryOnId 
             ? { ...item, ...updatedTryOn }
             : item
-        ) || []
+        );
       })
       
       // Update single try-on cache if it exists
@@ -56,7 +60,9 @@ export const useTryOn = () => {
     onSuccess: (_, tryOnId) => {
       // Remove from cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(['tryOns'], (old) => {
-        return old?.filter(item => item.id !== tryOnId) || []
+        // Ensure old is an array before filtering
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.filter(item => item.id !== tryOnId);
       })
       
       // Remove single try-on cache
@@ -129,11 +135,13 @@ export const useTryOnById = (tryOnId: string) => {
       
       // Update the try-ons list cache
       queryClient.setQueryData<TryOnWithWardrobe[]>(['tryOns'], (old) => {
-        return old?.map(item => 
+        // Ensure old is an array before mapping
+        const oldArray = Array.isArray(old) ? old : [];
+        return oldArray.map(item => 
           item.id === tryOnId 
             ? { ...item, ...updatedTryOn }
             : item
-        ) || []
+        );
       })
       
       // Call the callback with the new status

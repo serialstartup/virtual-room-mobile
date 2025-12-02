@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import { MotiView } from "moti";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useAvatar } from "@/hooks/useAvatar";
+import { useWorkflowStore } from "@/store/workflowStore";
 import ReusableButton from "@/components/ui/ReusableButton";
 import * as ImagePicker from "expo-image-picker";
 import { analytics } from "@/services/analytics";
@@ -25,9 +26,13 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
   onAvatarCreate,
 }) => {
   const { createAvatar, isCreating } = useAvatar();
+  const { 
+    workflowData, 
+    setAvatarCreationFaceImage, 
+    setAvatarCreationName 
+  } = useWorkflowStore();
 
-  const [faceImage, setFaceImage] = useState<string | null>(null);
-  const [avatarName, setAvatarName] = useState<string>("");
+  const { faceImage, avatarName } = workflowData.avatarCreation;
 
   // Image picker function
   const pickFaceImage = async () => {
@@ -50,7 +55,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       });
 
       if (!result.canceled && result.assets[0]) {
-        setFaceImage(result.assets[0].uri);
+        setAvatarCreationFaceImage(result.assets[0].uri);
       }
     } catch (error) {
       console.error("Error picking image:", error);
@@ -71,29 +76,65 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
     }
 
     try {
-      // Track start
-      analytics.trackAvatarModelGeneration(
-        faceImage.startsWith("file://") ? "camera" : "upload"
-      );
-      const startTime = Date.now();
+      console.log("[AVATAR_TRYON] 🎯 Starting avatar creation...");
+      
+      // Track start (wrapped in try-catch to isolate analytics issues)
+      try {
+        analytics.trackAvatarModelGeneration(
+          faceImage.startsWith("file://") ? "camera" : "upload"
+        );
+      } catch (analyticsError) {
+        console.warn("[AVATAR_TRYON] ⚠️ Analytics tracking start failed:", analyticsError);
+      }
+      
 
       const finalName = avatarName.trim() || generateRandomName();
+      console.log("[AVATAR_TRYON] 📝 Creating avatar with name:", finalName);
 
-      const newAvatar = await createAvatar({
+      // Create avatar data object first
+      const avatarData = {
         name: finalName,
         face_image_url: faceImage,
-      });
+      };
+      console.log("[AVATAR_TRYON] 📋 Avatar data prepared:", avatarData);
 
-      // Track completion
-      const processingTime = Date.now() - startTime;
-      analytics.trackAvatarCreated(
-        faceImage.startsWith("file://") ? "camera" : "upload"
-      );
-      analytics.trackCreditUsed(3, "avatar_creation");
+      // Call createAvatar with try-catch for more specific error handling
+      let newAvatar;
+      try {
+        console.log("[AVATAR_TRYON] 🚀 Calling createAvatar...");
+        newAvatar = await createAvatar(avatarData);
+        console.log("[AVATAR_TRYON] 📦 Raw avatar response:", newAvatar);
+      } catch (createError) {
+        console.error("[AVATAR_TRYON] ❌ createAvatar failed:", createError);
+        throw createError; // Re-throw to be caught by outer catch
+      }
+
+      console.log("[AVATAR_TRYON] ✅ Avatar created successfully:", newAvatar?.id);
+
+      // Track completion (wrapped in try-catch to isolate analytics issues)
+      try {
+        analytics.trackAvatarCreated(
+          faceImage.startsWith("file://") ? "camera" : "upload"
+        );
+        analytics.trackCreditUsed(3, "avatar_creation");
+      } catch (analyticsError) {
+        console.warn("[AVATAR_TRYON] ⚠️ Analytics tracking completion failed:", analyticsError);
+      }
 
       // Call onAvatarCreate to show ResultModal for avatar processing
-      if (onAvatarCreate) {
-        onAvatarCreate(newAvatar.id);
+      console.log("[AVATAR_TRYON] 🎯 Calling onAvatarCreate callback:", {
+        hasCallback: !!onAvatarCreate,
+        avatarId: newAvatar?.id
+      });
+      
+      if (onAvatarCreate && newAvatar?.id) {
+        try {
+          onAvatarCreate(newAvatar.id);
+          console.log("[AVATAR_TRYON] ✅ onAvatarCreate callback completed");
+        } catch (callbackError) {
+          console.error("[AVATAR_TRYON] ❌ onAvatarCreate callback failed:", callbackError);
+          throw callbackError;
+        }
       } else {
         // Fallback alert if no modal handler
         Alert.alert(
@@ -110,6 +151,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
         );
       }
     } catch (error: any) {
+      console.log("Sorun burada : ",error)
       Alert.alert("Error", error.message || "Failed to create avatar");
     }
   };
@@ -166,9 +208,9 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
               </Text>
               <TextInput
                 className="bg-white border border-gray-200 rounded-2xl px-4 py-3 text-gray-900"
-                placeholder="Avatarınıza bir isim verin (boş bırakılırsa otomatik oluşturulur)"
+                placeholder="lovelyavatar"
                 value={avatarName}
-                onChangeText={setAvatarName}
+                onChangeText={setAvatarCreationName}
                 maxLength={50}
               />
             </View>

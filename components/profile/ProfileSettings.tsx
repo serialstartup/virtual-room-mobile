@@ -4,12 +4,13 @@ import AnimatedView from "../ui/AnimatedView";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "../ui/ReusableButton";
-import { Pencil, User } from "lucide-react-native";
+import { Pencil, User, RotateCcw } from "lucide-react-native";
 import { useUser } from "@/hooks/useUser";
 import TokenPurchaseModal from "./TokenPurchaseModal";
 import Purchases from "react-native-purchases";
 import { analytics } from "@/services/analytics";
 import { useTranslation } from "react-i18next";
+import { onboardingStorage } from "@/services/onboardingStorage";
 
 type FormValues = {
   name: string;
@@ -110,6 +111,33 @@ const ProfileSettings = () => {
         { text: t("common.done") },
       ]);
     }
+  };
+
+  // Debug function to reset onboarding
+  const handleResetOnboarding = () => {
+    Alert.alert(
+      "Reset Onboarding",
+      "Are you sure you want to reset the onboarding? You'll see it again when you restart the app.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Reset",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await onboardingStorage.resetOnboarding();
+              Alert.alert("Success", "Onboarding has been reset. Restart the app to see it again.");
+            } catch (error) {
+              console.error("Reset onboarding error:", error);
+              Alert.alert("Error", "Failed to reset onboarding");
+            }
+          },
+        },
+      ]
+    );
   };
 
   if (isUserLoading) {
@@ -309,6 +337,38 @@ const ProfileSettings = () => {
               </View>
             </View>
           </View>
+
+          {/* Debug Section - Reset Onboarding */}
+          {__DEV__ && (
+            <View className="mt-6 pb-4">
+              <Text className="text-gray-500 text-sm mb-3">
+                Debug Options
+              </Text>
+              
+              <View className="bg-white rounded-2xl p-5 border border-gray-100">
+                <View className="flex-row items-center justify-between">
+                  <View>
+                    <Text className="text-base font-semibold text-gray-900">
+                      Reset Onboarding
+                    </Text>
+                    <Text className="text-gray-500 text-sm mt-1">
+                      Show onboarding screen again
+                    </Text>
+                  </View>
+                  
+                  <TouchableOpacity
+                    onPress={handleResetOnboarding}
+                    className="bg-gray-100 px-4 py-2.5 rounded-xl flex-row items-center gap-2"
+                  >
+                    <RotateCcw color="#666" size={16} />
+                    <Text className="text-gray-700 font-medium text-sm">
+                      Reset
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )}
         </View>
       </AnimatedView>
 
