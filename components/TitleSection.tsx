@@ -26,7 +26,7 @@ const TitleSection: FC<TitleSectionProps> = ({
       easing="easeInOut"
     >
       <View className="mb-6 mt-4 px-8">
-        <AnimatedText className="text-2xl font-semibold text-center text-black">
+        <AnimatedText className="text-3xl font-semibold text-center text-black">
           {title}
         </AnimatedText>
         <AnimatedText className="text-base text-center mt-1 text-virtual-text-muted">

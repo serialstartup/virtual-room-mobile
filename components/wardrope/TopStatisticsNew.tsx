@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
+import { LayoutGrid, Heart } from "lucide-react-native";
 
 interface TopStatisticsNewProps {
   totalOutfits: number;
@@ -21,18 +22,28 @@ const TopStatisticsNew: React.FC<TopStatisticsNewProps> = ({
       id: "all" as const,
       title: t("wardrobePage.statistics.totalOutfits"),
       value: totalOutfits,
-      color: "#6366f1",
+      icon: (
+        <LayoutGrid
+          size={18}
+          color={activeFilter === "all" ? "#ec4899" : "#6b7280"}
+        />
+      ),
     },
     {
       id: "liked" as const,
       title: t("wardrobePage.statistics.favorites"),
       value: favoritesCount,
-      color: "#ec4899",
+      icon: (
+        <Heart
+          size={18}
+          color={activeFilter === "liked" ? "#ec4899" : "#6b7280"}
+        />
+      ),
     },
   ];
 
   return (
-    <View className="flex-row justify-between gap-3 px-4 mt-4">
+    <View className="flex-row gap-3 px-4 mt-2 mb-2">
       {statistics.map((stat) => {
         const isActive = activeFilter === stat.id;
 
@@ -40,41 +51,34 @@ const TopStatisticsNew: React.FC<TopStatisticsNewProps> = ({
           <TouchableOpacity
             key={stat.id}
             className="flex-1"
-            onPress={() => {
-              onFilterChange(stat.id);
-            }}
+            activeOpacity={0.7}
+            onPress={() => onFilterChange(stat.id)}
           >
             <View
-              className={`p-3 rounded-xl border ${
+              className={`flex-row items-center justify-between px-4 py-3 rounded-xl border ${
                 isActive
-                  ? "bg-white border-virtual-primary"
+                  ? "bg-pink-50 border-pink-200"
                   : "bg-white border-gray-100"
               }`}
             >
-              <View className="flex-row items-center">
-                <View
-                  className="w-12 h-12 rounded-full items-center justify-center mb-2"
-                  style={{ backgroundColor: `${stat.color}15` }}
+              <View className="flex-row items-center gap-2">
+                {stat.icon}
+                <Text
+                  className={`text-sm font-medium ${
+                    isActive ? "text-pink-600" : "text-gray-600"
+                  }`}
                 >
-                  <Text>{stat.id === "all" ? "📊" : "❤️"}</Text>
-                </View>
-                <View className="ml-3 flex-col">
-                  <Text
-                    className={`text-2xl font-bold ${
-                      isActive ? "text-virtual-primary" : "text-gray-800"
-                    }`}
-                  >
-                    {stat.value}
-                  </Text>
-                  <Text
-                    className={`text-sm font-medium ${
-                      isActive ? "text-virtual-primary" : "text-gray-500"
-                    }`}
-                  >
-                    {stat.title}
-                  </Text>
-                </View>
+                  {stat.title}
+                </Text>
               </View>
+
+              <Text
+                className={`text-base font-bold ${
+                  isActive ? "text-pink-600" : "text-gray-900"
+                }`}
+              >
+                {stat.value}
+              </Text>
             </View>
           </TouchableOpacity>
         );

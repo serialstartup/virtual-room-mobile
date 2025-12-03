@@ -4,9 +4,9 @@ import {
   TouchableOpacity,
   StatusBar,
   StyleSheet,
-  SafeAreaView,
   Dimensions,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import PagerView from "react-native-pager-view";
 import Animated, {
@@ -21,8 +21,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { analytics } from "@/services/analytics";
 import { onboardingStorage } from "@/services/onboardingStorage";
 import "../../global.css";
-
-const { height } = Dimensions.get("window");
 
 // 1. Define the handler (from PagerView docs for Reanimated integration)
 function usePageScrollHandler(

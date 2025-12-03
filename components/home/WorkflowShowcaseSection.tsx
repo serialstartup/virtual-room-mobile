@@ -72,18 +72,6 @@ const WorkflowShowcaseSection: React.FC<WorkflowShowcaseSectionProps> = ({
       <AnimatedView animation="fadeIn" duration={400} className="px-6 mb-4">
         <View className="flex-row items-center justify-between mb-1">
           <Text className="text-xl font-bold text-gray-900">{title}</Text>
-          <TouchableOpacity
-            onPress={handleTryNow}
-            className="flex-row items-center bg-gray-50 px-3 py-1.5 rounded-full"
-          >
-            <Text
-              className="text-sm font-semibold mr-1"
-              style={{ color: accentColor }}
-            >
-              {t("home.workflowShowcase.tryNow")}
-            </Text>
-            <ChevronRight size={14} color={accentColor} />
-          </TouchableOpacity>
         </View>
         <Text className="text-sm text-gray-600">{subtitle}</Text>
       </AnimatedView>

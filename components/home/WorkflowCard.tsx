@@ -51,7 +51,7 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
         }}
       >
         {/* Image Section */}
-        <View className="relative h-[180px] bg-gray-50">
+        <View className="relative h-[180px] bg-gray-100">
           {image ? (
             <View className="w-full h-full relative overflow-hidden">
               {/* Blurred Background */}
@@ -70,13 +70,10 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
             </View>
           ) : (
             <View
-              className="w-full h-full items-center justify-center"
-              style={{ backgroundColor: accentColor + "10" }}
+              className=" p-4 w-64 bg-black/80 rounded-2xl h-auto items-center justify-center m-auto"
             >
               <Text
-                className="text-4xl font-bold opacity-20"
-                style={{ color: accentColor }}
-              >
+                className="text-sm text-center font-bold text-white"              >
                 {text || "?"}
               </Text>
             </View>

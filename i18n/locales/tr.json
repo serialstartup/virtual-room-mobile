@@ -346,15 +346,15 @@
           "description": "Gelişmiş AI teknolojisi ile sanal deneme deneyimi yaşayın."
         },
         "ecommerce": {
-          "title": "E-ticaret Entegrasyonu",
-          "description": "Favori mağazalarınızdan gerçek ürünleri deneyin ve kaydedin."
+          "title": "Ürünleri Üzerinizde Görün",
+          "description": "Bir model oluşturabilir veya kendi üzerinizde kıyafetleri deneyebilirsiniz."
         },
         "favorites": {
           "title": "Favorilerinizi Kaydedin",
           "description": "Uygulama içinde kişisel gardırop koleksiyonunuzu oluşturun."
         },
         "share": {
-          "title": "Paylaş & Keşfet",
+          "title": "İndir & Paylaş",
           "description": "Görünümlerinizi paylaşın ve benzer ürünleri bulun, kolayca kombinler oluşturun."
         }
       }

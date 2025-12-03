@@ -129,7 +129,10 @@ const ProfileSettings = () => {
           onPress: async () => {
             try {
               await onboardingStorage.resetOnboarding();
-              Alert.alert("Success", "Onboarding has been reset. Restart the app to see it again.");
+              Alert.alert(
+                "Success",
+                "Onboarding has been reset. Restart the app to see it again."
+              );
             } catch (error) {
               console.error("Reset onboarding error:", error);
               Alert.alert("Error", "Failed to reset onboarding");
@@ -185,7 +188,9 @@ const ProfileSettings = () => {
               </View>
               <View>
                 <Text className="text-gray-800 text-xl font-bold">
-                  {user.name}
+                  {user.name.length > 10
+                    ? `${user.name.substring(0, 10)}...`
+                    : user.name}
                 </Text>
                 <Text className="text-gray-500 text-sm">{user.email}</Text>
               </View>
@@ -219,6 +224,7 @@ const ProfileSettings = () => {
                   numberOfLines={1}
                   label={t("auth.name")}
                   error={errors.name}
+                  maxLength={20}
                 />
               </View>
               <View>
@@ -341,10 +347,8 @@ const ProfileSettings = () => {
           {/* Debug Section - Reset Onboarding */}
           {__DEV__ && (
             <View className="mt-6 pb-4">
-              <Text className="text-gray-500 text-sm mb-3">
-                Debug Options
-              </Text>
-              
+              <Text className="text-gray-500 text-sm mb-3">Debug Options</Text>
+
               <View className="bg-white rounded-2xl p-5 border border-gray-100">
                 <View className="flex-row items-center justify-between">
                   <View>
@@ -355,7 +359,7 @@ const ProfileSettings = () => {
                       Show onboarding screen again
                     </Text>
                   </View>
-                  
+
                   <TouchableOpacity
                     onPress={handleResetOnboarding}
                     className="bg-gray-100 px-4 py-2.5 rounded-xl flex-row items-center gap-2"

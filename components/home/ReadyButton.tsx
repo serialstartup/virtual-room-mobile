@@ -2,9 +2,13 @@ import { View, Text } from "react-native";
 import GradientView from "../GradientView";
 import ReusableButton from "../ui/ReusableButton";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
 
 const ReadyButton = () => {
   const { t } = useTranslation();
+  const handleTryNow = () => {
+    router.push("/(tabs)/try-on");
+  };
 
   return (
     <View className="my-6">
@@ -25,7 +29,7 @@ const ReadyButton = () => {
             padding="py-2 px-10"
             title={t("home.readySection.button")}
             buttonShadow={true}
-            onPress={() => {}}
+            onPress={handleTryNow}
           />
         </View>
       </GradientView>

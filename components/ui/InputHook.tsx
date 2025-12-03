@@ -1,5 +1,10 @@
-import { TextInput, View, Text } from 'react-native';
-import { Controller, Control, FieldError, RegisterOptions } from 'react-hook-form';
+import { TextInput, View, Text } from "react-native";
+import {
+  Controller,
+  Control,
+  FieldError,
+  RegisterOptions,
+} from "react-hook-form";
 
 interface InputProps {
   name: string;
@@ -8,8 +13,8 @@ interface InputProps {
   secureTextEntry?: boolean;
   multiline?: boolean;
   numberOfLines?: number;
-  keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad' | 'url';
-  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad" | "url";
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
   error?: FieldError;
   label?: string;
   editable?: boolean;
@@ -17,6 +22,7 @@ interface InputProps {
   rules?: RegisterOptions;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  maxLength?: number;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -26,8 +32,8 @@ export const Input: React.FC<InputProps> = ({
   secureTextEntry = false,
   multiline = false,
   numberOfLines = 1,
-  keyboardType = 'default',
-  autoCapitalize = 'none',
+  keyboardType = "default",
+  autoCapitalize = "none",
   error,
   label,
   editable = true,
@@ -35,11 +41,19 @@ export const Input: React.FC<InputProps> = ({
   rules,
   leftIcon,
   rightIcon,
+  maxLength,
 }) => {
   return (
     <View style={{ marginBottom: 16 }}>
       {label && (
-        <Text style={{ fontSize: 14, fontWeight: '500', color: '#374151', marginBottom: 8 }}>
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: "500",
+            color: "#374151",
+            marginBottom: 8,
+          }}
+        >
           {label}
         </Text>
       )}
@@ -48,27 +62,25 @@ export const Input: React.FC<InputProps> = ({
         name={name}
         rules={rules}
         render={({ field: { onChange, onBlur, value } }) => (
-          <View style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            borderWidth: 1,
-            borderColor: error ? '#EF4444' : '#D1D5DB',
-            borderRadius: 8,
-            paddingHorizontal: 12,
-            backgroundColor: (!editable || disabled) ? '#F3F4F6' : 'white'
-          }}>
-            {leftIcon && (
-              <View style={{ marginRight: 8 }}>
-                {leftIcon}
-              </View>
-            )}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              borderWidth: 1,
+              borderColor: error ? "#EF4444" : "#D1D5DB",
+              borderRadius: 8,
+              paddingHorizontal: 12,
+              backgroundColor: !editable || disabled ? "#F3F4F6" : "white",
+            }}
+          >
+            {leftIcon && <View style={{ marginRight: 8 }}>{leftIcon}</View>}
             <TextInput
               style={{
                 flex: 1,
                 paddingVertical: 8,
                 fontSize: 16,
                 height: multiline ? 80 : 38,
-                color: (!editable || disabled) ? '#9CA3AF' : '#000'
+                color: !editable || disabled ? "#9CA3AF" : "#000",
               }}
               onBlur={onBlur}
               onChangeText={onChange}
@@ -81,17 +93,14 @@ export const Input: React.FC<InputProps> = ({
               numberOfLines={numberOfLines}
               keyboardType={keyboardType}
               autoCapitalize={autoCapitalize}
+              maxLength={maxLength}
             />
-            {rightIcon && (
-              <View style={{ marginLeft: 8 }}>
-                {rightIcon}
-              </View>
-            )}
+            {rightIcon && <View style={{ marginLeft: 8 }}>{rightIcon}</View>}
           </View>
         )}
       />
       {error && (
-        <Text style={{ color: '#EF4444', fontSize: 12, marginTop: 4 }}>
+        <Text style={{ color: "#EF4444", fontSize: 12, marginTop: 4 }}>
           {error.message}
         </Text>
       )}

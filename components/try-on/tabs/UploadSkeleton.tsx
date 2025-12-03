@@ -1,110 +1,106 @@
-import { View, Text, TouchableOpacity, Image, Alert } from 'react-native'
-import { useState, type FC } from 'react'
-import { Upload, X, Camera, Image as ImageIcon } from 'lucide-react-native'
-import { Colors } from '@/constants'
-import * as ImagePicker from 'expo-image-picker'
+import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { useState, type FC } from "react";
+import { Upload, X, Camera, Image as ImageIcon } from "lucide-react-native";
+import { Colors } from "@/constants";
+import * as ImagePicker from "expo-image-picker";
 
 interface UploadSkeletonProps {
-  title: string
-  onImageSelect: (uri: string) => void
-  selectedImage?: string
-  disabled?: boolean
+  title: string;
+  onImageSelect: (uri: string) => void;
+  selectedImage?: string;
+  disabled?: boolean;
 }
 
-const UploadSkeleton: FC<UploadSkeletonProps> = ({ 
-  title, 
-  onImageSelect, 
+const UploadSkeleton: FC<UploadSkeletonProps> = ({
+  title,
+  onImageSelect,
   selectedImage,
-  disabled = false 
+  disabled = false,
 }) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const requestPermissions = async () => {
-    const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync()
-    const { status: galleryStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-    
-    if (cameraStatus !== 'granted' || galleryStatus !== 'granted') {
+    const { status: cameraStatus } =
+      await ImagePicker.requestCameraPermissionsAsync();
+    const { status: galleryStatus } =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (cameraStatus !== "granted" || galleryStatus !== "granted") {
       Alert.alert(
-        'Permissions Required',
-        'Camera and photo library permissions are required to upload images.',
-        [{ text: 'OK' }]
-      )
-      return false
+        "Permissions Required",
+        "Camera and photo library permissions are required to upload images.",
+        [{ text: "OK" }]
+      );
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const showImagePickerOptions = () => {
-    if (disabled) return
-    
-    Alert.alert(
-      'Select Image',
-      'Choose how you want to select an image',
-      [
-        {
-          text: 'Camera',
-          onPress: () => pickImage('camera'),
-        },
-        {
-          text: 'Gallery',
-          onPress: () => pickImage('gallery'),
-        },
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-      ]
-    )
-  }
+    if (disabled) return;
 
-  const pickImage = async (source: 'camera' | 'gallery') => {
-    const hasPermissions = await requestPermissions()
-    if (!hasPermissions) return
+    Alert.alert("Select Image", "Choose how you want to select an image", [
+      {
+        text: "Camera",
+        onPress: () => pickImage("camera"),
+      },
+      {
+        text: "Gallery",
+        onPress: () => pickImage("gallery"),
+      },
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+    ]);
+  };
 
-    setLoading(true)
-    
+  const pickImage = async (source: "camera" | "gallery") => {
+    const hasPermissions = await requestPermissions();
+    if (!hasPermissions) return;
+
+    setLoading(true);
+
     try {
-      let result
-      
-      if (source === 'camera') {
+      let result;
+
+      if (source === "camera") {
         result = await ImagePicker.launchCameraAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
-          aspect: [3, 4],
           quality: 0.8,
-        })
+        });
       } else {
         result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
-          aspect: [3, 4],
           quality: 0.8,
-        })
+        });
       }
 
       if (!result.canceled && result.assets[0]) {
-        onImageSelect(result.assets[0].uri)
+        onImageSelect(result.assets[0].uri);
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to pick image. Please try again.')
-      console.error('Image picker error:', error)
+      Alert.alert("Error", "Failed to pick image. Please try again.");
+      console.error("Image picker error:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const removeImage = () => {
-    onImageSelect('')
-  }
+    onImageSelect("");
+  };
 
   if (selectedImage) {
     return (
       <View className="relative">
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={showImagePickerOptions}
           disabled={disabled}
           activeOpacity={0.8}
-          className={`rounded-xl overflow-hidden ${disabled ? 'opacity-50' : ''}`}
+          className={`rounded-xl overflow-hidden ${disabled ? "opacity-50" : ""}`}
         >
           <Image
             source={{ uri: selectedImage }}
@@ -117,7 +113,7 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
             </View>
           </View>
         </TouchableOpacity>
-        
+
         {!disabled && (
           <TouchableOpacity
             onPress={removeImage}
@@ -128,18 +124,18 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
           </TouchableOpacity>
         )}
       </View>
-    )
+    );
   }
 
   return (
     <View>
-      <TouchableOpacity 
+      <TouchableOpacity
         onPress={showImagePickerOptions}
         disabled={disabled || loading}
         activeOpacity={0.8}
         className={`flex items-center justify-center border-2 border-virtual-primary-light border-dotted p-10 rounded-xl gap-4 ${
-          disabled ? 'opacity-50' : ''
-        } ${loading ? 'bg-gray-50' : ''}`}
+          disabled ? "opacity-50" : ""
+        } ${loading ? "bg-gray-50" : ""}`}
       >
         {loading ? (
           <>
@@ -170,7 +166,7 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
         )}
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default UploadSkeleton
+export default UploadSkeleton;

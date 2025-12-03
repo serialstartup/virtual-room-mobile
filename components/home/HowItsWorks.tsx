@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import WorkflowShowcaseSection from "./WorkflowShowcaseSection";
+import TitleSection from "../TitleSection";
 
 const HowItsWorks = () => {
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ const HowItsWorks = () => {
       id: 3,
       title: t("home.workflowShowcase.classic.steps.step3.title"),
       description: t("home.workflowShowcase.classic.steps.step3.description"),
-      image: require("@/assets/images/try-on-model.png"),
+      image: require("@/assets/images/ai-working.jpg"),
       badge: t("home.workflowShowcase.classic.steps.step3.badge"),
     },
     {
@@ -58,7 +59,7 @@ const HowItsWorks = () => {
       id: 2,
       title: t("home.workflowShowcase.avatar.steps.step2.title"),
       description: t("home.workflowShowcase.avatar.steps.step2.description"),
-      image: require("@/assets/images/avatar-model.png"),
+      image: require("@/assets/images/ai-working.jpg"),
       badge: t("home.workflowShowcase.avatar.steps.step2.badge"),
     },
     {
@@ -87,7 +88,7 @@ const HowItsWorks = () => {
       description: t(
         "home.workflowShowcase.productToModel.steps.step2.description"
       ),
-      image: require("@/assets/images/product-model.png"),
+      image: require("@/assets/images/ai-working.jpg"),
       badge: t("home.workflowShowcase.productToModel.steps.step2.badge"),
     },
     {
@@ -118,7 +119,7 @@ const HowItsWorks = () => {
       description: t(
         "home.workflowShowcase.textToFashion.steps.step2.description"
       ),
-      image: require("@/assets/images/fashion-model.png"),
+      image: require("@/assets/images/ai-working.jpg"),
       badge: t("home.workflowShowcase.textToFashion.steps.step2.badge"),
     },
     {
@@ -135,54 +136,95 @@ const HowItsWorks = () => {
   return (
     <View className="bg-gray-50 py-10">
       {/* Main Header */}
-      <View className="px-6 mb-8">
-        <Text className="text-3xl font-bold text-gray-900 mb-2">
-          {t("home.workflowShowcase.sectionTitle")}
-        </Text>
-        <Text className="text-lg text-gray-600">
-          {t("home.workflowShowcase.sectionSubtitle")}
-        </Text>
-      </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-        {/* Classic Try-On Section */}
-        <WorkflowShowcaseSection
-          workflowType="classic"
-          title={t("home.workflowShowcase.classic.title")}
-          subtitle={t("home.workflowShowcase.classic.subtitle")}
-          steps={classicSteps}
-          accentColor={colors.classic}
-        />
+      <TitleSection
+        subtitle={t("home.workflowShowcase.sectionSubtitle")}
+        title={t("home.workflowShowcase.sectionTitle")}
+      >
+        <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+          {/* Classic Try-On Section */}
+          <WorkflowShowcaseSection
+            workflowType="classic"
+            title={t("home.workflowShowcase.classic.title")}
+            subtitle={t("home.workflowShowcase.classic.subtitle")}
+            steps={classicSteps}
+            accentColor={colors.classic}
+          />
 
-        {/* Avatar Try-On Section */}
-        <WorkflowShowcaseSection
-          workflowType="avatar"
-          title={t("home.workflowShowcase.avatar.title")}
-          subtitle={t("home.workflowShowcase.avatar.subtitle")}
-          steps={avatarSteps}
-          accentColor={colors.avatar}
-        />
+          {/* Avatar Try-On Section */}
+          <WorkflowShowcaseSection
+            workflowType="avatar"
+            title={t("home.workflowShowcase.avatar.title")}
+            subtitle={t("home.workflowShowcase.avatar.subtitle")}
+            steps={avatarSteps}
+            accentColor={colors.classic}
+          />
 
-        {/* Product to Model Section */}
-        <WorkflowShowcaseSection
-          workflowType="product-to-model"
-          title={t("home.workflowShowcase.productToModel.title")}
-          subtitle={t("home.workflowShowcase.productToModel.subtitle")}
-          steps={productToModelSteps}
-          accentColor={colors.productToModel}
-        />
+          {/* Product to Model Section */}
+          <WorkflowShowcaseSection
+            workflowType="product-to-model"
+            title={t("home.workflowShowcase.productToModel.title")}
+            subtitle={t("home.workflowShowcase.productToModel.subtitle")}
+            steps={productToModelSteps}
+            accentColor={colors.classic}
+          />
 
-        {/* Text to Fashion Section */}
-        <WorkflowShowcaseSection
-          workflowType="text-to-fashion"
-          title={t("home.workflowShowcase.textToFashion.title")}
-          subtitle={t("home.workflowShowcase.textToFashion.subtitle")}
-          steps={textToFashionSteps}
-          accentColor={colors.textToFashion}
-        />
-      </ScrollView>
+          {/* Text to Fashion Section */}
+          <WorkflowShowcaseSection
+            workflowType="text-to-fashion"
+            title={t("home.workflowShowcase.textToFashion.title")}
+            subtitle={t("home.workflowShowcase.textToFashion.subtitle")}
+            steps={textToFashionSteps}
+            accentColor={colors.classic}
+          />
+        </ScrollView>
+      </TitleSection>
     </View>
   );
 };
 
 export default HowItsWorks;
+
+//  <View className="px-6 mb-8">
+//       <Text className="text-3xl text-center font-bold text-gray-900 my-4">
+//         {t("home.workflowShowcase.sectionTitle")}
+//       </Text>
+//     </View>
+
+//     <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+//       {/* Classic Try-On Section */}
+//       <WorkflowShowcaseSection
+//         workflowType="classic"
+//         title={t("home.workflowShowcase.classic.title")}
+//         subtitle={t("home.workflowShowcase.classic.subtitle")}
+//         steps={classicSteps}
+//         accentColor={colors.classic}
+//       />
+
+//       {/* Avatar Try-On Section */}
+//       <WorkflowShowcaseSection
+//         workflowType="avatar"
+//         title={t("home.workflowShowcase.avatar.title")}
+//         subtitle={t("home.workflowShowcase.avatar.subtitle")}
+//         steps={avatarSteps}
+//         accentColor={colors.classic}
+//       />
+
+//       {/* Product to Model Section */}
+//       <WorkflowShowcaseSection
+//         workflowType="product-to-model"
+//         title={t("home.workflowShowcase.productToModel.title")}
+//         subtitle={t("home.workflowShowcase.productToModel.subtitle")}
+//         steps={productToModelSteps}
+//         accentColor={colors.classic}
+//       />
+
+//       {/* Text to Fashion Section */}
+//       <WorkflowShowcaseSection
+//         workflowType="text-to-fashion"
+//         title={t("home.workflowShowcase.textToFashion.title")}
+//         subtitle={t("home.workflowShowcase.textToFashion.subtitle")}
+//         steps={textToFashionSteps}
+//         accentColor={colors.classic}
+//       />
+//     </ScrollView>

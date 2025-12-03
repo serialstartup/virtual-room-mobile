@@ -26,7 +26,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle, showIcon = fal
         </Text>
         
         {/* Decorative underline */}
-        <View className="w-16 h-1 bg-virtual-primary rounded-full mb-4" />
+        <View className="w-16 h-1 bg-virtual-primary rounded-full mb-1" />
         
         {/* Subtitle */}
         {subtitle && (

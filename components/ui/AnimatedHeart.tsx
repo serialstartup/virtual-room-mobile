@@ -1,7 +1,7 @@
-import { TouchableOpacity, ViewStyle } from 'react-native';
-import { MotiView } from 'moti';
-import { Heart } from 'lucide-react-native';
-import { HapticFeedback } from './haptic-feedback';
+import { TouchableOpacity, ViewStyle, View } from "react-native";
+import { MotiView } from "moti";
+import { Heart } from "lucide-react-native";
+import { HapticFeedback } from "./haptic-feedback";
 
 interface AnimatedHeartProps {
   isLiked: boolean;
@@ -14,7 +14,7 @@ interface AnimatedHeartProps {
   containerStyle?: ViewStyle;
   likedColor?: string;
   unlikedColor?: string;
-  hapticType?: 'light' | 'medium' | 'heavy' | 'selection';
+  hapticType?: "light" | "medium" | "heavy" | "selection";
 }
 
 const AnimatedHeart: React.FC<AnimatedHeartProps> = ({
@@ -28,31 +28,21 @@ const AnimatedHeart: React.FC<AnimatedHeartProps> = ({
   containerStyle,
   likedColor = "#ec4899",
   unlikedColor = "#6b7280",
-  hapticType = "light"
+  hapticType = "light",
 }) => {
   const handlePress = () => {
     if (disabled) return;
-    
+
     // Trigger haptic feedback
     HapticFeedback.trigger(hapticType);
-    
+
     // Call the toggle function
     onToggle();
   };
 
   return (
-    <MotiView
-      animate={{
-        scale: isLiked ? [1, 1.05, 1] : [1, 0.9, 1],
-      }}
-      transition={{
-        type: 'timing',
-        duration: 300,
-      }}
-      style={containerStyle}
-      className={containerClassName}
-    >
-      <TouchableOpacity 
+    <View style={containerStyle} className={containerClassName}>
+      <TouchableOpacity
         className={className}
         style={style}
         onPress={handlePress}
@@ -60,24 +50,24 @@ const AnimatedHeart: React.FC<AnimatedHeartProps> = ({
         disabled={disabled}
       >
         <MotiView
+          from={{ scale: 1 }}
           animate={{
-            scale: isLiked ? 1 : 0.8,
-            rotate: isLiked ? '0deg' : '0deg',
+            scale: isLiked ? [1, 1.2, 1] : 1,
           }}
           transition={{
-            type: 'spring',
+            type: "spring",
             damping: 15,
-            stiffness: 150,
+            stiffness: 200,
           }}
         >
-          <Heart 
-            size={size} 
-            color={isLiked ? likedColor : unlikedColor} 
+          <Heart
+            size={size}
+            color={isLiked ? likedColor : unlikedColor}
             fill={isLiked ? likedColor : "transparent"}
           />
         </MotiView>
       </TouchableOpacity>
-    </MotiView>
+    </View>
   );
 };
 

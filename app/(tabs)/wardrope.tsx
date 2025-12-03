@@ -89,7 +89,6 @@ const Wardrope = () => {
       <SectionWrapper>
         <PageHeader
           title={t("wardrobePage.title")}
-          subtitle={t("wardrobePage.subtitle")}
         />
       </SectionWrapper>
 

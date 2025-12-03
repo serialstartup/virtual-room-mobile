@@ -100,7 +100,7 @@ const EachOutput: React.FC<EachOutputProps> = ({
                   overflow: "hidden",
                 }}
               >
-                <TouchableOpacity style={{ backgroundColor: "white" }}>
+                <View style={{ backgroundColor: "white" }}>
                   {/* Image Container */}
                   <View style={{ position: "relative" }}>
                     <Image
@@ -196,7 +196,7 @@ const EachOutput: React.FC<EachOutputProps> = ({
                       </AnimatedView>
                     </View>
                   </View>
-                </TouchableOpacity>
+                </View>
               </View>
             );
           })

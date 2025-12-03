@@ -288,15 +288,15 @@
           "description": "Experience virtual fitting with advanced AI technology."
         },
         "ecommerce": {
-          "title": "E-commerce Integration",
-          "description": "Try on real products from your favorite stores and save them."
+          "title": "See Products on Yourself",
+          "description": "You can create a model or try on clothes yourself."
         },
         "favorites": {
           "title": "Save Your Favorites",
           "description": "Build your personal wardrobe collection within the app."
         },
         "share": {
-          "title": "Share & Discover",
+          "title": "Download & Share",
           "description": "Share your looks and find similar products, create combinations easily."
         }
       }
