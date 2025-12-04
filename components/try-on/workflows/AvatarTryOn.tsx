@@ -79,13 +79,13 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       console.log("[AVATAR_TRYON] 🎯 Starting avatar creation...");
       
       // Track start (wrapped in try-catch to isolate analytics issues)
-      try {
-        // analytics.trackAvatarModelGeneration(
-          faceImage.startsWith("file://") ? "camera" : "upload"
-        );
-      } catch (analyticsError) {
-        console.warn("[AVATAR_TRYON] ⚠️ Analytics tracking start failed:", analyticsError);
-      }
+      // try {
+      //   analytics.trackAvatarModelGeneration(
+      //     faceImage.startsWith("file://") ? "camera" : "upload"
+      //   );
+      // } catch (analyticsError) {
+      //   console.warn("[AVATAR_TRYON] ⚠️ Analytics tracking start failed:", analyticsError);
+      // }
       
 
       const finalName = avatarName.trim() || generateRandomName();

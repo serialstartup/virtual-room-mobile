@@ -10,7 +10,7 @@ import { X, Zap, Check, Sparkles } from "lucide-react-native";
 import { useState, useEffect } from "react";
 import { MotiView } from "moti";
 import { useTranslation } from "react-i18next";
-import Purchases, { PurchasesPackage } from "react-native-purchases";
+// import Purchases, { PurchasesPackage } from "react-native-purchases";
 
 interface TokenPackage {
   id: string;

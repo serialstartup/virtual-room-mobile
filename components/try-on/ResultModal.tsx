@@ -224,7 +224,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
     resultData,
     isAvatarProcessing,
     isTextToFashionProcessing,
-    currentStatus,
+    getStatus,
   ]);
 
   // Load existing feedback when component mounts or tryOnId changes
@@ -327,11 +327,12 @@ const ResultModal: React.FC<ResultModalProps> = ({
   }, [
     currentStatus,
     tryOnId,
-    getImageUrl(resultData),
+    resultData,
     autoSaved,
     isLiked,
     isAvatarProcessing,
     isTextToFashionProcessing,
+    getImageUrl,
   ]);
 
   const handleToggleLike = async () => {

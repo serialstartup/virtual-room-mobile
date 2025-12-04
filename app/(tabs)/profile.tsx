@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import { PageWrapper, SectionWrapper } from "@/components";
 import PageHeader from "@/components/PageHeader";
 import ProfileSettings from "@/components/profile/ProfileSettings";
-import PremiumCard from "@/components/profile/PremiumCard";
+// import PremiumCard from "@/components/profile/PremiumCard";
 import GeneralSettings from "@/components/profile/GeneralSettings";
 import CriticialButtons from "@/components/profile/CriticialButtons";
 import { useTranslation } from "react-i18next";
