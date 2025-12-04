@@ -1,4 +1,3 @@
-import { Text } from "react-native";
 import TitleSectionTab from "./TitleSectionTab";
 import UploadSkeleton from "./UploadSkeleton";
 import UploadWithAvatarSelection from "./UploadWithAvatarSelection";

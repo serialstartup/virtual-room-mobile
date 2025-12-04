@@ -1,6 +1,6 @@
 import TitleSectionTab from "./TitleSectionTab";
 import { View } from "react-native";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 
 type FormValues = {
@@ -15,7 +15,6 @@ interface ProductDressTabProps {
 const ProductDressTab: React.FC<ProductDressTabProps> = ({ onImageSelect, selectedImage }) => {
   const {
     control,
-    handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -23,16 +22,12 @@ const ProductDressTab: React.FC<ProductDressTabProps> = ({ onImageSelect, select
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // Pass the URL as image selection
-    onImageSelect(data.productURL);
-  };
 
   return (
     <TitleSectionTab title="Ürün URL Yapıştır">
       <View className="p-2">
         <Input
-          name="description"
+          name="productURL"
           control={control}
           placeholder="https:johndoe.com/ürün/kıyafet"
           numberOfLines={1}

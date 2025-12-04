@@ -123,14 +123,14 @@ const ResultModal: React.FC<ResultModalProps> = ({
       : subscribeTryOnUpdates;
 
   // Type-safe property access
-  const getStatus = (data: any) => {
+  const getStatus = useCallback((data: any) => {
     if (isAvatarProcessing || isTextToFashionProcessing) {
       return data?.status;
     }
     return data?.processing_status;
-  };
+  }, [isAvatarProcessing, isTextToFashionProcessing]);
 
-  const getImageUrl = (data: any) => {
+  const getImageUrl = useCallback((data: any) => {
     if (isAvatarProcessing) {
       return data?.avatar_image_url;
     }
@@ -138,7 +138,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
       return data?.image_url;
     }
     return data?.result_image;
-  };
+  }, [isAvatarProcessing, isTextToFashionProcessing]);
 
   // Use ref to avoid dependency issues
   const addToWardrobeRef = useRef(addToWardrobe);

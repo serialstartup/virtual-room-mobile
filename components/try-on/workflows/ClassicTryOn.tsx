@@ -100,10 +100,6 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
     }
 
     try {
-      // Track start
-      // analytics.trackTryOnStarted("classic");
-      const startTime = Date.now();
-
       const tryOnData = {
         self_image:
           classicData.selectedAvatar?.avatar_image_url ||
@@ -115,11 +111,6 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       };
 
       const newTryOn = await createTryOn(tryOnData);
-
-      // Track completion and credit usage
-      const processingTime = Date.now() - startTime;
-      // analytics.trackTryOnCompleted("classic", 1, processingTime);
-      // analytics.trackCreditUsed(1, "classic_try_on");
 
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {

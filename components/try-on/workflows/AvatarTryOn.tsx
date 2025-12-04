@@ -48,7 +48,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ['images'],
         allowsEditing: true,
         aspect: [1, 1], // Square aspect ratio for faces
         quality: 0.8,
@@ -99,7 +99,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       console.log("[AVATAR_TRYON] 📋 Avatar data prepared:", avatarData);
 
       // Call createAvatar with try-catch for more specific error handling
-      let newAvatar;
+      let newAvatar: any;
       try {
         console.log("[AVATAR_TRYON] 🚀 Calling createAvatar...");
         newAvatar = await createAvatar(avatarData);
@@ -114,8 +114,8 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       // Track completion (wrapped in try-catch to isolate analytics issues)
       try {
         // analytics.trackAvatarCreated(
-          faceImage.startsWith("file://") ? "camera" : "upload"
-        );
+        //   faceImage.startsWith("file://") ? "camera" : "upload"
+        // );
         // analytics.trackCreditUsed(3, "avatar_creation");
       } catch (analyticsError) {
         console.warn("[AVATAR_TRYON] ⚠️ Analytics tracking completion failed:", analyticsError);
