@@ -37,7 +37,7 @@ const ReusableButton: FC<ReusableButtonProps> = ({
         style={style}
       >
         <Text
-          className={`font-semibold text-center text-base ${textColor ? textColor : "text-white"} ${textShadow && "text-shadow-lg"}`}
+          className={`font-outfit-semibold text-center text-base ${textColor ? textColor : "text-white"} ${textShadow && "text-shadow-lg"}`}
         >
           {title}
         </Text>
@@ -53,7 +53,7 @@ const ReusableButton: FC<ReusableButtonProps> = ({
       style={style}
     >
       <Text
-        className={`font-semibold text-center text-base ${textColor ? textColor : "text-black"} ${textShadow && "text-shadow-lg"}`}
+        className={`font-outfit-semibold text-center text-base ${textColor ? textColor : "text-black"} ${textShadow && "text-shadow-lg"}`}
       >
         {title}
       </Text>

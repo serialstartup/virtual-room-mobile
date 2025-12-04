@@ -18,10 +18,10 @@ const ReadyButton = () => {
         end={{ x: 1, y: 0.5 }}
       >
         <View className="flex-col items-center justify-center py-8 px-10 gap-4">
-          <Text className="text-center text-white font-semibold text-3xl">
+          <Text className="text-center text-white font-outfit-semibold text-3xl">
             {t("home.readySection.title")}
           </Text>
-          <Text className=" text-center text-white mb-6">
+          <Text className=" text-center font-outfit-medium text-white mb-6">
             {t("home.readySection.subtitle")}
           </Text>
           <ReusableButton

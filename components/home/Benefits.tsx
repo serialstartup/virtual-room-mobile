@@ -54,10 +54,10 @@ const Benefits = () => {
                 <View className="bg-virtual-primary-light p-2 rounded-full ">
                   {benefit.icon}
                 </View>
-                <Text className="text-base font-semibold mt-4">
+                <Text className="text-lg font-outfit-medium mt-4">
                   {benefit.title}
                 </Text>
-                <Text className="text-base text-virtual-text-muted-dark">
+                <Text className="text-base font-outfit text-virtual-text-muted-dark">
                   {benefit.description}
                 </Text>
               </View>

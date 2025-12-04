@@ -120,7 +120,7 @@ Veri haklarınızı kullanmak için ayarlar menüsünden işlem yapabilirsiniz.
               <View className="bg-white p-2 rounded-full">
                 {icon}
               </View>
-              <Text className="text-xl font-bold text-gray-800">{title}</Text>
+              <Text className="text-xl font-outfit-bold text-gray-800">{title}</Text>
             </View>
             <TouchableOpacity
               onPress={onClose}
@@ -134,7 +134,7 @@ Veri haklarınızı kullanmak için ayarlar menüsünden işlem yapabilirsiniz.
 
         {/* Content */}
         <ScrollView className="flex-1 p-6">
-          <Text className="text-gray-700 text-base leading-6 whitespace-pre-line">
+          <Text className="text-gray-700 text-base font-outfit leading-6 whitespace-pre-line">
             {content}
           </Text>
         </ScrollView>

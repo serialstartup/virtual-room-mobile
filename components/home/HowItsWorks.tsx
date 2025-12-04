@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
 import WorkflowShowcaseSection from "./WorkflowShowcaseSection";
 import TitleSection from "../TitleSection";
@@ -144,7 +144,6 @@ const HowItsWorks = () => {
         <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
           {/* Classic Try-On Section */}
           <WorkflowShowcaseSection
-            workflowType="classic"
             title={t("home.workflowShowcase.classic.title")}
             subtitle={t("home.workflowShowcase.classic.subtitle")}
             steps={classicSteps}
@@ -153,7 +152,6 @@ const HowItsWorks = () => {
 
           {/* Avatar Try-On Section */}
           <WorkflowShowcaseSection
-            workflowType="avatar"
             title={t("home.workflowShowcase.avatar.title")}
             subtitle={t("home.workflowShowcase.avatar.subtitle")}
             steps={avatarSteps}
@@ -162,7 +160,6 @@ const HowItsWorks = () => {
 
           {/* Product to Model Section */}
           <WorkflowShowcaseSection
-            workflowType="product-to-model"
             title={t("home.workflowShowcase.productToModel.title")}
             subtitle={t("home.workflowShowcase.productToModel.subtitle")}
             steps={productToModelSteps}
@@ -171,7 +168,6 @@ const HowItsWorks = () => {
 
           {/* Text to Fashion Section */}
           <WorkflowShowcaseSection
-            workflowType="text-to-fashion"
             title={t("home.workflowShowcase.textToFashion.title")}
             subtitle={t("home.workflowShowcase.textToFashion.subtitle")}
             steps={textToFashionSteps}
@@ -184,47 +180,3 @@ const HowItsWorks = () => {
 };
 
 export default HowItsWorks;
-
-//  <View className="px-6 mb-8">
-//       <Text className="text-3xl text-center font-bold text-gray-900 my-4">
-//         {t("home.workflowShowcase.sectionTitle")}
-//       </Text>
-//     </View>
-
-//     <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
-//       {/* Classic Try-On Section */}
-//       <WorkflowShowcaseSection
-//         workflowType="classic"
-//         title={t("home.workflowShowcase.classic.title")}
-//         subtitle={t("home.workflowShowcase.classic.subtitle")}
-//         steps={classicSteps}
-//         accentColor={colors.classic}
-//       />
-
-//       {/* Avatar Try-On Section */}
-//       <WorkflowShowcaseSection
-//         workflowType="avatar"
-//         title={t("home.workflowShowcase.avatar.title")}
-//         subtitle={t("home.workflowShowcase.avatar.subtitle")}
-//         steps={avatarSteps}
-//         accentColor={colors.classic}
-//       />
-
-//       {/* Product to Model Section */}
-//       <WorkflowShowcaseSection
-//         workflowType="product-to-model"
-//         title={t("home.workflowShowcase.productToModel.title")}
-//         subtitle={t("home.workflowShowcase.productToModel.subtitle")}
-//         steps={productToModelSteps}
-//         accentColor={colors.classic}
-//       />
-
-//       {/* Text to Fashion Section */}
-//       <WorkflowShowcaseSection
-//         workflowType="text-to-fashion"
-//         title={t("home.workflowShowcase.textToFashion.title")}
-//         subtitle={t("home.workflowShowcase.textToFashion.subtitle")}
-//         steps={textToFashionSteps}
-//         accentColor={colors.classic}
-//       />
-//     </ScrollView>

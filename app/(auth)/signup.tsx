@@ -40,20 +40,29 @@ const Signup = () => {
   const onSubmit: SubmitHandler<SignupFormValues> = async (data) => {
     setIsLoading(true);
     try {
-      // Mock API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      // Import authService dynamically to avoid circular imports
+      const { authService } = await import("@/services/auth");
+      
+      const signupData = {
+        email: data.email,
+        password: data.password,
+        name: data.name || undefined,
+      };
 
-      // Simulate signup success
-      Alert.alert(t("signup.success.title"), t("signup.success.message"), [
-        {
-          text: t("signup.success.button"),
-          onPress: () => router.replace("/(tabs)"),
-        },
-      ]);
-    } catch {
+      const response = await authService.signup(signupData);
+
+      if (response.user) {
+        Alert.alert(t("signup.success.title"), t("signup.success.message"), [
+          {
+            text: t("signup.success.button"),
+            onPress: () => router.replace("/(tabs)"),
+          },
+        ]);
+      }
+    } catch (error: any) {
       Alert.alert(
         t("signup.errors.defaultError"),
-        t("signup.errors.createError"),
+        error.message || t("signup.errors.createError"),
         [{ text: t("common.ok") }]
       );
     } finally {
@@ -69,10 +78,10 @@ const Signup = () => {
           <View className="bg-virtual-primary/10 p-4 rounded-full mb-4">
             <Sparkles color="#ec4899" size={32} />
           </View>
-          <Text className="text-3xl font-bold text-gray-800 mb-2">
+          <Text className="text-3xl font-outfit-semibold text-gray-800 mb-2">
             {t("signup.title")}
           </Text>
-          <Text className="text-gray-500 text-center">
+          <Text className="text-gray-500 font-outfit text-center">
             {t("signup.subtitle")}
           </Text>
         </View>
@@ -135,13 +144,13 @@ const Signup = () => {
 
           {/* Terms Agreement */}
           <View className="mb-6">
-            <Text className="text-gray-500 text-center text-sm leading-5">
+            <Text className="text-gray-500 text-center font-outfit text-sm leading-5">
               {t("signup.termsText")}{" "}
-              <Text className="text-virtual-primary font-medium">
+              <Text className="text-virtual-primary font-outfit-medium">
                 {t("signup.termsLink")}
               </Text>{" "}
               {t("signup.and")}{" "}
-              <Text className="text-virtual-primary font-medium">
+              <Text className="text-virtual-primary font-outfit-medium">
                 {t("signup.privacyLink")}
               </Text>
               {t("signup.privacyEnd")}
@@ -166,7 +175,7 @@ const Signup = () => {
           {/* Divider */}
           <View className="flex-row items-center my-6">
             <View className="flex-1 h-px bg-gray-200" />
-            <Text className="mx-4 text-gray-500">{t("signup.or")}</Text>
+            <Text className="mx-4 text-gray-500 font-outfit">{t("signup.or")}</Text>
             <View className="flex-1 h-px bg-gray-200" />
           </View>
 
@@ -189,7 +198,7 @@ const Signup = () => {
 
         {/* Login Link */}
         <View className="items-center pb-4">
-          <Text className="text-gray-500">
+          <Text className="font-outfit text-gray-500">
             {t("signup.hasAccount")}{" "}
             <Link
               href="/(auth)/login"

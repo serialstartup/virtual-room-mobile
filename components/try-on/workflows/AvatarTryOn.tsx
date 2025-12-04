@@ -14,7 +14,7 @@ import { useAvatar } from "@/hooks/useAvatar";
 import { useWorkflowStore } from "@/store/workflowStore";
 import ReusableButton from "@/components/ui/ReusableButton";
 import * as ImagePicker from "expo-image-picker";
-import { analytics } from "@/services/analytics";
+// import { analytics } from "@/services/analytics";
 
 interface AvatarTryOnProps {
   onTryOnCreate: (tryOnId: string) => void;
@@ -80,7 +80,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       
       // Track start (wrapped in try-catch to isolate analytics issues)
       try {
-        analytics.trackAvatarModelGeneration(
+        // analytics.trackAvatarModelGeneration(
           faceImage.startsWith("file://") ? "camera" : "upload"
         );
       } catch (analyticsError) {
@@ -113,10 +113,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
 
       // Track completion (wrapped in try-catch to isolate analytics issues)
       try {
-        analytics.trackAvatarCreated(
+        // analytics.trackAvatarCreated(
           faceImage.startsWith("file://") ? "camera" : "upload"
         );
-        analytics.trackCreditUsed(3, "avatar_creation");
+        // analytics.trackCreditUsed(3, "avatar_creation");
       } catch (analyticsError) {
         console.warn("[AVATAR_TRYON] ⚠️ Analytics tracking completion failed:", analyticsError);
       }
@@ -171,10 +171,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                 <Ionicons name="person-outline" size={24} color="white" />
               </View>
               <View>
-                <Text className="text-2xl font-bold text-gray-900">
+                <Text className="text-2xl font-outfit-semibold text-gray-900">
                   Create Avatar
                 </Text>
-                <Text className="text-lg text-gray-600">
+                <Text className="text-lg font-outfit text-gray-600">
                   Upload your face photo
                 </Text>
               </View>
@@ -189,10 +189,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                   color="#3B82F6"
                 />
                 <View className="ml-3 flex-1">
-                  <Text className="font-semibold text-blue-900 mb-2">
+                  <Text className="font-outfit-semibold text-blue-900 mb-2">
                     Privacy First
                   </Text>
-                  <Text className="text-blue-800 text-sm">
+                  <Text className="text-blue-800 font-outfit text-sm">
                     Mahremiyetinizi önemsiyoruz. Yüzünüzü yükleyin ve vücüdü
                     olan bir avatar oluşturalım, bu avatar üzerinden işlemlere
                     devam edin.
@@ -203,7 +203,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
 
             {/* Avatar Name Input */}
             <View className="mb-6">
-              <Text className="text-lg font-semibold text-gray-900 mb-3">
+              <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                 Avatar İsmi (Opsiyonel)
               </Text>
               <TextInput
@@ -217,7 +217,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
 
             {/* Face Image Upload */}
             <View className="mb-6">
-              <Text className="text-lg font-semibold text-gray-900 mb-3">
+              <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                 Yüz Fotoğrafı *
               </Text>
               <TouchableOpacity
@@ -233,20 +233,20 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                         contentFit="cover"
                       />
                     </View>
-                    <Text className="text-blue-600 font-semibold">
+                    <Text className="text-blue-600 font-outfit-semibold">
                       Fotoğraf Seçildi ✓
                     </Text>
-                    <Text className="text-gray-500 text-sm">
+                    <Text className="text-gray-500 font-outfit text-sm">
                       Değiştirmek için tekrar dokunun
                     </Text>
                   </View>
                 ) : (
                   <View className="items-center">
                     <Ionicons name="camera-outline" size={40} color="#6B7280" />
-                    <Text className="text-gray-700 font-semibold mt-3">
+                    <Text className="text-gray-700 font-outfit-semibold mt-3">
                       Yüz Fotoğrafı Seçin
                     </Text>
-                    <Text className="text-gray-500 text-sm text-center mt-1">
+                    <Text className="text-gray-500 font-outfit text-sm text-center mt-1">
                       En iyi sonuç için net, iyi aydınlatılmış selfie kullanın
                     </Text>
                   </View>
@@ -263,10 +263,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                   color="#10B981"
                 />
                 <View className="ml-3 flex-1">
-                  <Text className="font-semibold text-green-900 mb-2">
+                  <Text className="font-outfit-semibold text-green-900 mb-2">
                     İdeal Fotoğraf Özellikleri
                   </Text>
-                  <Text className="text-green-800 text-sm">
+                  <Text className="text-green-800 font-outfit text-sm">
                     • Yüz net görünür olmalı{"\n"}• İyi aydınlatma{"\n"}• Tek
                     kişi{"\n"}• Gözlük veya maske olmadan{"\n"}• Frontal açı
                   </Text>

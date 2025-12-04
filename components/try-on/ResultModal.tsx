@@ -395,7 +395,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
       return (
         <View className="items-center py-8">
           <ActivityIndicator size="large" color="#6366f1" />
-          <Text className="text-gray-600 mt-4">{t("common.loading")}</Text>
+          <Text className="text-gray-600 font-outfit mt-4">{t("common.loading")}</Text>
         </View>
       );
     }
@@ -403,14 +403,14 @@ const ResultModal: React.FC<ResultModalProps> = ({
     if (error) {
       return (
         <View className="items-center py-8">
-          <Text className="text-red-500 text-center mb-4">
+          <Text className="text-red-500 font-outfit text-center mb-4">
             {t("common.error")}: {error.message}
           </Text>
           <TouchableOpacity
             onPress={handleRetry}
             className="bg-virtual-primary px-6 py-3 rounded-lg"
           >
-            <Text className="text-white font-semibold">
+            <Text className="text-white font-outfit-semibold">
               {t("common.retry")}
             </Text>
           </TouchableOpacity>
@@ -423,12 +423,12 @@ const ResultModal: React.FC<ResultModalProps> = ({
       return (
         <View className="items-center py-8">
           <ActivityIndicator size="large" color="#6366f1" />
-          <Text className="text-gray-600 mt-4">
+          <Text className="text-gray-600 font-outfit mt-4">
             {isAvatarProcessing
-              ? "Loading avatar..."
+              ? t("workflows.buttons.loadingAvatar")
               : isTextToFashionProcessing
-                ? "Loading text-to-fashion model..."
-                : "Loading try-on..."}
+                ? t("workflows.buttons.loadingTextToFashion")
+                : t("workflows.buttons.loadingTryOn")}
           </Text>
         </View>
       );
@@ -441,7 +441,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
             <View className="w-20 h-20 rounded-full border-4 border-gray-200 items-center justify-center mb-6">
               <ActivityIndicator size="large" color="#6366f1" />
             </View>
-            <Text className="text-gray-600 mt-4 text-center font-medium">
+            <Text className="text-gray-600 mt-4 text-center font-outfit-medium">
               {t("tryOn.messages.preparingRequest")}
             </Text>
           </View>
@@ -453,13 +453,13 @@ const ResultModal: React.FC<ResultModalProps> = ({
             <View className="w-24 h-24 rounded-full border-4 border-virtual-primary/20 items-center justify-center mb-6">
               <ActivityIndicator size="large" color="#6366f1" />
             </View>
-            <Text className="text-gray-600 mt-4 text-center font-semibold text-lg">
+            <Text className="text-gray-600 mt-4 text-center font-outfit-semibold text-lg">
               {t("tryOn.messages.processingDescription")}
             </Text>
-            <Text className="text-gray-400 mt-2 text-center text-sm">
+            <Text className="text-gray-400 mt-2 font-outfit text-center text-sm">
               {t("tryOn.messages.processingDuration")}
             </Text>
-            <Text className="text-gray-400 mt-4 text-center text-xs">
+            <Text className="text-gray-400 mt-4 font-outfit text-center text-xs">
               {t("tryOn.messages.processingTip")}
             </Text>
           </View>
@@ -505,7 +505,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                     <View className="absolute bottom-4 left-4 bg-black/70 px-3 py-2 rounded-full">
                       <View className="flex-row items-center">
                         <ActivityIndicator size="small" color="white" />
-                        <Text className="text-white text-xs ml-2">
+                        <Text className="text-white font-outfit text-xs ml-2">
                           {t("wardrobe.messages.autoSaving")}
                         </Text>
                       </View>
@@ -518,7 +518,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                   autoSaved &&
                   !isSavingToWardrobe && (
                     <View className="absolute bottom-4 left-4 bg-green-500/90 px-3 py-2 rounded-full">
-                      <Text className="text-white text-xs font-medium">
+                      <Text className="text-white text-xs font-outfit-medium">
                         {t("wardrobe.messages.autoSaved")}
                       </Text>
                     </View>
@@ -607,7 +607,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                     onPress={handleRetry}
                     className="bg-gray-200 px-6 py-3 rounded-lg flex-1"
                   >
-                    <Text className="text-gray-700 font-semibold text-center">
+                    <Text className="text-gray-700 font-outfit-semibold text-center">
                       {t("tryOn.buttons.newTryOn")}
                     </Text>
                   </TouchableOpacity>
@@ -615,7 +615,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                     onPress={handleClose}
                     className="bg-virtual-primary px-6 py-3 rounded-lg flex-1"
                   >
-                    <Text className="text-white font-semibold text-center">
+                    <Text className="text-white font-outfit-semibold text-center">
                       {t("common.close")}
                     </Text>
                   </TouchableOpacity>
@@ -626,7 +626,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
         } else {
           return (
             <View className="items-center py-8">
-              <Text className="text-red-500 text-center mb-4">
+              <Text className="text-red-500 font-outfit text-center mb-4">
                 🖼️ Image not available
               </Text>
               <Text className="text-gray-500 text-center text-sm">
@@ -639,26 +639,26 @@ const ResultModal: React.FC<ResultModalProps> = ({
       case "failed":
         return (
           <View className="items-center py-8">
-            <Text className="text-red-500 text-xl mb-2">❌</Text>
-            <Text className="text-red-500 text-center mb-4">
+            <Text className="text-red-500 font-outfit text-xl mb-2">❌</Text>
+            <Text className="text-red-500 font-outfit text-center mb-4">
               {t("errors.processingError")}
             </Text>
-            <Text className="text-gray-500 text-center mb-4 text-sm">
+            <Text className="text-gray-500 text-center font-outfit mb-4 text-sm">
               {error?.message || t("errors.unknownError")}
             </Text>
             {__DEV__ && resultData && (
               <View className="bg-gray-100 p-3 rounded-lg mb-4 w-full">
-                <Text className="text-xs text-gray-600 text-center">
+                <Text className="text-xs font-outfit text-gray-600 text-center">
                   DEBUG: Status={getStatus(resultData)}, ID=
                   {(resultData as any).id}
                 </Text>
-                <Text className="text-xs text-gray-600 text-center mt-1">
+                <Text className="text-xs text-gray-600 font-outfit text-center mt-1">
                   {isAvatarProcessing
                     ? `Avatar: name=${(resultData as any).name || "N/A"}, face_image=${(resultData as any).face_image_url ? "✓" : "✗"}`
                     : `Request: self_image=${(resultData as any).self_image ? "✓" : "✗"}, dress_desc=${(resultData as any).dress_description ? "✓" : "✗"}`}
                 </Text>
                 {error?.message && (
-                  <Text className="text-xs text-red-600 text-center mt-1">
+                  <Text className="text-xs font-outfit text-red-600 text-center mt-1">
                     Error: {error.message}
                   </Text>
                 )}
@@ -669,7 +669,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                 onPress={handleRetry}
                 className="bg-virtual-primary px-6 py-3 rounded-lg flex-1"
               >
-                <Text className="text-white font-semibold text-center">
+                <Text className="text-white font-outfit-semibold text-center">
                   {t("common.retry")}
                 </Text>
               </TouchableOpacity>
@@ -677,7 +677,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                 onPress={handleClose}
                 className="bg-gray-200 px-6 py-3 rounded-lg flex-1"
               >
-                <Text className="text-gray-700 font-semibold text-center">
+                <Text className="text-gray-700 font-outfit-semibold text-center">
                   {t("common.close")}
                 </Text>
               </TouchableOpacity>
@@ -688,7 +688,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
       default:
         return (
           <View className="items-center py-8">
-            <Text className="text-gray-600">{t("errors.unknownError")}</Text>
+            <Text className="text-gray-600 font-outfit">{t("errors.unknownError")}</Text>
           </View>
         );
     }
@@ -704,7 +704,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
       <View className="flex-1 bg-white">
         {/* Header */}
         <View className="flex-row items-center justify-between p-4 border-b border-gray-200">
-          <Text className="text-xl font-bold text-gray-800">
+          <Text className="text-2xl font-outfit-bold text-gray-800">
             {currentStatus === "completed"
               ? t("tryOn.processing.completed")
               : currentStatus === "processing"
@@ -719,7 +719,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
             disabled={currentStatus === "processing"}
           >
             <Text
-              className={`text-xl ${currentStatus === "processing" ? "text-gray-300" : "text-gray-500"}`}
+              className={`text-xl font-outfit ${currentStatus === "processing" ? "text-gray-300" : "text-gray-500"}`}
             >
               ✕
             </Text>

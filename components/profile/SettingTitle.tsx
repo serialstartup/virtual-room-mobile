@@ -44,7 +44,7 @@ const SettingTitle: React.FC<SettingTitleProps> = ({
           <View className="bg-white p-2 rounded-full">
             {getIcon()}
           </View>
-          <Text className="text-lg font-semibold text-gray-800">{title}</Text>
+          <Text className="text-lg font-outfit-semibold text-gray-800">{title}</Text>
         </View>
       </View>
       <View className="p-4">

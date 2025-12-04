@@ -13,9 +13,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "@/global.css";
 import "@/i18n";
-import Purchases from "react-native-purchases";
-import { Platform } from "react-native";
-import { analytics } from "@/services/analytics";
+// import Purchases from "react-native-purchases";
+// import { Platform } from "react-native";
+// import { analytics } from "@/services/analytics";
 import { onboardingStorage } from "@/services/onboardingStorage";
 import OnboardingScreen from "@/components/onboarding/OnboardingScreen";
 
@@ -49,41 +49,44 @@ export default function RootLayout() {
     checkOnboarding();
   }, []);
 
-  useEffect(() => {
-    const initRevenueCat = async () => {
-      try {
-        const apiKey = Platform.select({
-          ios: process.env.REVENUECAT_API_KEY_IOS,
-          android: process.env.REVENUECAT_API_KEY_ANDROID,
-        });
+  // RevenueCat and Analytics will be configured in closed testing phase
+  // For now, skip these integrations to avoid development noise
+  
+  // useEffect(() => {
+  //   const initRevenueCat = async () => {
+  //     try {
+  //       const apiKey = Platform.select({
+  //         ios: process.env.REVENUECAT_API_KEY_IOS,
+  //         android: process.env.REVENUECAT_API_KEY_ANDROID,
+  //       });
 
-        if (apiKey) {
-          await Purchases.configure({ apiKey });
-          // Enable debug logs for development
-          if (__DEV__) {
-            await Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
-          }
-        }
-      } catch (error) {
-        console.error("RevenueCat init error:", error);
-      }
-    };
+  //       if (apiKey) {
+  //         await Purchases.configure({ apiKey });
+  //         // Enable debug logs for development
+  //         if (__DEV__) {
+  //           await Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error("RevenueCat init error:", error);
+  //     }
+  //   };
 
-    initRevenueCat();
-  }, []);
+  //   initRevenueCat();
+  // }, []);
 
-  // Initialize analytics on mount
-  useEffect(() => {
-    const initAnalytics = async () => {
-      try {
-        await analytics.initialize();
-      } catch (error) {
-        console.error("Analytics init error:", error);
-      }
-    };
+  // // Initialize analytics on mount
+  // useEffect(() => {
+  //   const initAnalytics = async () => {
+  //     try {
+  //       await analytics.initialize();
+  //     } catch (error) {
+  //       console.error("Analytics init error:", error);
+  //     }
+  //   };
 
-    initAnalytics();
-  }, []);
+  //   initAnalytics();
+  // }, []);
 
   if (!fontsLoaded || onboardingComplete === null) {
     return null;

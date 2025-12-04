@@ -2,11 +2,10 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   ScrollView,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import AnimatedView from "../ui/AnimatedView";
 import AnimatedText from "../ui/AnimatedText";
 import AnimatedHeart from "../ui/AnimatedHeart";
@@ -32,24 +31,16 @@ const EachOutput: React.FC<EachOutputProps> = ({
 
   // Filter the wardrobeItems based on the filter prop
   const filteredOutfits = React.useMemo(() => {
-    console.log("[EACH_OUTPUT] 🔍 Filtering outfits:");
-    console.log("- filter:", filter);
-    console.log("- wardrobeItems length:", wardrobeItems?.length || 0);
-    console.log("- favorites length:", favorites?.length || 0);
-
     if (filter === "liked") {
-      console.log("- returning favorites:", favorites?.length || 0);
       return favorites;
     }
-    console.log("- returning wardrobeItems:", wardrobeItems?.length || 0);
     return wardrobeItems;
   }, [wardrobeItems, favorites, filter]);
 
   const toggleFavorite = async (tryOnId: string) => {
     try {
       await toggleLike(tryOnId);
-    } catch (error) {
-      console.error("Toggle like error:", error);
+    } catch {
       Alert.alert(t("common.error"), t("wardrobePage.messages.likeError"));
     }
   };
@@ -63,7 +54,7 @@ const EachOutput: React.FC<EachOutputProps> = ({
       <View className="flex-row flex-wrap justify-between shadow-sm">
         {filteredOutfits.length === 0 ? (
           <View className="w-full flex-1 justify-center items-center py-20">
-            <Text className="text-gray-500 text-center">
+            <Text className="text-gray-500 font-outfit text-center">
               {filter === "liked"
                 ? t("wardrobePage.messages.noFavorites")
                 : t("wardrobePage.messages.noTryOns")}
@@ -71,23 +62,10 @@ const EachOutput: React.FC<EachOutputProps> = ({
           </View>
         ) : (
           filteredOutfits.map((wardrobeItem, index) => {
-            console.log("[EACH_OUTPUT] 🎨 Rendering item:", {
-              index,
-              wardrobeItemId: wardrobeItem.id,
-              tryOnId: wardrobeItem.try_on?.id,
-              resultImage: wardrobeItem.try_on?.result_image,
-              hasImage: !!wardrobeItem.try_on?.result_image,
-            });
-
             const tryOn = wardrobeItem.try_on;
             if (!tryOn || !tryOn.result_image) {
-              console.log(
-                "[EACH_OUTPUT] ❌ Skipping item - missing tryOn or result_image"
-              );
               return null;
             }
-
-            console.log("[EACH_OUTPUT] 🏗️ About to render item:", tryOn.id);
 
             return (
               <View
@@ -109,23 +87,9 @@ const EachOutput: React.FC<EachOutputProps> = ({
                       }}
                       style={{
                         width: "100%",
-                        height: 384, // h-96 equivalent
-                        backgroundColor: "#f3f4f6", // bg-gray-100 equivalent
+                        height: 420, // h-96 equivalent
                       }}
                       resizeMode="cover"
-                      onLoad={() =>
-                        console.log(
-                          "[EACH_OUTPUT] ✅ Image loaded:",
-                          tryOn.result_image
-                        )
-                      }
-                      onError={(error) =>
-                        console.log(
-                          "[EACH_OUTPUT] ❌ Image error:",
-                          error,
-                          tryOn.result_image
-                        )
-                      }
                     />
 
                     {/* Favorite Heart */}
@@ -150,7 +114,7 @@ const EachOutput: React.FC<EachOutputProps> = ({
                         }}
                       >
                         <Text
-                          className="text-xs font-semibold"
+                          className="text-xs font-outfit-semibold"
                           style={{
                             color:
                               tryOn.processing_status === "completed"
@@ -175,7 +139,7 @@ const EachOutput: React.FC<EachOutputProps> = ({
                     <AnimatedText
                       animation="slideUp"
                       delay={index * 150 + 200}
-                      className="text-sm font-semibold text-gray-800 mb-3 leading-5"
+                      className="text-base font-outfit-semibold text-gray-800 mb-3 leading-5"
                       numberOfLines={2}
                     >
                       {tryOn.dress_description ||
@@ -190,7 +154,7 @@ const EachOutput: React.FC<EachOutputProps> = ({
                         className="flex-row items-center"
                       >
                         <Calendar size={12} color="#6b7280" />
-                        <Text className="text-xs text-gray-500 ml-1">
+                        <Text className="text-sm font-outfit text-gray-500 ml-1">
                           {formatDate(wardrobeItem.created_at)}
                         </Text>
                       </AnimatedView>

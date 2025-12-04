@@ -46,7 +46,7 @@ const DescriptionDressTab: React.FC<DescriptionDressTabProps> = ({ onDescription
           className="bg-virtual-primary rounded-xl py-3 px-4 mt-4"
           activeOpacity={0.8}
         >
-          <Text className="text-white text-center font-semibold">Tarifi Kaydet</Text>
+          <Text className="text-white text-center font-outfit-semibold">Tarifi Kaydet</Text>
         </TouchableOpacity>
       </View>
     </TitleSectionTab>

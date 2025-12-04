@@ -54,22 +54,22 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
       {/* Avatar Selection Section */}
       {enableAvatarSelection && (
         <View className="mt-6 ">
-          <Text className="text-lg font-semibold text-gray-900 mb-3">
+          <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
             Veya Modellerimden Seç
           </Text>
           
           {avatarsLoading ? (
             <View className="h-24 items-center justify-center bg-gray-50 rounded-lg">
-              <Text className="text-gray-500">Avatarlar yükleniyor...</Text>
+              <Text className="text-gray-500 font-outfit">Avatarlar yükleniyor...</Text>
             </View>
           ) : avatarsError ? (
             <View className="h-24 items-center justify-center bg-red-50 rounded-lg border border-red-200">
-              <Text className="text-red-500 text-center text-sm">{avatarsError.message}</Text>
+              <Text className="text-red-500 font-outfit text-center text-sm">{avatarsError.message}</Text>
             </View>
           ) : avatars.length === 0 ? (
             <View className="h-24 items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
               <User size={24} color={Colors.gray[400]} />
-              <Text className="text-gray-500 text-center mt-1 text-sm">Henüz avatar oluşturmadınız</Text>
+              <Text className="text-gray-500 font-outfit text-center mt-1 text-sm">Henüz avatar oluşturmadınız</Text>
             </View>
           ) : (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-2">
@@ -98,7 +98,7 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
                       {selectedAvatar?.id === avatar.id && (
                         <View className="absolute inset-0 bg-virtual-primary/20 items-center justify-center">
                           <View className="bg-virtual-primary rounded-full w-8 h-8 items-center justify-center shadow-lg">
-                            <Text className="text-white text-sm font-bold">✓</Text>
+                            <Text className="text-white text-sm font-outfit-semibold">✓</Text>
                           </View>
                         </View>
                       )}
@@ -106,7 +106,7 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
                     
                     {/* Avatar Name */}
                     <Text 
-                      className={`text-sm text-center mt-3 w-40 font-medium ${
+                      className={`text-sm text-center mt-3 w-40 font-outfit-medium ${
                         selectedAvatar?.id === avatar.id 
                           ? 'text-virtual-primary' 
                           : 'text-gray-600'
@@ -124,7 +124,7 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
           {/* Selection Feedback */}
           {selectedAvatar && (
             <View className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
-              <Text className="text-green-700 font-medium text-sm">
+              <Text className="text-green-700 font-outfit-medium text-sm">
                 ✓ Seçilen Model: {selectedAvatar.name || `Avatar ${selectedAvatar.id.slice(0, 8)}`}
               </Text>
             </View>

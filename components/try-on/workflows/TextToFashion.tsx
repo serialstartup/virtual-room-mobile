@@ -12,31 +12,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { useWorkflowStore } from "@/store/workflowStore";
 import { useTextToFashion } from "@/hooks/useMultiModalTryOn";
 import ReusableButton from "@/components/ui/ReusableButton";
-import { analytics } from "@/services/analytics";
+// import { analytics } from "@/services/analytics";
+import { useTranslation } from "react-i18next";
 
 interface TextToFashionProps {
   onTryOnCreate: (tryOnId: string) => void;
 }
 
-const fashionPromptExamples = [
-  "Elegant black evening dress with silver accessories",
-  "Casual summer outfit with denim jacket and white sneakers",
-  "Professional business suit with modern cut",
-  "Bohemian style maxi dress with floral patterns",
-  "Streetwear outfit with oversized hoodie and cargo pants",
-  "Vintage 90s grunge look with flannel shirt",
-];
-
-const scenePromptExamples = [
-  "Luxurious hotel lobby with marble floors",
-  "Modern urban street at sunset",
-  "Minimalist studio with soft lighting",
-  "Parisian café terrace",
-  "Fashion runway with dramatic lighting",
-  "Rooftop garden with city skyline",
-];
-
 const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
+  const { t } = useTranslation();
+  
+  // Get localized examples from translation files
+  const fashionPromptExamples = t("textToFashion.examples.fashionPrompts", { returnObjects: true }) as string[];
+  const scenePromptExamples = t("textToFashion.examples.scenePrompts", { returnObjects: true }) as string[];
+
   const {
     workflowData,
     currentStep,
@@ -68,14 +57,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
     }
 
     if (!hasCredits) {
-      analytics.trackOutOfCredits("text_to_fashion");
+      // analytics.trackOutOfCredits("text_to_fashion");
       Alert.alert("No Credits", "You need credits to create a fashion design.");
       return;
     }
 
     try {
       // Track start
-      analytics.trackTryOnStarted("text_to_fashion");
+      // analytics.trackTryOnStarted("text_to_fashion");
       const startTime = Date.now();
 
       const textToFashionRequestData = {
@@ -87,15 +76,15 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
       // Track completion and credit usage
       const processingTime = Date.now() - startTime;
-      analytics.trackTryOnCompleted("text_to_fashion", 2, processingTime);
-      analytics.trackCreditUsed(2, "text_to_fashion");
+      // analytics.trackTryOnCompleted("text_to_fashion", 2, processingTime);
+      // analytics.trackCreditUsed(2, "text_to_fashion");
 
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
-      analytics.trackTryOnFailed(
-        "text_to_fashion",
-        err.message || "Unknown error"
-      );
+      // analytics.trackTryOnFailed(
+      //   "text_to_fashion",
+      //   err.message || "Unknown error"
+      // );
       Alert.alert("Error", err.message || "Failed to create fashion design");
     }
   };
@@ -115,10 +104,10 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                   <Ionicons name="create-outline" size={24} color="white" />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">
+                  <Text className="text-2xl font-outfit-semibold text-gray-900">
                     Step 1
                   </Text>
-                  <Text className="text-lg text-gray-600">
+                  <Text className="text-lg font-outfit text-gray-600">
                     Describe Your Fashion Idea
                   </Text>
                 </View>
@@ -126,7 +115,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
               {/* Fashion Description */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">
+                <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                   Fashion Description *
                 </Text>
                 <TextInput
@@ -138,14 +127,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                   textAlignVertical="top"
                   maxLength={500}
                 />
-                <Text className="text-sm text-gray-500 mt-2">
+                <Text className="text-sm font-outfit text-gray-500 mt-2">
                   {textToFashionData.fashionDescription.length}/500 characters
                 </Text>
               </View>
 
               {/* Examples */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">
+                <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                   Example Ideas
                 </Text>
                 <ScrollView
@@ -159,7 +148,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                       onPress={() => setFashionDescription(example)}
                       className="bg-white border border-gray-200 rounded-2xl p-3 mr-3 min-w-[200px]"
                     >
-                      <Text className="text-gray-700 text-sm">{example}</Text>
+                      <Text className="text-gray-700 font-outfit text-sm">{example}</Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
@@ -170,10 +159,10 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                 <View className="flex-row items-start">
                   <Ionicons name="bulb-outline" size={20} color="#F97316" />
                   <View className="ml-3 flex-1">
-                    <Text className="font-semibold text-orange-900 mb-2">
+                    <Text className="font-outfit-semibold text-orange-900 mb-2">
                       Tips for Better Results
                     </Text>
-                    <Text className="text-orange-800 text-sm leading-relaxed">
+                    <Text className="text-orange-800 text-sm font-outfit leading-relaxed">
                       • Be specific about colors, styles, and materials{"\n"}•
                       Include details about accessories and shoes{"\n"}• Mention
                       the overall vibe (casual, formal, edgy, elegant){"\n"}•
@@ -203,16 +192,16 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                   />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">
+                  <Text className="text-2xl font-outfit-semibold text-gray-900">
                     Step 2
                   </Text>
-                  <Text className="text-lg text-gray-600">Ready to Create</Text>
+                  <Text className="text-lg font-outfit text-gray-600">Ready to Create</Text>
                 </View>
               </View>
 
               {/* Scene Setting (Optional) */}
               <View className="mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-3">
+                <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                   Scene Setting (Optional)
                 </Text>
                 <TextInput
@@ -224,14 +213,14 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                   textAlignVertical="top"
                   maxLength={200}
                 />
-                <Text className="text-sm text-gray-500 mt-2">
+                <Text className="text-sm font-outfit text-gray-500 mt-2">
                   {textToFashionData.scenePrompt.length}/200 characters
                 </Text>
               </View>
 
               {/* Scene Examples */}
               <View className="mb-6">
-                <Text className="text-base font-medium text-gray-900 mb-3">
+                <Text className="text-base font-outfit-medium text-gray-900 mb-3">
                   Scene Ideas
                 </Text>
                 <ScrollView
@@ -245,7 +234,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                       onPress={() => setFashionScenePrompt(example)}
                       className="bg-white border border-gray-200 rounded-xl p-3 mr-3 min-w-[160px]"
                     >
-                      <Text className="text-gray-700 text-sm">{example}</Text>
+                      <Text className="text-gray-700 font-outfit text-sm">{example}</Text>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
@@ -253,7 +242,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
               {/* Summary */}
               <View className="bg-white rounded-2xl p-4 mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-4">
+                <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
                   Summary
                 </Text>
 
@@ -264,7 +253,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                     color="#6B7280"
                     style={{ marginTop: 2 }}
                   />
-                  <Text className="text-gray-700 ml-3 flex-1">
+                  <Text className="text-gray-700 font-outfit ml-3 flex-1">
                     Fashion:{" "}
                     {textToFashionData.fashionDescription ||
                       "No description provided"}
@@ -278,7 +267,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
                     color="#6B7280"
                     style={{ marginTop: 2 }}
                   />
-                  <Text className="text-gray-700 ml-3 flex-1">
+                  <Text className="text-gray-700 font-outfit ml-3 flex-1">
                     Scene:{" "}
                     {textToFashionData.scenePrompt || "Modern urban setting"}
                   </Text>
@@ -286,7 +275,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
                 <View className="flex-row items-center">
                   <Ionicons name="time-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     Processing time: ~8-15 minutes
                   </Text>
                 </View>
@@ -294,7 +283,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
 
               <ReusableButton
                 title={
-                  isCreating ? "Creating Fashion..." : "Create Fashion Design"
+                  isCreating ? t("textToFashion.buttons.creating") : t("textToFashion.buttons.createDesign")
                 }
                 onPress={handleCreateTextToFashion}
                 disabled={
@@ -311,7 +300,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
               />
 
               {error && (
-                <Text className="text-red-500 text-center mt-4">
+                <Text className="text-red-500 font-outfit text-center mt-4">
                   {error.message}
                 </Text>
               )}
@@ -329,10 +318,10 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
       {/* Progress Bar */}
       <View className="px-6 py-4">
         <View className="flex-row items-center justify-between mb-2">
-          <Text className="text-sm font-semibold text-gray-600">
+          <Text className="text-sm font-outfit-semibold text-gray-600">
             Step {currentStep} of 2
           </Text>
-          <Text className="text-sm font-semibold text-orange-500">
+          <Text className="text-sm font-outfit-semibold text-orange-500">
             {getWorkflowProgress()}% Complete
           </Text>
         </View>
@@ -361,7 +350,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
             }`}
           >
             <Text
-              className={`font-semibold ${
+              className={`font-outfit-semibold ${
                 currentStep === 1 ? "text-gray-400" : "text-gray-700"
               }`}
             >
@@ -373,7 +362,7 @@ const TextToFashion: React.FC<TextToFashionProps> = ({ onTryOnCreate }) => {
             onPress={handleNext}
             className="px-6 py-3 bg-orange-500 rounded-2xl"
           >
-            <Text className="text-white font-semibold">Next</Text>
+            <Text className="text-white font-outfit-semibold">Next</Text>
           </TouchableOpacity>
         </View>
       )}

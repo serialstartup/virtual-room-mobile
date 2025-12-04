@@ -153,14 +153,14 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
           <TouchableOpacity onPress={handleClose}>
             <Ionicons name="close" size={24} color="#374151" />
           </TouchableOpacity>
-          <Text className="text-lg font-semibold text-gray-900">Create Custom Model</Text>
+          <Text className="text-lg font-outfit-semibold text-gray-900">Create Custom Model</Text>
           <View style={{ width: 24 }} />
         </View>
 
         <ScrollView className="flex-1 p-4">
           {/* Model Name */}
           <View className="mb-6">
-            <Text className="text-sm font-medium text-gray-700 mb-2">Model Name</Text>
+            <Text className="text-sm font-outfit-medium text-gray-700 mb-2">Model Name</Text>
             <TextInput
               value={modelName}
               onChangeText={setModelName}
@@ -172,7 +172,7 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
 
           {/* Model Type */}
           <View className="mb-6">
-            <Text className="text-sm font-medium text-gray-700 mb-2">Model Type</Text>
+            <Text className="text-sm font-outfit-medium text-gray-700 mb-2">Model Type</Text>
             <View className="flex-row">
               <TouchableOpacity
                 onPress={() => setModelType('model-create')}
@@ -182,12 +182,12 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
                     : 'border-gray-300 bg-white'
                 }`}
               >
-                <Text className={`text-center font-medium ${
+                <Text className={`text-center font-outfit-medium ${
                   modelType === 'model-create' ? 'text-blue-700' : 'text-gray-700'
                 }`}>
                   Text to Model
                 </Text>
-                <Text className="text-xs text-gray-500 text-center mt-1">
+                <Text className="text-xs font-outfit text-gray-500 text-center mt-1">
                   Create from description
                 </Text>
               </TouchableOpacity>
@@ -200,12 +200,12 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
                     : 'border-gray-300 bg-white'
                 }`}
               >
-                <Text className={`text-center font-medium ${
+                <Text className={`text-center font-outfit-medium ${
                   modelType === 'product-to-model' ? 'text-blue-700' : 'text-gray-700'
                 }`}>
                   Product to Model
                 </Text>
-                <Text className="text-xs text-gray-500 text-center mt-1">
+                <Text className="text-xs font-outfit text-gray-500 text-center mt-1">
                   Upload product image
                 </Text>
               </TouchableOpacity>
@@ -215,7 +215,7 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
           {/* Product Image Upload (only for product-to-model) */}
           {modelType === 'product-to-model' && (
             <View className="mb-6">
-              <Text className="text-sm font-medium text-gray-700 mb-2">Product Image</Text>
+              <Text className="text-sm font-outfit-medium text-gray-700 mb-2">Product Image</Text>
               <TouchableOpacity
                 onPress={pickImage}
                 className="border-2 border-dashed border-gray-300 rounded-lg p-6 items-center"
@@ -227,13 +227,13 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
                       className="w-32 h-32 rounded-lg mb-2"
                       resizeMode="cover"
                     />
-                    <Text className="text-sm text-gray-600">Tap to change image</Text>
+                    <Text className="text-sm font-outfit text-gray-600">Tap to change image</Text>
                   </View>
                 ) : (
                   <View className="items-center">
                     <Ionicons name="cloud-upload-outline" size={32} color="#9CA3AF" />
-                    <Text className="text-sm text-gray-600 mt-2">Tap to upload product image</Text>
-                    <Text className="text-xs text-gray-400 mt-1">
+                    <Text className="text-sm font-outfit text-gray-600 mt-2">Tap to upload product image</Text>
+                    <Text className="text-xs font-outfit text-gray-400 mt-1">
                       Supports JPG, PNG formats
                     </Text>
                   </View>
@@ -244,7 +244,7 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
 
           {/* Prompt */}
           <View className="mb-6">
-            <Text className="text-sm font-medium text-gray-700 mb-2">
+            <Text className="text-sm font-outfit-medium text-gray-700 mb-2">
               {modelType === 'model-create' ? 'Model Description' : 'Scene Description (Optional)'}
             </Text>
             <TextInput
@@ -260,7 +260,7 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
               className="border border-gray-300 rounded-lg px-3 py-2 text-gray-900 min-h-[100px]"
               textAlignVertical="top"
             />
-            <Text className="text-xs text-gray-500 mt-1">
+            <Text className="text-xs text-gray-500 font-outfit mt-1">
               {modelType === 'model-create'
                 ? 'Describe the full look you want to create'
                 : 'Describe the setting or scene (optional)'}
@@ -269,8 +269,8 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
 
           {/* Tips */}
           <View className="bg-blue-50 rounded-lg p-4 mb-6">
-            <Text className="text-sm font-medium text-blue-900 mb-2">💡 Tips for better results:</Text>
-            <Text className="text-xs text-blue-700 leading-4">
+            <Text className="text-sm font-outfit-medium text-blue-900 mb-2">💡 Tips for better results:</Text>
+            <Text className="text-xs font-outfit text-blue-700 leading-4">
               {modelType === 'model-create'
                 ? '• Use detailed descriptions\n• Mention clothing style, colors, and fit\n• Include lighting and pose details\n• Be specific about the overall look'
                 : '• Use clear, high-quality product images\n• Ensure the product is well-lit\n• Crop tightly around the product\n• Add scene context for realistic results'}
@@ -290,10 +290,10 @@ const CreateCustomModelModal: React.FC<CreateCustomModelModalProps> = ({
             {loading ? (
               <View className="flex-row items-center justify-center">
                 <ActivityIndicator color="white" />
-                <Text className="text-white font-semibold ml-2">Creating Model...</Text>
+                <Text className="text-white font-outfit-semibold ml-2">Creating Model...</Text>
               </View>
             ) : (
-              <Text className="text-white font-semibold text-center">Create Model</Text>
+              <Text className="text-white font-outfit-semibold text-center">Create Model</Text>
             )}
           </TouchableOpacity>
         </View>

@@ -20,7 +20,7 @@ const TitleSection: FC<TitleSectionProps> = ({
 }) => {
   return (
     <AnimatedView
-      className={`p-4 items-center  ${bgColor ? bgColor : "bg-white"} ${className}`}
+      className={`p-2 items-center  ${bgColor ? bgColor : "bg-white"} ${className}`}
       animation="fadeIn"
       duration={600}
       easing="easeInOut"

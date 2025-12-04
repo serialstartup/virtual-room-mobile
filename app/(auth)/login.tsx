@@ -59,10 +59,10 @@ const Login = () => {
           <View className="bg-virtual-primary/10 p-4 rounded-full mb-4">
             <Sparkles color="#ec4899" size={32} />
           </View>
-          <Text className="text-3xl font-bold text-gray-800 mb-2">
+          <Text className="text-3xl font-outfit-semibold text-gray-800 mb-2">
             {t("login.title")}
           </Text>
-          <Text className="text-gray-500 text-center">
+          <Text className="text-gray-500 font-outfit text-center">
             {t("login.subtitle")}
           </Text>
         </View>
@@ -126,18 +126,18 @@ const Login = () => {
           {/* Error Message */}
           {loginError && (
             <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <Text className="text-red-600 text-sm">
+              <Text className="text-red-600 font-outfit text-sm">
                 {loginError.message || t("login.errors.loginError")}
               </Text>
             </View>
           )}
 
           {/* Forgot Password */}
-          <TouchableOpacity className="mb-6">
+          {/* <TouchableOpacity className="mb-6">
             <Text className="text-virtual-primary text-right font-medium">
               {t("login.forgotPassword")}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* Login Button */}
           <ReusableButton
@@ -157,7 +157,7 @@ const Login = () => {
           {/* Divider */}
           <View className="flex-row items-center my-6">
             <View className="flex-1 h-px bg-gray-200" />
-            <Text className="mx-4 text-gray-500">{t("login.or")}</Text>
+            <Text className="mx-4 font-outfit text-gray-500">{t("login.or")}</Text>
             <View className="flex-1 h-px bg-gray-200" />
           </View>
 
@@ -180,7 +180,7 @@ const Login = () => {
 
         {/* Sign Up Link */}
         <View className="items-center pb-4">
-          <Text className="text-gray-500">
+          <Text className="text-gray-500 font-outfit">
             {t("login.noAccount")}{" "}
             <Link
               href="/(auth)/signup"

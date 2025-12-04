@@ -51,21 +51,21 @@ const TabContent = ({ type }: TabContentProps) => {
         <View className="items-center">
           {type === "yearly" && (
             <View className="bg-virtual-primary px-3 py-1 rounded-full mb-3">
-              <Text className="text-white font-semibold text-xs">
+              <Text className="text-white font-outfit-semibold text-xs">
                 %40 İndirim
               </Text>
             </View>
           )}
           <View className="flex-row items-center gap-1">
-            <Text className="text-3xl font-bold text-gray-800">
+            <Text className="text-3xl font-outfit-semibold text-gray-800">
               {type === "monthly" ? monthlyPrice : yearlyPrice}
             </Text>
-            <Text className="text-gray-500 text-base">
+            <Text className="text-gray-500 font-outfit text-base">
               {type === "monthly" ? "/ay" : "/yıl"}
             </Text>
           </View>
           {type === "yearly" && (
-            <Text className="text-gray-400 text-xs mt-1">
+            <Text className="text-gray-400 font-outfit text-xs mt-1">
               Aylık {yearlyMonthlyEquivalent} eşdeğer
             </Text>
           )}

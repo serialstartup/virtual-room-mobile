@@ -37,7 +37,7 @@ export default function Index() {
     return (
       <View className="flex-1 items-center justify-center bg-white">
         <ActivityIndicator size="large" color="#ec4899" />
-        <Text className="mt-4 text-gray-600">Checking authentication...</Text>
+        <Text className="mt-4 font-outfit text-gray-600">Checking authentication...</Text>
       </View>
     );
   }

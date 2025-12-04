@@ -4,13 +4,12 @@ import AnimatedView from "../ui/AnimatedView";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
 import ReusableButton from "../ui/ReusableButton";
-import { Pencil, User, RotateCcw } from "lucide-react-native";
+import { Pencil, } from "lucide-react-native";
 import { useUser } from "@/hooks/useUser";
 import TokenPurchaseModal from "./TokenPurchaseModal";
 import Purchases from "react-native-purchases";
 import { analytics } from "@/services/analytics";
 import { useTranslation } from "react-i18next";
-import { onboardingStorage } from "@/services/onboardingStorage";
 
 type FormValues = {
   name: string;
@@ -113,35 +112,6 @@ const ProfileSettings = () => {
     }
   };
 
-  // Debug function to reset onboarding
-  const handleResetOnboarding = () => {
-    Alert.alert(
-      "Reset Onboarding",
-      "Are you sure you want to reset the onboarding? You'll see it again when you restart the app.",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Reset",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await onboardingStorage.resetOnboarding();
-              Alert.alert(
-                "Success",
-                "Onboarding has been reset. Restart the app to see it again."
-              );
-            } catch (error) {
-              console.error("Reset onboarding error:", error);
-              Alert.alert("Error", "Failed to reset onboarding");
-            }
-          },
-        },
-      ]
-    );
-  };
 
   if (isUserLoading) {
     return (
@@ -150,7 +120,7 @@ const ProfileSettings = () => {
         className="bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden"
       >
         <View className="bg-gray-50 px-6 py-8 border-b border-gray-100">
-          <Text className="text-gray-500 text-center">
+          <Text className="text-gray-500 font-outfit text-center">
             {t("profile.profileLoading")}
           </Text>
         </View>
@@ -165,7 +135,7 @@ const ProfileSettings = () => {
         className="bg-gray-100 border border-gray-100 rounded-2xl overflow-hidden"
       >
         <View className="bg-gray-50 px-6 py-8 border-b border-gray-100">
-          <Text className="text-red-500 text-center">
+          <Text className="font-outfit text-red-500 text-center">
             {t("profile.profileLoadError")}
           </Text>
         </View>
@@ -184,28 +154,29 @@ const ProfileSettings = () => {
           <View className="flex-row items-start justify-between">
             <View className="flex-row items-center gap-4">
               <View className="w-16 h-16 rounded-full bg-gray-200 items-center justify-center">
-                <User color="black" size={28} />
+                {/* <User color="black" size={28} /> */}
+                <Text className="text-3xl font-outfit-semibold">{user.name.substring(0,1).toUpperCase()}</Text>
               </View>
               <View>
-                <Text className="text-gray-800 text-xl font-bold">
+                <Text className="text-gray-800 text-xl font-outfit-bold">
                   {user.name.length > 10
                     ? `${user.name.substring(0, 10)}...`
                     : user.name}
                 </Text>
-                <Text className="text-gray-500 text-sm">{user.email}</Text>
+                <Text className="text-gray-500 font-outfit text-sm">{user.email}</Text>
               </View>
             </View>
             <TouchableOpacity className="mt-1" onPress={handleEdit}>
               {isEditing ? (
                 <View className="border-[1px] py-2 px-4 border-gray-300 rounded-xl">
-                  <Text className="text-sm text-black">
+                  <Text className="text-sm font-outfit text-black">
                     {t("common.cancel")}
                   </Text>
                 </View>
               ) : (
                 <View className="flex-row items-center gap-2 border-[1px] py-2 px-4 border-gray-300 rounded-xl">
                   <Pencil color="black" size={14} />
-                  <Text className="text-sm">{t("common.edit")}</Text>
+                  <Text className="text-sm font-outfit">{t("common.edit")}</Text>
                 </View>
               )}
             </TouchableOpacity>
@@ -268,18 +239,18 @@ const ProfileSettings = () => {
           ) : (
             <View className="space-y-4">
               <View className="mb-4">
-                <Text className="text-gray-500 text-sm mb-1">
+                <Text className="text-gray-500 font-outfit text-sm mb-1">
                   {t("auth.name")}
                 </Text>
-                <Text className="text-gray-800 text-base font-medium">
+                <Text className="text-gray-800 text-base font-outfit-medium">
                   {user.name}
                 </Text>
               </View>
               <View>
-                <Text className="text-gray-500 text-sm mb-1">
+                <Text className="text-gray-500 font-outfit text-sm mb-1">
                   {t("auth.email")}
                 </Text>
-                <Text className="text-gray-800 text-base font-medium">
+                <Text className="text-gray-800 text-base font-outfit-medium">
                   {user.email}
                 </Text>
               </View>
@@ -288,7 +259,7 @@ const ProfileSettings = () => {
 
           {/* Plan Section */}
           <View className="mt-8 pb-6">
-            <Text className="text-gray-500 text-sm mb-3">
+            <Text className="text-gray-500 font-outfit text-sm mb-3">
               {t("profile.accountStatus")}
             </Text>
 
@@ -296,18 +267,20 @@ const ProfileSettings = () => {
               {/* Üst Kısım */}
               <View className="flex-row items-center justify-between mb-4">
                 <View>
-                  <Text className="text-lg font-bold text-gray-900">
+                  <Text className="text-lg font-outfit-bold text-gray-900">
                     {t("profile.tokenBalance")}
                   </Text>
-                  <Text className="text-gray-500 text-sm mt-1">
-                    {t("profile.total")}: {user?.token} • {t("profile.used")}:{" "}
-                    {user?.total_tokens_used}
+                  <Text className="text-gray-500 font-outfit text-sm mt-1">
+                    {t("profile.total")}: {user?.token}
+                  </Text>
+                  <Text className="text-gray-500 font-outfit text-sm mt-1">
+                    {t("profile.used")}: {user?.total_tokens_used}
                   </Text>
                 </View>
 
                 {/* Token Badge */}
                 <View className="bg-virtual-primary/10 px-4 py-2 rounded-full">
-                  <Text className="text-virtual-primary font-semibold">
+                  <Text className="text-virtual-primary font-outfit-semibold">
                     {user?.token} {t("tokens.packages.tokens")}
                   </Text>
                 </View>
@@ -324,55 +297,21 @@ const ProfileSettings = () => {
               </View>
 
               {/* Alt Kısım */}
-              <View className="flex-row items-center justify-between">
-                <Text className="text-gray-500 text-sm">
-                  {t("profile.tokenInfo")}
-                </Text>
-
+              <View className="my-3">
                 <TouchableOpacity
                   onPress={() => {
-                    analytics.trackUpgradeClicked("profile_token_section");
-                    setShowTokenModal(true);
+                    // analytics.trackUpgradeClicked("profile_token_section");
+                    // setShowTokenModal(true);
                   }}
-                  className="bg-virtual-primary px-5 py-2.5 rounded-xl shadow-sm"
+                  className="bg-virtual-primary px-5 py-2.5 rounded-xl shadow-sm self-end "
                 >
-                  <Text className="text-white font-semibold text-sm">
+                  <Text className="text-white font-outfit-semibold text-sm">
                     {t("profile.buyTokens")}
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-
-          {/* Debug Section - Reset Onboarding */}
-          {__DEV__ && (
-            <View className="mt-6 pb-4">
-              <Text className="text-gray-500 text-sm mb-3">Debug Options</Text>
-
-              <View className="bg-white rounded-2xl p-5 border border-gray-100">
-                <View className="flex-row items-center justify-between">
-                  <View>
-                    <Text className="text-base font-semibold text-gray-900">
-                      Reset Onboarding
-                    </Text>
-                    <Text className="text-gray-500 text-sm mt-1">
-                      Show onboarding screen again
-                    </Text>
-                  </View>
-
-                  <TouchableOpacity
-                    onPress={handleResetOnboarding}
-                    className="bg-gray-100 px-4 py-2.5 rounded-xl flex-row items-center gap-2"
-                  >
-                    <RotateCcw color="#666" size={16} />
-                    <Text className="text-gray-700 font-medium text-sm">
-                      Reset
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          )}
         </View>
       </AnimatedView>
 

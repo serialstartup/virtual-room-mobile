@@ -66,25 +66,13 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
     },
   ];
 
-  const [offerings, setOfferings] = useState<PurchasesPackage[]>([]);
+  // const [offerings, setOfferings] = useState<PurchasesPackage[]>([]);
+  // const [rcInitialized, setRcInitialized] = useState(false);
 
   useEffect(() => {
-    const fetchOfferings = async () => {
-      try {
-        const offerings = await Purchases.getOfferings();
-        if (
-          offerings.current &&
-          offerings.current.availablePackages.length !== 0
-        ) {
-          setOfferings(offerings.current.availablePackages);
-        }
-      } catch (e) {
-        console.error("Error fetching offerings:", e);
-      }
-    };
-
+    // Skip RevenueCat integration for now - will be configured in closed testing
     if (visible) {
-      fetchOfferings();
+      console.log("TokenPurchaseModal opened - using mock packages for development");
     }
   }, [visible]);
 
@@ -97,26 +85,10 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
 
     setIsPurchasing(true);
     try {
-      // Find the RC package that matches the selected ID
-      // Assuming RC product IDs match our IDs (token_50, token_100, etc.)
-      const rcPackage = offerings.find(
-        (p) => p.product.identifier === selectedPackage
-      );
-
-      let transactionId = "";
-
-      if (rcPackage) {
-        const { transaction } = await Purchases.purchasePackage(rcPackage);
-        transactionId = transaction?.transactionIdentifier || "";
-      } else {
-        // Fallback for testing/dev without RC setup
-        console.warn("RevenueCat package not found, simulating purchase");
-        transactionId = "simulated_" + Date.now();
-        // In production, you might want to block this
-        if (!__DEV__) {
-          throw new Error("Package not available");
-        }
-      }
+      // For development phase, always use simulated purchase
+      // RevenueCat integration will be handled during closed testing
+      console.log(`Simulating purchase for package: ${selectedPackage}`);
+      const transactionId = "mock_transaction_" + Date.now();
 
       await onPurchase(selectedPackage, transactionId);
       onClose();
@@ -153,10 +125,10 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                 <Zap size={24} color="#ec4899" fill="#ec4899" />
               </View>
               <View>
-                <Text className="text-2xl font-bold text-gray-900">
+                <Text className="text-2xl font-outfit-semibold text-gray-900">
                   {t("tokens.title")}
                 </Text>
-                <Text className="text-sm text-gray-500 mt-0.5">
+                <Text className="text-sm font-outfit text-gray-500 mt-0.5">
                   {t("tokens.subtitle")}
                 </Text>
               </View>
@@ -173,7 +145,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           {/* Benefits Section */}
           <View className="px-6 py-6 bg-gradient-to-b from-virtual-primary/5 to-transparent">
-            <Text className="text-lg font-semibold text-gray-900 mb-4">
+            <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
               {t("tokens.benefits.title")}
             </Text>
             <View className="space-y-3">
@@ -187,7 +159,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                   <View className="bg-green-100 p-1.5 rounded-full">
                     <Check size={14} color="#22c55e" strokeWidth={3} />
                   </View>
-                  <Text className="text-gray-700 flex-1">{benefit}</Text>
+                  <Text className="text-gray-700 font-outfit flex-1">{benefit}</Text>
                 </View>
               ))}
             </View>
@@ -195,7 +167,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
 
           {/* Token Packages */}
           <View className="px-6 py-6">
-            <Text className="text-lg font-semibold text-gray-900 mb-4">
+            <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
               {t("tokens.packages.title")}
             </Text>
             <View className="space-y-4">
@@ -230,7 +202,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                     {/* Badge */}
                     {pkg.badge && (
                       <View className="absolute -top-3 left-4 bg-virtual-primary px-3 py-1 rounded-full">
-                        <Text className="text-white text-xs font-bold">
+                        <Text className="text-white text-xs font-outfit-semibold">
                           {pkg.badge}
                         </Text>
                       </View>
@@ -247,7 +219,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                             }
                           />
                           <Text
-                            className={`text-2xl font-bold ${
+                            className={`text-2xl font-outfit-semibold ${
                               selectedPackage === pkg.id
                                 ? "text-virtual-primary"
                                 : "text-gray-900"
@@ -259,7 +231,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
 
                         {pkg.discount && (
                           <View className="bg-green-100 px-2 py-1 rounded-md self-start mb-2">
-                            <Text className="text-green-700 text-xs font-semibold">
+                            <Text className="text-green-700 text-xs font-outfit-semibold">
                               {pkg.discount}
                             </Text>
                           </View>
@@ -274,7 +246,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                       {/* Right Side - Price */}
                       <View className="items-end">
                         <Text
-                          className={`text-3xl font-bold ${
+                          className={`text-3xl font-outfit-semibold ${
                             selectedPackage === pkg.id
                               ? "text-virtual-primary"
                               : "text-gray-900"
@@ -282,7 +254,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
                         >
                           {pkg.price}
                         </Text>
-                        <Text className="text-gray-500 text-sm mt-1">
+                        <Text className="text-gray-500 font-outfit text-sm mt-1">
                           {t("tokens.packages.oneTime")}
                         </Text>
                       </View>
@@ -303,10 +275,10 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
           {/* Info Section */}
           <View className="px-6 pb-6">
             <View className="bg-blue-50 rounded-2xl p-4 border border-blue-100">
-              <Text className="text-blue-900 font-semibold mb-2">
+              <Text className="text-blue-900 font-outfit-semibold mb-2">
                 {t("tokens.info.title")}
               </Text>
-              <Text className="text-blue-800 text-sm leading-relaxed">
+              <Text className="text-blue-800 text-sm font-outfit leading-relaxed">
                 {t("tokens.info.description")}
               </Text>
             </View>
@@ -333,7 +305,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
             }}
             activeOpacity={0.8}
           >
-            <Text className="text-white text-center font-bold text-lg">
+            <Text className="text-white text-center font-outfit-semibold text-lg">
               {isPurchasing
                 ? t("tokens.purchase.processing")
                 : selectedPackage
@@ -342,7 +314,7 @@ const TokenPurchaseModal: React.FC<TokenPurchaseModalProps> = ({
             </Text>
           </TouchableOpacity>
 
-          <Text className="text-center text-gray-500 text-xs mt-3">
+          <Text className="text-center font-outfit text-gray-500 text-xs mt-3">
             {t("tokens.purchase.securePayment")}
           </Text>
         </View>

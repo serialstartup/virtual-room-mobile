@@ -14,13 +14,15 @@ import { useProductToModel } from "@/hooks/useMultiModalTryOn";
 import UploadTab from "../tabs/UploadTab";
 import ReusableButton from "@/components/ui/ReusableButton";
 import { UserAvatar } from "@/hooks/useUserAvatars";
-import { analytics } from "@/services/analytics";
+// import { analytics } from "@/services/analytics";
+import { useTranslation } from "react-i18next";
 
 interface ProductToModelProps {
   onTryOnCreate: (tryOnId: string) => void;
 }
 
 const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
+  const { t } = useTranslation();
   const {
     workflowData,
     currentStep,
@@ -100,7 +102,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
     }
 
     if (!hasCredits) {
-      analytics.trackOutOfCredits("product_to_model");
+      // analytics.trackOutOfCredits("product_to_model");
       Alert.alert(
         "No Credits",
         "You need credits to create a product showcase."
@@ -110,7 +112,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
     try {
       // Track start
-      analytics.trackProductToModelStarted();
+      // analytics.trackProductToModelStarted();
       const startTime = Date.now();
 
       const productToModelData = {
@@ -126,8 +128,8 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
       // Track completion and credit usage
       const processingTime = Date.now() - startTime;
-      analytics.trackProductToModelCompleted(newTryOn.id, processingTime);
-      analytics.trackCreditUsed(1, "product_to_model");
+      // analytics.trackProductToModelCompleted(newTryOn.id, processingTime);
+      // analytics.trackCreditUsed(1, "product_to_model");
 
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
@@ -150,10 +152,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   <Ionicons name="bag-outline" size={24} color="white" />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">
+                  <Text className="text-2xl font-outfit-bold text-gray-900">
                     Step 1
                   </Text>
-                  <Text className="text-lg text-gray-600">
+                  <Text className="text-lg font-outfit text-gray-600">
                     Upload Product Image
                   </Text>
                 </View>
@@ -186,10 +188,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     <Ionicons name="person-outline" size={24} color="white" />
                   </View>
                   <View>
-                    <Text className="text-2xl font-bold text-gray-900">
+                    <Text className="text-2xl font-outfit-semibold text-gray-900">
                       Step 2
                     </Text>
-                    <Text className="text-lg text-gray-600">Select Model</Text>
+                    <Text className="text-lg font-outfit text-gray-600">Select Model</Text>
                   </View>
                 </View>
 
@@ -221,7 +223,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     <Ionicons name="create-outline" size={24} color="white" />
                   </View>
                   <View>
-                    <Text className="text-2xl font-bold text-gray-900">
+                    <Text className="text-2xl font-outfit-semibold text-gray-900">
                       Step 3
                     </Text>
                     <Text className="text-lg text-gray-600">
@@ -232,7 +234,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
                 {/* Product Name */}
                 <View className="mb-6">
-                  <Text className="text-lg font-semibold text-gray-900 mb-3">
+                  <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                     Product Name *
                   </Text>
                   <TextInput
@@ -247,7 +249,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
                 {/* Scene Prompt */}
                 <View className="mb-6">
-                  <Text className="text-lg font-semibold text-gray-900 mb-3">
+                  <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
                     Scene Setting
                   </Text>
                   <TextInput
@@ -259,7 +261,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     textAlignVertical="top"
                     maxLength={300}
                   />
-                  <Text className="text-sm text-gray-500 mt-2">
+                  <Text className="text-sm font-outfit text-gray-500 mt-2">
                     {productData.scenePrompt.length}/300 characters
                   </Text>
                 </View>
@@ -269,10 +271,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   <View className="flex-row items-start">
                     <Ionicons name="bulb-outline" size={20} color="#3B82F6" />
                     <View className="ml-3 flex-1">
-                      <Text className="font-semibold text-blue-900 mb-2">
+                      <Text className="font-outfit-semibold text-blue-900 mb-2">
                         Tips for Better Results
                       </Text>
-                      <Text className="text-blue-800 text-sm leading-relaxed">
+                      <Text className="text-blue-800 text-sm font-outfit leading-relaxed">
                         • Use descriptive scene settings for more engaging
                         showcases{"\n"}• Specify lighting preferences (natural,
                         studio, dramatic){"\n"}• Mention the target audience or
@@ -303,10 +305,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">
+                  <Text className="text-2xl font-outfit-semibold text-gray-900">
                     Step 4
                   </Text>
-                  <Text className="text-lg text-gray-600">
+                  <Text className="text-lg font-outfit text-gray-600">
                     Ready to Generate
                   </Text>
                 </View>
@@ -314,13 +316,13 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
               {/* Summary */}
               <View className="bg-white rounded-2xl p-4 mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-4">
+                <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
                   Summary
                 </Text>
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="bag-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     {productData.productImage
                       ? "Product image uploaded ✓"
                       : "No image selected"}
@@ -329,7 +331,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="person-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     {productData.modelImage
                       ? "Model image uploaded ✓"
                       : productData.selectedAvatar
@@ -340,7 +342,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="pricetag-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     {productData.productName
                       ? `Product: ${productData.productName}`
                       : "No product name"}
@@ -354,7 +356,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     color="#6B7280"
                     style={{ marginTop: 2 }}
                   />
-                  <Text className="text-gray-700 ml-3 flex-1">
+                  <Text className="text-gray-700 font-outfit even:ml-3 flex-1">
                     Scene:{" "}
                     {productData.scenePrompt || "Professional studio setting"}
                   </Text>
@@ -362,7 +364,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
                 <View className="flex-row items-center">
                   <Ionicons name="time-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     Processing time: ~3-10 minutes
                   </Text>
                 </View>
@@ -370,7 +372,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
               <ReusableButton
                 title={
-                  isCreating ? "Generating..." : "Generate Product Showcase"
+                  isCreating ? t("workflows.buttons.generating") : t("tryOn.buttons.generateShowcase")
                 }
                 onPress={handleCreateProductToModel}
                 disabled={
@@ -387,7 +389,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
               />
 
               {error && (
-                <Text className="text-red-500 text-center mt-4">
+                <Text className="text-red-500 font-outfit text-center mt-4">
                   {error.message}
                 </Text>
               )}
@@ -405,10 +407,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
       {/* Progress Bar */}
       <View className="px-6 py-4">
         <View className="flex-row items-center justify-between mb-2">
-          <Text className="text-sm font-semibold text-gray-600">
+          <Text className="text-sm font-outfit-semibold text-gray-600">
             Step {currentStep} of 4
           </Text>
-          <Text className="text-sm font-semibold text-green-500">
+          <Text className="text-sm font-outfit-semibold text-green-500">
             {getWorkflowProgress()}% Complete
           </Text>
         </View>
@@ -453,7 +455,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                 color={currentStep === 1 ? "#9CA3AF" : "#374151"}
               />
               <Text
-                className={`font-semibold ml-1 ${
+                className={`font-outfit-semibold ml-1 ${
                   currentStep === 1 ? "text-gray-400" : "text-gray-700"
                 }`}
               >
@@ -477,7 +479,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
               }}
             >
               <Text
-                className={`font-semibold mr-1 ${
+                className={`font-outfit-semibold mr-1 ${
                   isCurrentStepValid() ? "text-white" : "text-gray-500"
                 }`}
               >

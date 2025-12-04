@@ -30,11 +30,26 @@ export const useAuthStore = create<AuthState>()(
 
       // Actions
       login: (user: User, token: string) => {
+        console.log('[AUTH_STORE] 🔑 Login called with:', {
+          userEmail: user?.email || 'No email',
+          hasToken: !!token,
+          tokenPrefix: token ? token.substring(0, 20) + '...' : 'No token'
+        });
+        
         set({
           user,
           token,
           isAuthenticated: true,
           isLoading: false
+        });
+        
+        // Verify state was set correctly
+        const newState = get();
+        console.log('[AUTH_STORE] ✅ Login completed, new state:', {
+          hasUser: !!newState.user,
+          hasToken: !!newState.token,
+          isAuthenticated: newState.isAuthenticated,
+          userEmail: newState.user?.email || 'No email'
         });
       },
 
@@ -77,6 +92,15 @@ export const useAuthStore = create<AuthState>()(
         return (state, error) => {
           if (error) {
             console.error('[AUTH_STORE] 🚨 Hydration failed:', error);
+          } else if (state) {
+            console.log('[AUTH_STORE] 💧 Hydration successful:', {
+              hasUser: !!state.user,
+              hasToken: !!state.token,
+              isAuthenticated: state.isAuthenticated,
+              userEmail: state.user?.email || 'No email'
+            });
+          } else {
+            console.log('[AUTH_STORE] 💧 Hydration completed - no stored state');
           }
         };
       }

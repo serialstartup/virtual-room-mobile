@@ -21,7 +21,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle, showIcon = fal
         )}
         
         {/* Title */}
-        <Text className="text-center text-gray-800 font-bold text-3xl mb-2">
+        <Text className="text-center font-outfit text-gray-800 font-bold text-3xl mb-2">
           {title}
         </Text>
         
@@ -30,7 +30,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle, showIcon = fal
         
         {/* Subtitle */}
         {subtitle && (
-          <Text className="text-center text-gray-500 text-base leading-6 max-w-sm">
+          <Text className="text-center font-outfit text-gray-500 text-base leading-6 max-w-sm">
             {subtitle}
           </Text>
         )}

@@ -28,10 +28,10 @@ const PremiumCard = () => {
           <View className="flex-row items-center gap-3">
             <Crown color="white" size={24} />
             <View className="text-wrap">
-              <Text className="text-2xl font-bold text-white">
+              <Text className="text-2xl font-outfit-bold text-white">
                 Virtual Room Premium
               </Text>
-              <Text className="text-white text-sm">
+              <Text className="text-white font-outfit text-sm">
                 Kendiniz üzerinde sınırsız deneme yapın!
               </Text>
             </View>

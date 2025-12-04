@@ -9,13 +9,15 @@ import DescriptionDressTab from "../tabs/DescriptionDressTab";
 import ReusableButton from "@/components/ui/ReusableButton";
 import UploadTab from "../tabs/UploadTab";
 import { UserAvatar } from "@/hooks/useUserAvatars";
-import { analytics } from "@/services/analytics";
+// import { analytics } from "@/services/analytics";
+import { useTranslation } from "react-i18next";
 
 interface ClassicTryOnProps {
   onTryOnCreate: (tryOnId: string) => void;
 }
 
 const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
+  const { t } = useTranslation();
   const {
     workflowData,
     currentStep,
@@ -92,14 +94,14 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
     }
 
     if (!hasCredits) {
-      analytics.trackOutOfCredits("classic_try_on");
+      // analytics.trackOutOfCredits("classic_try_on");
       Alert.alert("No Credits", "You need credits to create a try-on.");
       return;
     }
 
     try {
       // Track start
-      analytics.trackTryOnStarted("classic");
+      // analytics.trackTryOnStarted("classic");
       const startTime = Date.now();
 
       const tryOnData = {
@@ -116,12 +118,12 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
 
       // Track completion and credit usage
       const processingTime = Date.now() - startTime;
-      analytics.trackTryOnCompleted("classic", 1, processingTime);
-      analytics.trackCreditUsed(1, "classic_try_on");
+      // analytics.trackTryOnCompleted("classic", 1, processingTime);
+      // analytics.trackCreditUsed(1, "classic_try_on");
 
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
-      analytics.trackTryOnFailed("classic", err.message || "Unknown error");
+      // analytics.trackTryOnFailed("classic", err.message || "Unknown error");
       Alert.alert("Error", err.message || "Failed to create try-on");
     }
   };
@@ -154,10 +156,10 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                     <Ionicons name="person-outline" size={24} color="white" />
                   </View>
                   <View>
-                    <Text className="text-2xl font-bold text-gray-900">
+                    <Text className="text-2xl font-outfit-semibold text-gray-900">
                       Step 1
                     </Text>
-                    <Text className="text-lg text-gray-600">
+                    <Text className="text-lg font-outfit text-gray-600">
                       Upload Your Photo
                     </Text>
                   </View>
@@ -194,10 +196,10 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   <Ionicons name="shirt-outline" size={24} color="white" />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">
+                  <Text className="text-2xl font-outfit-semibold text-gray-900">
                     Step 2
                   </Text>
-                  <Text className="text-lg text-gray-600">Choose Garment</Text>
+                  <Text className="text-lg font-outfit text-gray-600">Choose Garment</Text>
                 </View>
               </View>
 
@@ -211,7 +213,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   activeOpacity={0.8}
                 >
                   <Text
-                    className={`text-center font-semibold ${
+                    className={`text-center font-outfit-semibold ${
                       activeTab === "image"
                         ? "text-virtual-primary"
                         : "text-gray-500"
@@ -229,7 +231,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   activeOpacity={0.8}
                 >
                   <Text
-                    className={`text-center font-semibold ${
+                    className={`text-center font-outfit-semibold ${
                       activeTab === "description"
                         ? "text-virtual-primary"
                         : "text-gray-500"
@@ -275,7 +277,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   />
                 </View>
                 <View>
-                  <Text className="text-2xl font-bold text-gray-900">
+                  <Text className="text-2xl font-outfit-semibold text-gray-900">
                     Step 3
                   </Text>
                   <Text className="text-lg text-gray-600">Ready to Create</Text>
@@ -284,13 +286,13 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
 
               {/* Summary */}
               <View className="bg-white rounded-2xl p-4 mb-6">
-                <Text className="text-lg font-semibold text-gray-900 mb-4">
+                <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
                   Summary
                 </Text>
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="person-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     {classicData.selfImage
                       ? "Your photo uploaded ✓"
                       : classicData.selectedAvatar
@@ -301,7 +303,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="shirt-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     {classicData.dressImage
                       ? "Garment image uploaded ✓"
                       : classicData.dressDescription
@@ -312,14 +314,14 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
 
                 <View className="flex-row items-center">
                   <Ionicons name="time-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 ml-3">
+                  <Text className="text-gray-700 font-outfit ml-3">
                     Processing time: ~2-5 minutes
                   </Text>
                 </View>
               </View>
 
               <ReusableButton
-                title={isCreating ? "Creating..." : "Create Try-On"}
+                title={isCreating ? t("workflows.buttons.creating") : t("tryOn.buttons.createTryOn")}
                 onPress={handleCreateTryOn}
                 disabled={
                   !isCurrentWorkflowValid() || isCreating || !hasCredits
@@ -335,7 +337,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
               />
 
               {error && (
-                <Text className="text-red-500 text-center mt-4">
+                <Text className="text-red-500 font-outfit text-center mt-4">
                   {error.message}
                 </Text>
               )}
@@ -353,10 +355,10 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       {/* Progress Bar */}
       <View className="px-6 py-4">
         <View className="flex-row items-center justify-between mb-2">
-          <Text className="text-sm font-semibold text-gray-600">
+          <Text className="text-sm font-outfit-semibold text-gray-600">
             Step {currentStep} of 3
           </Text>
-          <Text className="text-sm font-semibold text-virtual-primary">
+          <Text className="text-sm font-outfit-semibold text-virtual-primary">
             {getWorkflowProgress()}% Complete
           </Text>
         </View>
@@ -401,7 +403,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                 color={currentStep === 1 ? "#9CA3AF" : "#374151"}
               />
               <Text
-                className={`font-semibold ml-1 ${
+                className={`font-outfit-semibold ml-1 ${
                   currentStep === 1 ? "text-gray-400" : "text-gray-700"
                 }`}
               >
@@ -425,7 +427,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
               }}
             >
               <Text
-                className={`font-semibold mr-1 ${
+                className={`font-outfit-semibold mr-1 ${
                   isCurrentStepValid() ? "text-white" : "text-gray-500"
                 }`}
               >

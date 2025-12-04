@@ -49,7 +49,7 @@
     "workflow": "İş Akışı",
     "workflowSelector": {
       "howItWorks": "Nasıl çalışır",
-      "howItWorksDesc": "Her iş akışı, çarpıcı moda görselleri oluşturmak için gelişmiş AI kullanır. İşlem süresi karmaşıklığa bağlı olarak 2-15 dakika arasında değişir. Tüm sonuçlar gelecekte başvurmak üzere gardırobunuza kaydedilir.",
+      "howItWorksDesc": "Her iş akışı, çarpıcı moda görselleri oluşturmak için gelişmiş AI kullanır. İşlem süresi karmaşıklığa bağlı olarak 15-60 saniye arasında değişir. Tüm sonuçlar gelecekte başvurmak üzere gardırobunuza kaydedilir.",
       "options": {
         "classic": {
           "title": "Klasik Deneme",
@@ -109,14 +109,17 @@
       "startTryOn": "Denemeyi Başlat",
       "newTryOn": "Yeni Deneme",
       "viewResult": "Sonucu Görüntüle",
-      "createTryOn": "Try-On Oluştur"
+      "createTryOn": "Try-On Oluştur",
+      "generateShowcase": "Ürün Vitrin Oluştur"
     },
     "messages": {
       "processingTip": "💡 İpucu: Daha iyi sonuçlar için yüksek kaliteli, tek kişilik fotoğraflar kullanın",
       "processingDescription": "AI kıyafetinizi size uyduruyor...",
       "processingDuration": "Bu işlem 30-60 saniye sürebilir",
       "preparingRequest": "Verileriniz AI sistemine gönderiliyor",
-      "followSteps": "AI moda içeriği oluşturmak için adımları takip edin"
+      "followSteps": "AI moda içeriği oluşturmak için adımları takip edin",
+      "permissionRequired": "Resim yüklemek için kamera ve fotoğraf galerisi izinleri gereklidir.",
+      "chooseImageSource": "Resim seçme yöntemini seçin"
     }
   },
   "wardrobe": {
@@ -152,7 +155,7 @@
     "loading": "Gardırobunuz yükleniyor...",
     "error": "Gardırop yüklenemedi",
     "statistics": {
-      "totalOutfits": "Toplam Kıyafet",
+      "totalOutfits": "Toplam ",
       "favorites": "Favoriler"
     },
     "messages": {
@@ -178,7 +181,7 @@
     "logout": "Çıkış Yap",
     "tokenBalance": "Token Bakiyesi",
     "tokensUsed": "Kullanılan Token",
-    "total": "Toplam",
+    "total": "Kalan",
     "used": "Kullanılan",
     "buyTokens": "Token Satın Al",
     "upgrade": "Yükselt",
@@ -401,12 +404,12 @@
           "step1": {
             "title": "Kıyafet Seçin",
             "description": "Birtane kıyafet görseli yükleyin",
-            "badge": "Adım 2"
+            "badge": "Adım 1"
           },
           "step2": {
             "title": "Fotoğrafınızı Yükleyin",
             "description": "En iyi sonuç için net bir fotoğraf yükleyin",
-            "badge": "Adım 1"
+            "badge": "Adım 2"
           },
           "step3": {
             "title": "AI İşleme",
@@ -503,5 +506,55 @@
     "en": "English",
     "es": "Español",
     "fr": "Français"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "retry": "Tekrar Dene",
+    "back": "Geri",
+    "next": "İleri",
+    "done": "Tamam",
+    "previous": "Önceki",
+    "ok": "Tamam"
+  },
+  "textToFashion": {
+    "examples": {
+      "fashionPrompts": [
+        "Gümüş aksesuarları olan şık siyah gece elbisesi",
+        "Kot ceket ve beyaz spor ayakkabı ile yazlık casual outfit", 
+        "Modern kesimli profesyonel iş takımı",
+        "Çiçek desenli bohem tarzı uzun elbise",
+        "Oversized kapüşonlu ve kargo pantolonlu streetwear outfit",
+        "Flanel gömlek ile vintage 90'lar grunge look"
+      ],
+      "scenePrompts": [
+        "Mermer zeminli lüks otel lobisi",
+        "Gün batımında modern şehir caddesi",
+        "Yumuşak aydınlatmalı minimalist stüdyo",
+        "Paris'te kafe terası",
+        "Dramatik aydınlatmalı moda podium",
+        "Şehir manzaralı çatı bahçesi"
+      ]
+    },
+    "buttons": {
+      "creating": "Moda Tasarımı Oluşturuluyor...",
+      "createDesign": "Moda Tasarımı Oluştur"
+    }
+  },
+  "workflows": {
+    "buttons": {
+      "creating": "Oluşturuluyor...",
+      "generating": "Üretiliyor...",
+      "loadingAvatar": "Avatar yükleniyor...",
+      "loadingTextToFashion": "Metin-moda modeli yükleniyor...",
+      "loadingTryOn": "Deneme yükleniyor..."
+    }
   }
 }

@@ -112,7 +112,8 @@ const WorkflowSelector: React.FC<WorkflowSelectorProps> = ({
                       style={{
                         width: "100%",
                         height: 180,
-                        aspectRatio: 370 / 175,
+                        aspectRatio: 340 / 170,
+                        // aspectRatio: 16 / 9,
                       }}
                       contentFit="cover"
                       contentPosition="center"
@@ -125,19 +126,14 @@ const WorkflowSelector: React.FC<WorkflowSelectorProps> = ({
                     {/* Header with badges */}
                     <View className="flex-row items-start justify-between mb-3">
                       <View className="flex-1">
-                        <Text className="text-xl font-bold text-gray-900 mb-1">
+                        <Text className="text-xl font-outfit-semibold text-gray-900 mb-1">
                           {option.title}
                         </Text>
-                        <Text className="text-gray-600 text-base">
+                        <Text className="text-gray-500 text-base font-outfit">
                           {option.subtitle}
                         </Text>
                       </View>
                     </View>
-
-                    {/* Description */}
-                    <Text className="text-gray-500 text-sm leading-relaxed">
-                      {option.description}
-                    </Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -153,11 +149,11 @@ const WorkflowSelector: React.FC<WorkflowSelectorProps> = ({
               size={24}
               color="#6B7280"
             />
-            <Text className="text-lg font-semibold text-gray-900 ml-3">
+            <Text className="text-lg font-outfit-semibold text-gray-900 ml-3">
               {t("tryOn.workflowSelector.howItWorks")}
             </Text>
           </View>
-          <Text className="text-gray-600 leading-relaxed">
+          <Text className="text-gray-600 font-outfit leading-relaxed">
             {t("tryOn.workflowSelector.howItWorksDesc")}
           </Text>
         </View>

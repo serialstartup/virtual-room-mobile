@@ -17,8 +17,6 @@ const GeneralSettings = () => {
   const languageOptions = [
     { label: t('languages.tr'), value: "tr" },
     { label: t('languages.en'), value: "en" },
-    { label: t('languages.es'), value: "es" },
-    { label: t('languages.fr'), value: "fr" },
   ];
 
   const privacyOptions = [
@@ -93,7 +91,7 @@ const GeneralSettings = () => {
     return (
       <AnimatedView animation="slideUp">
         <View className="bg-gray-50 p-6 rounded-2xl">
-          <Text className="text-gray-500 text-center">{t('profile.messages.settingsLoading')}</Text>
+          <Text className="text-gray-500 font-outfit text-center">{t('profile.messages.settingsLoading')}</Text>
         </View>
       </AnimatedView>
     );
@@ -159,10 +157,10 @@ const GeneralSettings = () => {
                   {option.icon}
                 </View>
                 <View className="flex-1">
-                  <Text className="text-gray-800 font-semibold text-base">
+                  <Text className="text-gray-800 font-outfit-semibold text-base">
                     {option.title}
                   </Text>
-                  <Text className="text-gray-500 text-sm mt-1">
+                  <Text className="font-outfit text-gray-500 text-sm mt-1">
                     {option.subtitle}
                   </Text>
                 </View>

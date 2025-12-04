@@ -1,29 +1,12 @@
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import AnimatedView from "../ui/AnimatedView";
-import { Key, LogOut, ChevronRight } from "lucide-react-native";
+import { LogOut, ChevronRight } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 
 const CriticialButtons = () => {
   const router = useRouter();
   const { logout } = useAuth();
-  const handleForgotPassword = () => {
-    Alert.alert(
-      "Şifre Sıfırlama",
-      "E-posta adresinize şifre sıfırlama bağlantısı gönderilsin mi?",
-      [
-        {
-          text: "İptal",
-          style: "cancel",
-        },
-        {
-          text: "Gönder",
-          onPress: () => console.log("Password reset email sent"),
-        },
-      ]
-    );
-  };
-
   const handleLogout = () => {
     Alert.alert(
       "Çıkış Yap",
@@ -52,16 +35,16 @@ const CriticialButtons = () => {
   };
 
   const criticalActions = [
-    {
-      id: "forgot-password",
-      title: "Şifremi Unuttum",
-      subtitle: "E-posta ile şifre sıfırlama",
-      icon: <Key color="#ffffffff" size={22} />,
-      action: handleForgotPassword,
-      bgColor: "bg-white",
-      borderColor: "border-blue-200",
-      iconBg: "bg-blue-300",
-    },
+    // {
+    //   id: "forgot-password",
+    //   title: "Şifremi Unuttum",
+    //   subtitle: "E-posta ile şifre sıfırlama",
+    //   icon: <Key color="#ffffffff" size={22} />,
+    //   action: handleForgotPassword,
+    //   bgColor: "bg-white",
+    //   borderColor: "border-blue-200",
+    //   iconBg: "bg-blue-300",
+    // },
     {
       id: "logout",
       title: "Çıkış Yap",
@@ -77,7 +60,7 @@ const CriticialButtons = () => {
   return (
     <AnimatedView animation="slideUp">
       <View className="px-4 py-2">
-        <Text className="text-gray-500 text-sm mb-3 px-1">Hesap İşlemleri</Text>
+        <Text className="text-gray-500 font-outfit text-sm mb-3 px-1">Hesap İşlemleri</Text>
         
         <View className="space-y-3">
           {criticalActions.map((action) => (
@@ -100,10 +83,10 @@ const CriticialButtons = () => {
                     {action.icon}
                   </View>
                   <View className="flex-1">
-                    <Text className="font-semibold text-base text-gray-900">
+                    <Text className="font-outfit-semibold text-base text-gray-900">
                       {action.title}
                     </Text>
-                    <Text className="text-sm mt-0.5 text-gray-700">
+                    <Text className="text-sm mt-0.5 font-outfit text-gray-700">
                       {action.subtitle}
                     </Text>
                   </View>

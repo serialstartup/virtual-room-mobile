@@ -1,38 +1,36 @@
-import * as SecureStore from 'expo-secure-store';
-
-const TOKEN_KEY = 'auth_token';
+// Legacy authService - now just wraps the Auth Store
+// All token management is handled by Zustand Auth Store + AsyncStorage
 
 export const authService = {
+  // Deprecated: Use Auth Store instead
   async getToken(): Promise<string | null> {
-    try {
-      return await SecureStore.getItemAsync(TOKEN_KEY);
-    } catch (error) {
-      console.error('Error getting auth token:', error);
-      return null;
-    }
+    console.warn('[AUTH_SERVICE] ⚠️ getToken() is deprecated, use Auth Store instead');
+    return null;
   },
 
+  // Deprecated: Use Auth Store instead  
   async setToken(token: string): Promise<void> {
-    try {
-      await SecureStore.setItemAsync(TOKEN_KEY, token);
-    } catch (error) {
-      console.error('Error setting auth token:', error);
-    }
+    console.warn('[AUTH_SERVICE] ⚠️ setToken() is deprecated, use Auth Store instead');
   },
 
+  // Deprecated: Use Auth Store instead
   async removeToken(): Promise<void> {
-    try {
-      await SecureStore.deleteItemAsync(TOKEN_KEY);
-    } catch (error) {
-      console.error('Error removing auth token:', error);
-    }
+    console.warn('[AUTH_SERVICE] ⚠️ removeToken() is deprecated, use Auth Store instead');
   },
 
+  // Get auth headers from Auth Store
   async getAuthHeaders(): Promise<Record<string, string>> {
-    const token = await this.getToken();
-    return {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` })
-    };
+    try {
+      const { useAuthStore } = await import('@/store/authStore');
+      const { token, isAuthenticated } = useAuthStore.getState();
+      
+      return {
+        'Content-Type': 'application/json',
+        ...(token && isAuthenticated && { Authorization: `Bearer ${token}` })
+      };
+    } catch (error) {
+      console.error('[AUTH_SERVICE] Error getting auth headers:', error);
+      return { 'Content-Type': 'application/json' };
+    }
   }
 };

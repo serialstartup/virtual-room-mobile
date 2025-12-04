@@ -49,7 +49,7 @@
     "workflow": "Workflow",
     "workflowSelector": {
       "howItWorks": "How it works",
-      "howItWorksDesc": "Each workflow uses advanced AI to create stunning fashion visuals. Processing time varies from 2-15 minutes depending on complexity. All results are saved to your wardrobe for future reference.",
+      "howItWorksDesc": "Each workflow uses advanced AI to create stunning fashion visuals. Processing time varies from 15-60 seconds depending on complexity. All results are saved to your wardrobe for future reference.",
       "options": {
         "classic": {
           "title": "Classic Try-On",
@@ -109,14 +109,17 @@
       "startTryOn": "Start Try-On",
       "newTryOn": "New Try-On",
       "viewResult": "View Result",
-      "createTryOn": "Create Try-On"
+      "createTryOn": "Create Try-On",
+      "generateShowcase": "Generate Product Showcase"
     },
     "messages": {
       "processingTip": "💡 Tip: Use high-quality, single-person photos for better results",
       "processingDescription": "AI is fitting the outfit to you...",
       "processingDuration": "This process may take 30-60 seconds",
       "preparingRequest": "Your data is being sent to the AI system",
-      "followSteps": "Follow the steps to create AI fashion content"
+      "followSteps": "Follow the steps to create AI fashion content",
+      "permissionRequired": "Camera and photo library permissions are required to upload images.",
+      "chooseImageSource": "Choose how you want to select an image"
     }
   },
   "wardrobe": {
@@ -152,7 +155,7 @@
     "loading": "Loading your wardrobe...",
     "error": "Unable to load wardrobe",
     "statistics": {
-      "totalOutfits": "Total Outfits",
+      "totalOutfits": "Total ",
       "favorites": "Favorites"
     },
     "messages": {
@@ -178,7 +181,7 @@
     "logout": "Logout",
     "tokenBalance": "Token Balance",
     "tokensUsed": "Tokens Used",
-    "total": "Total",
+    "total": "Left",
     "used": "Used",
     "buyTokens": "Buy Tokens",
     "upgrade": "Upgrade",
@@ -517,5 +520,55 @@
   "languages": {
     "tr": "Türkçe",
     "en": "English"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "previous": "Previous",
+    "ok": "OK"
+  },
+  "textToFashion": {
+    "examples": {
+      "fashionPrompts": [
+        "Elegant black evening dress with silver accessories",
+        "Casual summer outfit with denim jacket and white sneakers", 
+        "Professional business suit with modern cut",
+        "Bohemian style maxi dress with floral patterns",
+        "Streetwear outfit with oversized hoodie and cargo pants",
+        "Vintage 90s grunge look with flannel shirt"
+      ],
+      "scenePrompts": [
+        "Luxurious hotel lobby with marble floors",
+        "Modern urban street at sunset",
+        "Minimalist studio with soft lighting",
+        "Parisian café terrace",
+        "Fashion runway with dramatic lighting",
+        "Rooftop garden with city skyline"
+      ]
+    },
+    "buttons": {
+      "creating": "Creating Fashion...",
+      "createDesign": "Create Fashion Design"
+    }
+  },
+  "workflows": {
+    "buttons": {
+      "creating": "Creating...",
+      "generating": "Generating...",
+      "loadingAvatar": "Loading avatar...",
+      "loadingTextToFashion": "Loading text-to-fashion model...",
+      "loadingTryOn": "Loading try-on..."
+    }
   }
 }

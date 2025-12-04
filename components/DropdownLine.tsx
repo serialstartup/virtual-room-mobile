@@ -46,13 +46,13 @@ const DropdownLine: React.FC<DropdownLineProps> = ({
         disabled={disabled}
       >
         <View className="flex-1 mr-4">
-          <Text className="text-gray-800 font-semibold text-base">{title}</Text>
+          <Text className="text-gray-800 font-outfit-semibold text-base">{title}</Text>
           {subtitle && (
-            <Text className="text-gray-500 text-sm mt-1">{subtitle}</Text>
+            <Text className="text-gray-500 font-outfit text-sm mt-1">{subtitle}</Text>
           )}
         </View>
         <View className="flex-row items-center gap-2">
-          <Text className="text-gray-600 font-medium">
+          <Text className="text-gray-600 font-outfit-medium">
             {selectedOption?.label || 'Seçiniz'}
           </Text>
           {isOpen ? (
@@ -81,8 +81,8 @@ const DropdownLine: React.FC<DropdownLineProps> = ({
             >
               <Text className={`text-base ${
                 selectedValue === option.value 
-                  ? 'text-virtual-primary font-semibold' 
-                  : 'text-gray-700'
+                  ? 'text-virtual-primary font-outfit-semibold' 
+                  : 'text-gray-700 font-outfit'
               }`}>
                 {option.label}
               </Text>

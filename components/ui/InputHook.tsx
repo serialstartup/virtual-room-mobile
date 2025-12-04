@@ -46,14 +46,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <View style={{ marginBottom: 16 }}>
       {label && (
-        <Text
-          style={{
-            fontSize: 14,
-            fontWeight: "500",
-            color: "#374151",
-            marginBottom: 8,
-          }}
-        >
+        <Text className="font-outfit-medium text-base text-gray-600 mb-2 ">
           {label}
         </Text>
       )}
@@ -100,7 +93,7 @@ export const Input: React.FC<InputProps> = ({
         )}
       />
       {error && (
-        <Text style={{ color: "#EF4444", fontSize: 12, marginTop: 4 }}>
+        <Text className="font-outfit text-red-500 text-base mt-2">
           {error.message}
         </Text>
       )}

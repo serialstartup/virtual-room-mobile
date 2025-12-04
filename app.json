@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "Fashaura",
+    "slug": "fashaura",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "icon": "./assets/images/fashaura-logo.png",
+    "scheme": "fashaura",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

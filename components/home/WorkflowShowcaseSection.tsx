@@ -1,11 +1,7 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import AnimatedView from "../ui/AnimatedView";
 import WorkflowCard from "./WorkflowCard";
-import { ChevronRight } from "lucide-react-native";
-import { useRouter } from "expo-router";
-import { useWorkflowStore, WorkflowType } from "@/store/workflowStore";
-import { useTranslation } from "react-i18next";
 
 interface WorkflowStep {
   id: number;
@@ -17,7 +13,7 @@ interface WorkflowStep {
 }
 
 interface WorkflowShowcaseSectionProps {
-  workflowType: WorkflowType;
+  // workflowType: WorkflowType;
   title: string;
   subtitle: string;
   steps: WorkflowStep[];
@@ -26,25 +22,25 @@ interface WorkflowShowcaseSectionProps {
 }
 
 const WorkflowShowcaseSection: React.FC<WorkflowShowcaseSectionProps> = ({
-  workflowType,
+  // workflowType,
   title,
   subtitle,
   steps,
   accentColor,
   onTryNow,
 }) => {
-  const router = useRouter();
-  const { t } = useTranslation();
-  const { setActiveWorkflow } = useWorkflowStore();
+  // const router = useRouter();
+  // const { t } = useTranslation();
+  // const { setActiveWorkflow } = useWorkflowStore();
 
-  const handleTryNow = () => {
-    if (onTryNow) {
-      onTryNow();
-    } else {
-      setActiveWorkflow(workflowType);
-      router.push("/(tabs)/try-on");
-    }
-  };
+  // const handleTryNow = () => {
+  //   if (onTryNow) {
+  //     onTryNow();
+  //   } else {
+  //     setActiveWorkflow(workflowType);
+  //     router.push("/(tabs)/try-on");
+  //   }
+  // };
 
   const renderItem = ({
     item,
@@ -61,7 +57,7 @@ const WorkflowShowcaseSection: React.FC<WorkflowShowcaseSectionProps> = ({
       text={item.text}
       badge={item.badge}
       accentColor={accentColor}
-      onPress={handleTryNow}
+      // onPress={handleTryNow}
       index={index}
     />
   );
@@ -71,17 +67,17 @@ const WorkflowShowcaseSection: React.FC<WorkflowShowcaseSectionProps> = ({
       {/* Section Header */}
       <AnimatedView animation="fadeIn" duration={400} className="px-6 mb-4">
         <View className="flex-row items-center justify-between mb-1">
-          <Text className="text-xl font-bold text-gray-900">{title}</Text>
+          <Text className="text-xl font-outfit-semibold text-gray-900">{title}</Text>
         </View>
-        <Text className="text-sm text-gray-600">{subtitle}</Text>
+        <Text className="text-sm font-outfit text-gray-600">{subtitle}</Text>
       </AnimatedView>
 
       {/* Horizontal Scroll List */}
-      <View className="h-[260px] pl-6">
+      <View className="h-[300px] pl-3 ">
         <FlashList
           data={steps}
           renderItem={renderItem}
-          keyExtractor={(item) => `${workflowType}-${item.id}`}
+          keyExtractor={(item) => `${item.id}`}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{ paddingRight: 24 }}

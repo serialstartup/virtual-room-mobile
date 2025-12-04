@@ -68,13 +68,13 @@ const DialogScreen: React.FC<DialogScreenProps> = ({
         activeOpacity={0.7}
       >
         <View className="flex-1 mr-4">
-          <Text className="text-gray-800 font-semibold text-base">{title}</Text>
+          <Text className="text-gray-800 font-outfit-semibold text-base">{title}</Text>
           {subtitle && (
             <Text className="text-gray-500 text-sm mt-1">{subtitle}</Text>
           )}
         </View>
         <View className="flex-row items-center gap-2">
-          <Text className="text-gray-600 font-medium">{buttonText}</Text>
+          <Text className="text-gray-600 font-outfit-medium">{buttonText}</Text>
           <ChevronRight color="#6b7280" size={20} />
         </View>
       </TouchableOpacity>
@@ -90,9 +90,9 @@ const DialogScreen: React.FC<DialogScreenProps> = ({
           <View className="bg-gray-50 px-6 py-4 border-b border-gray-100">
             <View className="flex-row items-center justify-between">
               <View>
-                <Text className="text-xl font-bold text-gray-800">{title}</Text>
+                <Text className="text-xl font-outfit-semibold text-gray-800">{title}</Text>
                 {subtitle && (
-                  <Text className="text-gray-500 text-sm mt-1">{subtitle}</Text>
+                  <Text className="text-gray-500 font-outfit text-base mt-1">{subtitle}</Text>
                 )}
               </View>
               <TouchableOpacity
@@ -120,10 +120,10 @@ const DialogScreen: React.FC<DialogScreenProps> = ({
                       {option.icon}
                     </View>
                     <View className="flex-1">
-                      <Text className="text-gray-800 font-semibold text-base">
+                      <Text className="text-gray-800 font-outfit-semibold text-base">
                         {option.title}
                       </Text>
-                      <Text className="text-gray-500 text-sm mt-1">
+                      <Text className="text-gray-500 font-outfit text-base mt-1">
                         {option.subtitle}
                       </Text>
                     </View>

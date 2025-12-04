@@ -30,7 +30,7 @@ const ChooseModelTab: React.FC<ChooseModelTabProps> = ({ onImageSelect, selected
     return (
       <TitleSectionTab title="Model seç">
         <View className="items-center py-8">
-          <Text className="text-red-500 text-center">
+          <Text className="text-red-500 font-outfit text-center">
             Modeller yüklenirken hata oluştu
           </Text>
         </View>
@@ -42,7 +42,7 @@ const ChooseModelTab: React.FC<ChooseModelTabProps> = ({ onImageSelect, selected
     return (
       <TitleSectionTab title="Model seç">
         <View className="items-center py-8">
-          <Text className="text-gray-600 text-center">
+          <Text className="text-gray-600 font-outfit text-center">
             Model bulunamadı
           </Text>
         </View>
@@ -70,12 +70,12 @@ const ChooseModelTab: React.FC<ChooseModelTabProps> = ({ onImageSelect, selected
           {isSelected && (
             <View className="absolute inset-0 bg-virtual-primary/20 items-center justify-center">
               <View className="bg-virtual-primary rounded-full w-8 h-8 items-center justify-center">
-                <Text className="text-white font-bold">✓</Text>
+                <Text className="text-white font-outfit-bold">✓</Text>
               </View>
             </View>
           )}
         </View>
-        <Text className={`mt-2 text-sm font-medium ${
+        <Text className={`mt-2 text-sm font-outfit-medium ${
           isSelected ? 'text-virtual-primary' : 'text-gray-700'
         }`}>
           {item.name}

@@ -43,9 +43,9 @@ const SwitchLine: FC<SwitchLineProps> = ({
   return (
     <View className="flex-row items-center justify-between py-3">
       <View className="flex-1 mr-4">
-        <Text className="text-gray-800 font-semibold text-base">{title}</Text>
+        <Text className="text-gray-800 font-outfit-semibold text-base">{title}</Text>
         {subtitle && (
-          <Text className="text-gray-500 text-sm mt-1">{subtitle}</Text>
+          <Text className="text-gray-500 font-outfit text-sm mt-1">{subtitle}</Text>
         )}
       </View>
       <Switch

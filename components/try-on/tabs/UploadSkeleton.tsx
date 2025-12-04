@@ -3,6 +3,7 @@ import { useState, type FC } from "react";
 import { Upload, X, Camera, Image as ImageIcon } from "lucide-react-native";
 import { Colors } from "@/constants";
 import * as ImagePicker from "expo-image-picker";
+import { useTranslation } from "react-i18next";
 
 interface UploadSkeletonProps {
   title: string;
@@ -17,6 +18,7 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
   selectedImage,
   disabled = false,
 }) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const requestPermissions = async () => {
@@ -27,9 +29,9 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
 
     if (cameraStatus !== "granted" || galleryStatus !== "granted") {
       Alert.alert(
-        "Permissions Required",
-        "Camera and photo library permissions are required to upload images.",
-        [{ text: "OK" }]
+        t("common.error"),
+        t("tryOn.messages.permissionRequired"),
+        [{ text: t("common.confirm") }]
       );
       return false;
     }
@@ -39,17 +41,17 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
   const showImagePickerOptions = () => {
     if (disabled) return;
 
-    Alert.alert("Select Image", "Choose how you want to select an image", [
+    Alert.alert(t("tryOn.buttons.selectFromGallery"), t("tryOn.messages.chooseImageSource"), [
       {
-        text: "Camera",
+        text: t("tryOn.buttons.takePhoto"),
         onPress: () => pickImage("camera"),
       },
       {
-        text: "Gallery",
+        text: t("tryOn.buttons.selectFromGallery"),
         onPress: () => pickImage("gallery"),
       },
       {
-        text: "Cancel",
+        text: t("common.cancel"),
         style: "cancel",
       },
     ]);
@@ -81,9 +83,8 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
       if (!result.canceled && result.assets[0]) {
         onImageSelect(result.assets[0].uri);
       }
-    } catch (error) {
-      Alert.alert("Error", "Failed to pick image. Please try again.");
-      console.error("Image picker error:", error);
+    } catch {
+      Alert.alert(t("common.error"), t("errors.uploadError"));
     } finally {
       setLoading(false);
     }
@@ -142,24 +143,24 @@ const UploadSkeleton: FC<UploadSkeletonProps> = ({
             <View className="animate-spin">
               <Upload size={48} color={Colors.gray[400]} />
             </View>
-            <Text className="text-gray-400 font-medium text-base">
-              Loading...
+            <Text className="text-gray-400 font-outfit-medium text-base">
+              {t("common.loading")}
             </Text>
           </>
         ) : (
           <>
             <Upload size={48} color={Colors.gray[400]} />
-            <Text className="text-virtual-primary font-semibold text-base text-center">
+            <Text className="text-virtual-primary font-outfit-semibold text-base text-center">
               {title}
             </Text>
             <View className="flex-row gap-4 mt-2">
               <View className="flex items-center">
                 <Camera size={20} color={Colors.gray[500]} />
-                <Text className="text-xs text-gray-500 mt-1">Camera</Text>
+                <Text className="text-xs font-outfit text-gray-500 mt-1">{t("tryOn.buttons.takePhoto")}</Text>
               </View>
               <View className="flex items-center">
                 <ImageIcon size={20} color={Colors.gray[500]} />
-                <Text className="text-xs text-gray-500 mt-1">Gallery</Text>
+                <Text className="text-xs font-outfit text-gray-500 mt-1">{t("tryOn.buttons.selectFromGallery")}</Text>
               </View>
             </View>
           </>

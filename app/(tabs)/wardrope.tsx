@@ -40,7 +40,7 @@ const Wardrope = () => {
       <PageWrapper>
         <SectionWrapper>
           <View className="flex-1 justify-center items-center">
-            <Text className="text-gray-500 text-center">
+            <Text className="font-outfit text-gray-500 text-center">
               {t("wardrobePage.loginRequired")}
             </Text>
           </View>
@@ -58,7 +58,7 @@ const Wardrope = () => {
             subtitle={t("wardrobePage.subtitle")}
           />
           <View className="flex-1 justify-center items-center">
-            <Text className="text-gray-500 text-center">
+            <Text className="font-outfit text-gray-500 text-center">
               {t("wardrobePage.loading")}
             </Text>
           </View>
@@ -76,7 +76,7 @@ const Wardrope = () => {
             subtitle={t("wardrobePage.subtitle")}
           />
           <View className="flex-1 justify-center items-center">
-            <Text className="text-red-500 text-center">
+            <Text className="font-outfit text-red-500 text-center">
               {t("wardrobePage.error")}
             </Text>
           </View>

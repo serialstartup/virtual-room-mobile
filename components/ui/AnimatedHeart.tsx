@@ -52,12 +52,11 @@ const AnimatedHeart: React.FC<AnimatedHeartProps> = ({
         <MotiView
           from={{ scale: 1 }}
           animate={{
-            scale: isLiked ? [1, 1.2, 1] : 1,
+            scale: isLiked ? [1, 1.1, 1] : 1,
           }}
           transition={{
-            type: "spring",
-            damping: 15,
-            stiffness: 200,
+            type: "timing",
+            duration: 150,
           }}
         >
           <Heart

@@ -28,9 +28,9 @@ const Profile = () => {
           <GeneralSettings />
         </SectionWrapper>
 
-        <SectionWrapper className="p-4 my-4">
+        {/* <SectionWrapper className="p-4 my-4">
           <PremiumCard />
-        </SectionWrapper>
+        </SectionWrapper> */}
 
         <SectionWrapper className="my-4">
           <CriticialButtons />

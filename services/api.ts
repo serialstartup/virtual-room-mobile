@@ -1,5 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 // Backend base URL - update this based on your environment
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/api';
 
@@ -29,54 +27,17 @@ class ApiClient {
 
   private async getAuthHeader(): Promise<Record<string, string>> {
     try {
-      let authToken: string | null = null;
+      // Use only Auth Store (Zustand + AsyncStorage)
+      const { useAuthStore } = await import('@/store/authStore');
+      const storeState = useAuthStore.getState();
       
-      try {
-        // Dynamic import to avoid circular dependencies
-        const { useAuthStore } = await import('@/store/authStore');
-        const storeState = useAuthStore.getState();
-        authToken = storeState.token;
-        
-        console.log('[API] 🔑 Auth store state:', {
-          hasToken: !!authToken,
-          isAuthenticated: storeState.isAuthenticated,
-          hasUser: !!storeState.user,
-          userId: storeState.user?.id,
-          tokenPrefix: authToken ? authToken.substring(0, 20) + '...' : 'null'
-        });
-      } catch (storeError) {
-        console.warn('[API] ⚠️ Could not get token from store, falling back to AsyncStorage:', storeError);
-      }
-      
-      // Fallback to AsyncStorage if store is not available
-      if (!authToken) {
-        const token = await AsyncStorage.getItem('virtual-room-auth');
-        console.log('[API] 📱 AsyncStorage auth check:', {
-          hasStoredAuth: !!token
-        });
-        
-        if (token) {
-          const authData = JSON.parse(token);
-          // Zustand persist format: {state: {token, user, ...}}
-          authToken = authData.state?.token;
-          console.log('[API] 📱 AsyncStorage auth data:', {
-            hasStateToken: !!authData.state?.token,
-            hasStateUser: !!authData.state?.user,
-            isStateAuthenticated: !!authData.state?.isAuthenticated
-          });
-        } else {
-          console.warn('[API] 🚨 No auth token found in AsyncStorage');
-        }
-      }
-      
-      if (authToken) {
-        console.log('[API] ✅ Auth header created successfully');
+      if (storeState.token && storeState.isAuthenticated) {
         return {
-          Authorization: `Bearer ${authToken}`,
+          Authorization: `Bearer ${storeState.token}`,
         };
       }
       
-      console.error('[API] 🚨 No auth token available for request');
+      console.warn('[API] ⚠️ No valid auth token found in store');
       return {};
     } catch (error) {
       console.error('[API] 🚨 Error getting auth header:', error);

@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { MotiView } from "moti";
-import { useTranslation } from "react-i18next";
 
 interface WorkflowCardProps {
   id: number;
@@ -25,7 +24,6 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
   onPress,
   index,
 }) => {
-  const { t } = useTranslation();
 
   return (
     <MotiView
@@ -41,14 +39,7 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
       <TouchableOpacity
         onPress={onPress}
         activeOpacity={0.7}
-        className="w-[320px] h-[280px] bg-white rounded-2xl overflow-hidden border border-gray-100"
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.08,
-          shadowRadius: 8,
-          elevation: 3,
-        }}
+        className="w-[280px] h-[280px] bg-white rounded-2xl overflow-hidden border border-gray-200"
       >
         {/* Image Section */}
         <View className="relative h-[180px] bg-gray-100">
@@ -69,11 +60,8 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
               />
             </View>
           ) : (
-            <View
-              className=" p-4 w-64 bg-black/80 rounded-2xl h-auto items-center justify-center m-auto"
-            >
-              <Text
-                className="text-sm text-center font-bold text-white"              >
+            <View className=" p-4 w-64 bg-black/80 rounded-2xl h-auto items-center justify-center m-auto">
+              <Text className="text-sm text-center font-outfit-semibold text-white">
                 {text || "?"}
               </Text>
             </View>
@@ -82,7 +70,7 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
           {/* Step Badge */}
           {badge && (
             <View className="absolute top-3 left-3 bg-white px-3 py-1 rounded-full">
-              <Text className="text-xs font-semibold text-gray-700">
+              <Text className="text-xs font-outfit-semibold text-gray-700">
                 {badge}
               </Text>
             </View>
@@ -97,21 +85,21 @@ const WorkflowCard: React.FC<WorkflowCardProps> = ({
               style={{ backgroundColor: accentColor + "20" }}
             >
               <Text
-                className="text-xs font-bold"
+                className="text-xs font-outfit-semibold"
                 style={{ color: accentColor }}
               >
                 {id}
               </Text>
             </View>
             <Text
-              className="text-base font-bold text-gray-900 flex-1"
+              className="text-base font-outfit-semibold text-gray-900 flex-1"
               numberOfLines={1}
             >
               {title}
             </Text>
           </View>
 
-          <Text className="text-sm text-gray-600 leading-5" numberOfLines={2}>
+          <Text className="text-sm font-outfit text-gray-600 leading-5" numberOfLines={2}>
             {description}
           </Text>
         </View>
