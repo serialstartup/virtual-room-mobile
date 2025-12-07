@@ -1,3 +1,5 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
 import TitleSectionTab from "./TitleSectionTab";
 import UploadSkeleton from "./UploadSkeleton";
 
@@ -7,10 +9,12 @@ interface UploadDressTabProps {
 }
 
 const UploadDressTab: React.FC<UploadDressTabProps> = ({ onImageSelect, selectedImage }) => {
+  const { t } = useTranslation();
+  
   return (
-    <TitleSectionTab title="Kıyafet Yükle">
+    <TitleSectionTab title={t("uploadDressTab.title")}>
       <UploadSkeleton 
-        title="Kıyafet resmini yükle" 
+        title={t("uploadDressTab.uploadClothingImage")} 
         onImageSelect={onImageSelect}
         selectedImage={selectedImage}
       />

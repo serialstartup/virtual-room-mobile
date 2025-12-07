@@ -4,6 +4,7 @@ import { Colors } from '@/constants';
 import { useUserAvatars, type UserAvatar } from '@/hooks/useUserAvatars';
 import UploadSkeleton from './UploadSkeleton';
 import { User } from 'lucide-react-native';
+import { useTranslation } from 'react-i18next';
 
 interface UploadWithAvatarSelectionProps {
   title: string;
@@ -24,6 +25,7 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
   onAvatarSelect,
   selectedAvatar
 }) => {
+  const { t } = useTranslation();
   const { avatars, isLoading: avatarsLoading, error: avatarsError } = useUserAvatars();
   
 
@@ -55,12 +57,12 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
       {enableAvatarSelection && (
         <View className="mt-6 ">
           <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
-            Veya Modellerimden Seç
+            {t("tryOnTabs.selectFromModels")}
           </Text>
           
           {avatarsLoading ? (
             <View className="h-24 items-center justify-center bg-gray-50 rounded-lg">
-              <Text className="text-gray-500 font-outfit">Avatarlar yükleniyor...</Text>
+              <Text className="text-gray-500 font-outfit">{t("tryOnTabs.avatarsLoading")}</Text>
             </View>
           ) : avatarsError ? (
             <View className="h-24 items-center justify-center bg-red-50 rounded-lg border border-red-200">
@@ -69,7 +71,7 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
           ) : avatars.length === 0 ? (
             <View className="h-24 items-center justify-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
               <User size={24} color={Colors.gray[400]} />
-              <Text className="text-gray-500 font-outfit text-center mt-1 text-sm">Henüz avatar oluşturmadınız</Text>
+              <Text className="text-gray-500 font-outfit text-center mt-1 text-sm">{t("tryOnTabs.noAvatarsYet")}</Text>
             </View>
           ) : (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-2">
@@ -125,7 +127,7 @@ const UploadWithAvatarSelection: FC<UploadWithAvatarSelectionProps> = ({
           {selectedAvatar && (
             <View className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
               <Text className="text-green-700 font-outfit-medium text-sm">
-                ✓ Seçilen Model: {selectedAvatar.name || `Avatar ${selectedAvatar.id.slice(0, 8)}`}
+                ✓ {t("tryOnTabs.selectedModel")} {selectedAvatar.name || `Avatar ${selectedAvatar.id.slice(0, 8)}`}
               </Text>
             </View>
           )}

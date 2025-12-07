@@ -4,6 +4,7 @@ import { AnimatePresence, MotiView } from "moti";
 import DescriptionDressTab from "./tabs/DescriptionDressTab";
 import UploadTab from "./tabs/UploadTab";
 import ChooseClothes from "./ChooseClothes";
+import { useTranslation } from "react-i18next";
 interface DressModalProps {
   onImageSelect: (imageUrl: string, description?: string) => void;
   selectedImage?: string;
@@ -15,14 +16,15 @@ const DressModal: React.FC<DressModalProps> = ({
   selectedImage,
   selectedDescription,
 }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<
     "description" | "uploadDress" | "chooseDress"
   >("description");
 
   const tabs = [
-    { key: "description", title: "Tarif et" },
-    { key: "uploadDress", title: "Kıyafet Yükle" },
-    { key: "chooseDress", title: "Kıyafet Seç" },
+    { key: "description", title: t("tryOnTabs.description") },
+    { key: "uploadDress", title: t("tryOnTabs.uploadDress") },
+    { key: "chooseDress", title: t("tryOnTabs.chooseDress") },
   ];
 
   return (
@@ -31,9 +33,9 @@ const DressModal: React.FC<DressModalProps> = ({
       <View className="px-4 pt-4 pb-2">
         <View className="flex-row items-end mb-6 gap-2">
           <Text className="text-2xl font-semibold text-virtual-primary">
-            Step 2:
+            {t("steps.step2")}:
           </Text>
-          <Text className="text-2xl font-semibold ">Choose Clothing</Text>
+          <Text className="text-2xl font-semibold ">{t("steps.chooseClothing")}</Text>
         </View>
         <View className="flex-row rounded-2xl bg-gray-300 p-1">
           {tabs.map((tab) => {
@@ -88,8 +90,8 @@ const DressModal: React.FC<DressModalProps> = ({
             <UploadTab
               onImageSelect={onImageSelect}
               selectedImage={selectedImage}
-              title="Kıyafet yükle"
-              skeletonTitle="Kıyafet resmini yükless"
+              title={t("tryOnTabs.uploadDress")}
+              skeletonTitle={t("tryOnTabs.clickToSelectProduct")}
             />
           ) : (
             // <UploadDressTab

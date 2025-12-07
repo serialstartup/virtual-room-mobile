@@ -2,6 +2,7 @@ import TitleSectionTab from "./TitleSectionTab";
 import { View, Text, Alert, TouchableOpacity } from "react-native";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Input } from "@/components/ui/InputHook";
+import { useTranslation } from "react-i18next";
 
 type FormValues = {
   description: string;
@@ -13,6 +14,7 @@ interface DescriptionDressTabProps {
 }
 
 const DescriptionDressTab: React.FC<DescriptionDressTabProps> = ({ onDescriptionChange, selectedDescription }) => {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -25,16 +27,16 @@ const DescriptionDressTab: React.FC<DescriptionDressTabProps> = ({ onDescription
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     onDescriptionChange(data.description);
-    Alert.alert("Açıklama", `Tarif: ${data.description}`);
+    Alert.alert(t("tryOnTabs.description"), `${t("tryOn.placeholders.describeDress")}: ${data.description}`);
   };
 
   return (
-    <TitleSectionTab title="Kıyafeti Tarif Et">
+    <TitleSectionTab title={t("tryOnTabs.description")}>
       <View className="p-2">
         <Input
           name="description"
           control={control}
-          placeholder="Örnek: Kırmızı yaz elbisesi, mavi ceket.."
+          placeholder={t("placeholders.clothingDescription")}
           multiline={true}
           numberOfLines={3}
           error={errors.description}
@@ -46,7 +48,7 @@ const DescriptionDressTab: React.FC<DescriptionDressTabProps> = ({ onDescription
           className="bg-virtual-primary rounded-xl py-3 px-4 mt-4"
           activeOpacity={0.8}
         >
-          <Text className="text-white text-center font-outfit-semibold">Tarifi Kaydet</Text>
+          <Text className="text-white text-center font-outfit-semibold">{t("tryOnTabs.saveDescription")}</Text>
         </TouchableOpacity>
       </View>
     </TitleSectionTab>

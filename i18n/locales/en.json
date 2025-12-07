@@ -562,6 +562,114 @@
       "createDesign": "Create Fashion Design"
     }
   },
+  "tryOnTabs": {
+    "description": "Describe It",
+    "uploadDress": "Upload Clothing",
+    "chooseDress": "Choose Clothing",
+    "uploadProduct": "Add Product",
+    "addModel": "Add Model",
+    "selectFromModels": "Or Choose from Our Models",
+    "avatarsLoading": "Loading avatars...",
+    "noAvatarsYet": "You haven't created any avatars yet",
+    "selectedModel": "Selected Model:",
+    "productDetails": "Product Details",
+    "sceneSettings": "Scene Settings",
+    "clickToSelectProduct": "Click to select product",
+    "clickToSelectModel": "Click to select model",
+    "saveDescription": "Save Description"
+  },
+  "steps": {
+    "step1": "Step 1",
+    "step2": "Step 2", 
+    "step3": "Step 3",
+    "step4": "Step 4",
+    "uploadProductImage": "Upload Product Image",
+    "selectModel": "Select Model",
+    "readyToGenerate": "Ready to Generate",
+    "chooseClothing": "Choose Clothing"
+  },
+  "placeholders": {
+    "productName": "e.g. Nike Air Max Sneakers",
+    "sceneDescription": "Describe the setting for your product showcase (e.g. modern urban street, luxurious hotel lobby, minimalist studio)",
+    "clothingDescription": "Example: Red summer dress, blue jacket..",
+    "characterCount": "characters"
+  },
+  "scenePrompts": {
+    "studio": "Professional studio setting",
+    "street": "Modern urban street at sunset", 
+    "luxury": "Luxurious hotel lobby with marble floors",
+    "cafe": "Parisian café terrace",
+    "runway": "Fashion runway with dramatic lighting",
+    "rooftop": "Rooftop garden with city skyline"
+  },
+  "tips": {
+    "title": "Tips for Better Results",
+    "sceneDetails": "• Use descriptive scene settings for more engaging showcases\n• Specify lighting preferences (natural, studio, dramatic)\n• Mention the target audience or use case"
+  },
+  "summary": {
+    "title": "Summary",
+    "productUploaded": "Product image uploaded ✓",
+    "modelUploaded": "Model image uploaded ✓",
+    "avatarSelected": "Avatar selected:",
+    "noImageSelected": "No image selected", 
+    "noModelSelected": "No model selected",
+    "noProductName": "No product name",
+    "product": "Product:",
+    "scene": "Scene:",
+    "processingTime": "Processing time: ~3-10 minutes"
+  },
+  "avatar": {
+    "createAvatar": "Create Avatar",
+    "uploadFacePhoto": "Upload your face photo",
+    "privacyFirst": "Privacy First",
+    "privacyDescription": "We value your privacy. Upload your face and let us create an avatar with a body, continue operations through this avatar.",
+    "avatarName": "Avatar Name (Optional)",
+    "avatarNamePlaceholder": "lovelyavatar",
+    "facePhoto": "Face Photo *",
+    "photoSelected": "Photo Selected ✓",
+    "tapToChange": "Tap again to change",
+    "selectFacePhoto": "Select Face Photo",
+    "photoTips": "Use clear, well-lit selfie for best results",
+    "idealPhoto": "Ideal Photo Features",
+    "photoRequirements": "• Face clearly visible\n• Good lighting\n• Single person\n• No glasses or mask\n• Frontal angle",
+    "creatingAvatar": "Creating Avatar...",
+    "createAvatarButton": "Create Avatar",
+    "missingInfo": "Missing Information",
+    "provideFaceImage": "Please provide face image.",
+    "avatarCreated": "Avatar Created!",
+    "avatarCreatedSuccess": "Your avatar \"{name}\" has been created successfully and will be processed in the background.",
+    "permissionNeeded": "Permission needed",
+    "allowPhotoAccess": "Please allow access to your photo library to upload face image.",
+    "failedToPickImage": "Failed to pick image"
+  },
+  "classic": {
+    "uploadPhotoOrSelectAvatar": "Please upload your photo or select an avatar first.",
+    "missingGarment": "Missing Garment",
+    "selectGarmentOrDescription": "Please select a garment image or add a description.",
+    "needCreditsForTryOn": "You need credits to create a try-on.",
+    "failedToCreateTryOn": "Failed to create try-on",
+    "uploadYourPhoto": "Upload Your Photo",
+    "addModel": "Add Model",
+    "clickToSelectModel": "Click to select model",
+    "chooseGarment": "Choose Garment",
+    "uploadImage": "Upload Image",
+    "describe": "Describe",
+    "readyToCreate": "Ready to Create",
+    "photoUploaded": "Your photo uploaded ✓",
+    "avatarSelected": "Avatar selected: {{name}} ✓",
+    "unnamed": "Unnamed",
+    "noPhotoOrAvatarSelected": "No photo or avatar selected",
+    "garmentImageUploaded": "Garment image uploaded ✓",
+    "garmentDescribed": "Described: \"{{description}}...\"",
+    "noGarmentSelected": "No garment selected",
+    "processingTime": "Processing time: ~2-5 minutes",
+    "stepProgress": "Step {{current}} of {{total}}",
+    "percentComplete": "{{percent}}% Complete"
+  },
+  "uploadDressTab": {
+    "title": "Upload Clothing",
+    "uploadClothingImage": "Upload clothing image"
+  },
   "workflows": {
     "buttons": {
       "creating": "Creating...",

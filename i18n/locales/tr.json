@@ -548,6 +548,114 @@
       "createDesign": "Moda Tasarımı Oluştur"
     }
   },
+  "tryOnTabs": {
+    "description": "Tarif Et",
+    "uploadDress": "Kıyafet Yükle",
+    "chooseDress": "Kıyafet Seç",
+    "uploadProduct": "Ürün Ekle",
+    "addModel": "Model Ekle",
+    "selectFromModels": "Veya Modellerimden Seç",
+    "avatarsLoading": "Avatarlar yükleniyor...",
+    "noAvatarsYet": "Henüz avatar oluşturmadınız",
+    "selectedModel": "Seçilen Model:",
+    "productDetails": "Ürün Detayları",
+    "sceneSettings": "Sahne Ayarları",
+    "clickToSelectProduct": "Ürün seçmek için tıkla",
+    "clickToSelectModel": "Model seçmek için tıkla",
+    "saveDescription": "Tarifi Kaydet"
+  },
+  "steps": {
+    "step1": "Adım 1",
+    "step2": "Adım 2",
+    "step3": "Adım 3", 
+    "step4": "Adım 4",
+    "uploadProductImage": "Ürün Resmini Yükle",
+    "selectModel": "Model Seç",
+    "readyToGenerate": "Üretmeye Hazır",
+    "chooseClothing": "Kıyafet Seç"
+  },
+  "placeholders": {
+    "productName": "örn. Nike Air Max Ayakkabı",
+    "sceneDescription": "Ürün vitrin ayarınız için ortamı tarif edin (örn. modern şehir caddesi, lüks otel lobisi, minimalist stüdyo)",
+    "clothingDescription": "Örnek: Kırmızı yaz elbisesi, mavi ceket..",
+    "characterCount": "karakter"
+  },
+  "scenePrompts": {
+    "studio": "Profesyonel stüdyo ortamı",
+    "street": "Gün batımında modern şehir caddesi",
+    "luxury": "Mermer zeminli lüks otel lobisi", 
+    "cafe": "Paris'te kafe terası",
+    "runway": "Dramatik aydınlatmalı moda podium",
+    "rooftop": "Şehir manzaralı çatı bahçesi"
+  },
+  "tips": {
+    "title": "Daha İyi Sonuçlar için İpuçları",
+    "sceneDetails": "• Daha etkileyici vitrinler için açıklayıcı sahne ayarları kullanın\n• Aydınlatma tercihlerini belirtin (doğal, stüdyo, dramatik)\n• Hedef kitle veya kullanım alanından bahsedin"
+  },
+  "summary": {
+    "title": "Özet",
+    "productUploaded": "Ürün resmi yüklendi ✓",
+    "modelUploaded": "Model resmi yüklendi ✓", 
+    "avatarSelected": "Avatar seçildi:",
+    "noImageSelected": "Resim seçilmedi",
+    "noModelSelected": "Model seçilmedi",
+    "noProductName": "Ürün adı girilmedi",
+    "product": "Ürün:",
+    "scene": "Sahne:",
+    "processingTime": "İşlem süresi: ~3-10 dakika"
+  },
+  "avatar": {
+    "createAvatar": "Avatar Oluştur",
+    "uploadFacePhoto": "Yüz fotoğrafınızı yükleyin",
+    "privacyFirst": "Mahremiyet Önceliğimiz",
+    "privacyDescription": "Mahremiyetinizi önemsiyoruz. Yüzünüzü yükleyin ve vücüdu olan bir avatar oluşturalım, bu avatar üzerinden işlemlere devam edin.",
+    "avatarName": "Avatar İsmi (Opsiyonel)",
+    "avatarNamePlaceholder": "güzelavatar",
+    "facePhoto": "Yüz Fotoğrafı *",
+    "photoSelected": "Fotoğraf Seçildi ✓",
+    "tapToChange": "Değiştirmek için tekrar dokunun",
+    "selectFacePhoto": "Yüz Fotoğrafı Seçin",
+    "photoTips": "En iyi sonuç için net, iyi aydınlatılmış selfie kullanın",
+    "idealPhoto": "İdeal Fotoğraf Özellikleri",
+    "photoRequirements": "• Yüz net görünür olmalı\n• İyi aydınlatma\n• Tek kişi\n• Gözlük veya maske olmadan\n• Frontal açı",
+    "creatingAvatar": "Avatar Oluşturuluyor...",
+    "createAvatarButton": "Avatar Oluştur",
+    "missingInfo": "Eksik Bilgi",
+    "provideFaceImage": "Lütfen yüz fotoğrafı ekleyin.",
+    "avatarCreated": "Avatar Oluşturuldu!",
+    "avatarCreatedSuccess": "Avatar'ınız \"{name}\" başarıyla oluşturuldu ve arka planda işlenecek.",
+    "permissionNeeded": "İzin gerekli",
+    "allowPhotoAccess": "Yüz fotoğrafı yüklemek için lütfen fotoğraf galerisine erişime izin verin.",
+    "failedToPickImage": "Fotoğraf seçme başarısız"
+  },
+  "classic": {
+    "uploadPhotoOrSelectAvatar": "Lütfen önce fotoğrafınızı yükleyin veya avatar seçin.",
+    "missingGarment": "Eksik Giysi",
+    "selectGarmentOrDescription": "Lütfen bir giysi fotoğrafı seçin veya açıklama ekleyin.",
+    "needCreditsForTryOn": "Deneme oluşturmak için kredi gerekir.",
+    "failedToCreateTryOn": "Deneme oluşturma başarısız",
+    "uploadYourPhoto": "Fotoğrafınızı Yükleyin",
+    "addModel": "Model Ekle",
+    "clickToSelectModel": "Model seçmek için tıkla",
+    "chooseGarment": "Giysi Seç",
+    "uploadImage": "Fotoğraf Yükle",
+    "describe": "Tarif Et",
+    "readyToCreate": "Oluşturmaya Hazır",
+    "photoUploaded": "Fotoğrafınız yüklendi ✓",
+    "avatarSelected": "Avatar seçildi: {{name}} ✓",
+    "unnamed": "İsimsiz",
+    "noPhotoOrAvatarSelected": "Fotoğraf veya avatar seçilmedi",
+    "garmentImageUploaded": "Giysi fotoğrafı yüklendi ✓",
+    "garmentDescribed": "Tarif edildi: \"{{description}}...\"",
+    "noGarmentSelected": "Giysi seçilmedi",
+    "processingTime": "İşlem süresi: ~2-5 dakika",
+    "stepProgress": "Adım {{current}} / {{total}}",
+    "percentComplete": "%{{percent}} Tamamlandı"
+  },
+  "uploadDressTab": {
+    "title": "Kıyafet Yükle",
+    "uploadClothingImage": "Kıyafet resmini yükle"
+  },
   "workflows": {
     "buttons": {
       "creating": "Oluşturuluyor...",

@@ -63,18 +63,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
       Alert.alert("Missing Image", "Please upload your product image first.");
       return;
     }
-    if (
-      currentStep === 2 &&
-      !productData.modelImage &&
-      !productData.selectedAvatar
-    ) {
-      Alert.alert(
-        "Missing Model",
-        "Please upload a model image or select an avatar."
-      );
-      return;
-    }
-    if (currentStep === 3 && !productData.productName.trim()) {
+    if (currentStep === 2 && !productData.productName.trim()) {
       Alert.alert("Missing Product Name", "Please enter a product name.");
       return;
     }
@@ -87,8 +76,6 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
       case 1:
         return !!productData.productImage;
       case 2:
-        return !!(productData.modelImage || productData.selectedAvatar);
-      case 3:
         return !!productData.productName.trim();
       default:
         return true;
@@ -117,11 +104,9 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
 
       const productToModelData = {
         product_image: productData.productImage!,
-        model_image:
-          productData.selectedAvatar?.avatar_image_url ||
-          productData.modelImage!,
+        model_image: "default_model", // Since we removed model selection, use default
         product_name: productData.productName,
-        scene_prompt: productData.scenePrompt || "professional studio setting",
+        scene_prompt: productData.scenePrompt || t("scenePrompts.studio"),
       };
 
       const newTryOn = await createProductToModel(productToModelData);
@@ -153,63 +138,24 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                 </View>
                 <View>
                   <Text className="text-2xl font-outfit-bold text-gray-900">
-                    Step 1
+                    {t("steps.step1")}
                   </Text>
                   <Text className="text-lg font-outfit text-gray-600">
-                    Upload Product Image
+                    {t("steps.uploadProductImage")}
                   </Text>
                 </View>
               </View>
               <UploadTab
                 onImageSelect={handleProductImageSelect}
                 selectedImage={productData.productImage || undefined}
-                title="Ürün ekle"
-                skeletonTitle="Ürün seçmek için tıkla"
+                title={t("tryOnTabs.uploadProduct")}
+                skeletonTitle={t("tryOnTabs.clickToSelectProduct")}
               />
-              {/* <UploadDressTab 
-                onImageSelect={handleProductImageSelect}
-                selectedImage={productData.productImage || undefined}
-              /> */}
             </View>
           </MotiView>
         );
 
-      case 2:
-        return (
-          <ScrollView>
-            <MotiView
-              from={{ opacity: 0, translateX: 50 }}
-              animate={{ opacity: 1, translateX: 0 }}
-              transition={{ type: "timing", duration: 300 }}
-            >
-              <View className="p-6 bg-gray-50 rounded-3xl">
-                <View className="flex-row items-center mb-6">
-                  <View className="w-12 h-12 bg-green-500 rounded-2xl items-center justify-center mr-4">
-                    <Ionicons name="person-outline" size={24} color="white" />
-                  </View>
-                  <View>
-                    <Text className="text-2xl font-outfit-semibold text-gray-900">
-                      Step 2
-                    </Text>
-                    <Text className="text-lg font-outfit text-gray-600">Select Model</Text>
-                  </View>
-                </View>
-
-                <UploadTab
-                  onImageSelect={handleModelImageSelect}
-                  selectedImage={productData.modelImage || undefined}
-                  title="Model ekle"
-                  skeletonTitle="Model seçmek için tıkla"
-                  enableAvatarSelection={true}
-                  onAvatarSelect={handleAvatarSelect}
-                  selectedAvatar={productData.selectedAvatar}
-                />
-              </View>
-            </MotiView>
-          </ScrollView>
-        );
-
-      case 3: // This was previously case 2, now it's case 3
+      case 2: // This was previously case 3, now it's case 2
         return (
           <ScrollView>
             <MotiView
@@ -224,10 +170,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   </View>
                   <View>
                     <Text className="text-2xl font-outfit-semibold text-gray-900">
-                      Step 3
+                      {t("steps.step2")}
                     </Text>
                     <Text className="text-lg text-gray-600">
-                      Product Details
+                      {t("tryOnTabs.productDetails")}
                     </Text>
                   </View>
                 </View>
@@ -239,7 +185,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   </Text>
                   <TextInput
                     className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900"
-                    placeholder="e.g. Nike Air Max Sneakers"
+                    placeholder={t("placeholders.productName")}
                     value={productData.productName}
                     onChangeText={setProductName}
                     multiline={false}
@@ -250,11 +196,11 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                 {/* Scene Prompt */}
                 <View className="mb-6">
                   <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
-                    Scene Setting
+                    {t("tryOnTabs.sceneSettings")}
                   </Text>
                   <TextInput
                     className="bg-white border border-gray-200 rounded-2xl p-4 text-gray-900 min-h-[120px]"
-                    placeholder="Describe the setting for your product showcase (e.g. modern urban street, luxurious hotel lobby, minimalist studio)"
+                    placeholder={t("placeholders.sceneDescription")}
                     value={productData.scenePrompt}
                     onChangeText={setProductScenePrompt}
                     multiline
@@ -262,7 +208,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     maxLength={300}
                   />
                   <Text className="text-sm font-outfit text-gray-500 mt-2">
-                    {productData.scenePrompt.length}/300 characters
+                    {productData.scenePrompt.length}/300 {t("placeholders.characterCount")}
                   </Text>
                 </View>
 
@@ -272,13 +218,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     <Ionicons name="bulb-outline" size={20} color="#3B82F6" />
                     <View className="ml-3 flex-1">
                       <Text className="font-outfit-semibold text-blue-900 mb-2">
-                        Tips for Better Results
+                        {t("tips.title")}
                       </Text>
                       <Text className="text-blue-800 text-sm font-outfit leading-relaxed">
-                        • Use descriptive scene settings for more engaging
-                        showcases{"\n"}• Specify lighting preferences (natural,
-                        studio, dramatic){"\n"}• Mention the target audience or
-                        use case
+                        {t("tips.sceneDetails")}
                       </Text>
                     </View>
                   </View>
@@ -288,7 +231,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
           </ScrollView>
         );
 
-      case 4:
+      case 3:
         return (
           <MotiView
             from={{ opacity: 0, translateX: 50 }}
@@ -306,10 +249,10 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                 </View>
                 <View>
                   <Text className="text-2xl font-outfit-semibold text-gray-900">
-                    Step 4
+                    {t("steps.step3")}
                   </Text>
                   <Text className="text-lg font-outfit text-gray-600">
-                    Ready to Generate
+                    {t("steps.readyToGenerate")}
                   </Text>
                 </View>
               </View>
@@ -317,26 +260,15 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
               {/* Summary */}
               <View className="bg-white rounded-2xl p-4 mb-6">
                 <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
-                  Summary
+                  {t("summary.title")}
                 </Text>
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="bag-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 font-outfit ml-3">
                     {productData.productImage
-                      ? "Product image uploaded ✓"
-                      : "No image selected"}
-                  </Text>
-                </View>
-
-                <View className="flex-row items-center mb-3">
-                  <Ionicons name="person-outline" size={20} color="#6B7280" />
-                  <Text className="text-gray-700 font-outfit ml-3">
-                    {productData.modelImage
-                      ? "Model image uploaded ✓"
-                      : productData.selectedAvatar
-                        ? `Avatar selected: ${productData.selectedAvatar.name || "Unnamed"} ✓`
-                        : "No model selected"}
+                      ? t("summary.productUploaded")
+                      : t("summary.noImageSelected")}
                   </Text>
                 </View>
 
@@ -344,8 +276,8 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   <Ionicons name="pricetag-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 font-outfit ml-3">
                     {productData.productName
-                      ? `Product: ${productData.productName}`
-                      : "No product name"}
+                      ? `${t("summary.product")} ${productData.productName}`
+                      : t("summary.noProductName")}
                   </Text>
                 </View>
 
@@ -357,15 +289,15 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                     style={{ marginTop: 2 }}
                   />
                   <Text className="text-gray-700 font-outfit even:ml-3 flex-1">
-                    Scene:{" "}
-                    {productData.scenePrompt || "Professional studio setting"}
+                    {t("summary.scene")}{" "}
+                    {productData.scenePrompt || t("scenePrompts.studio")}
                   </Text>
                 </View>
 
                 <View className="flex-row items-center">
                   <Ionicons name="time-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 font-outfit ml-3">
-                    Processing time: ~3-10 minutes
+                    {t("summary.processingTime")}
                   </Text>
                 </View>
               </View>
@@ -408,7 +340,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
       <View className="px-6 py-4">
         <View className="flex-row items-center justify-between mb-2">
           <Text className="text-sm font-outfit-semibold text-gray-600">
-            Step {currentStep} of 4
+            Step {currentStep} of 3
           </Text>
           <Text className="text-sm font-outfit-semibold text-green-500">
             {getWorkflowProgress()}% Complete
@@ -429,7 +361,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
       <View className="flex-1 px-6">{renderStepContent()}</View>
 
       {/* Navigation Buttons */}
-      {currentStep < 4 && (
+      {currentStep < 3 && (
         <View className="px-6 py-4 bg-white border-t border-gray-100">
           <View className="flex-row items-center gap-3">
             {/* Previous Button */}
@@ -459,7 +391,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   currentStep === 1 ? "text-gray-400" : "text-gray-700"
                 }`}
               >
-                Previous
+                {t("common.previous")}
               </Text>
             </TouchableOpacity>
 
@@ -483,7 +415,7 @@ const ProductToModel: React.FC<ProductToModelProps> = ({ onTryOnCreate }) => {
                   isCurrentStepValid() ? "text-white" : "text-gray-500"
                 }`}
               >
-                Next
+                {t("common.next")}
               </Text>
               <Ionicons
                 name="chevron-forward"

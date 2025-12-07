@@ -14,6 +14,7 @@ import { useAvatar } from "@/hooks/useAvatar";
 import { useWorkflowStore } from "@/store/workflowStore";
 import ReusableButton from "@/components/ui/ReusableButton";
 import * as ImagePicker from "expo-image-picker";
+import { useTranslation } from "react-i18next";
 // import { analytics } from "@/services/analytics";
 
 interface AvatarTryOnProps {
@@ -25,6 +26,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
   onTryOnCreate,
   onAvatarCreate,
 }) => {
+  const { t } = useTranslation();
   const { createAvatar, isCreating } = useAvatar();
   const { 
     workflowData, 
@@ -41,8 +43,8 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permissionResult.granted) {
         Alert.alert(
-          "Permission needed",
-          "Please allow access to your photo library to upload face image."
+          t("avatar.permissionNeeded"),
+          t("avatar.allowPhotoAccess")
         );
         return;
       }
@@ -59,7 +61,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       }
     } catch (error) {
       console.error("Error picking image:", error);
-      Alert.alert("Error", "Failed to pick image");
+      Alert.alert(t("common.error"), t("avatar.failedToPickImage"));
     }
   };
 
@@ -71,7 +73,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
   // Create avatar function
   const handleCreateAvatar = async () => {
     if (!faceImage) {
-      Alert.alert("Missing Information", "Please provide face image.");
+      Alert.alert(t("avatar.missingInfo"), t("avatar.provideFaceImage"));
       return;
     }
 
@@ -138,11 +140,11 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       } else {
         // Fallback alert if no modal handler
         Alert.alert(
-          "Avatar Created!",
-          `Your avatar "${newAvatar.name}" has been created successfully and will be processed in the background.`,
+          t("avatar.avatarCreated"),
+          t("avatar.avatarCreatedSuccess", { name: newAvatar.name }),
           [
             {
-              text: "OK",
+              text: t("common.ok"),
               onPress: () => {
                 console.log("Avatar created:", newAvatar);
               },
@@ -152,7 +154,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
       }
     } catch (error: any) {
       console.log("Sorun burada : ",error)
-      Alert.alert("Error", error.message || "Failed to create avatar");
+      Alert.alert(t("common.error"), error.message || "Failed to create avatar");
     }
   };
 
@@ -172,10 +174,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
               </View>
               <View>
                 <Text className="text-2xl font-outfit-semibold text-gray-900">
-                  Create Avatar
+                  {t("avatar.createAvatar")}
                 </Text>
                 <Text className="text-lg font-outfit text-gray-600">
-                  Upload your face photo
+                  {t("avatar.uploadFacePhoto")}
                 </Text>
               </View>
             </View>
@@ -190,12 +192,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                 />
                 <View className="ml-3 flex-1">
                   <Text className="font-outfit-semibold text-blue-900 mb-2">
-                    Privacy First
+                    {t("avatar.privacyFirst")}
                   </Text>
                   <Text className="text-blue-800 font-outfit text-sm">
-                    Mahremiyetinizi önemsiyoruz. Yüzünüzü yükleyin ve vücüdü
-                    olan bir avatar oluşturalım, bu avatar üzerinden işlemlere
-                    devam edin.
+                    {t("avatar.privacyDescription")}
                   </Text>
                 </View>
               </View>
@@ -204,11 +204,11 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
             {/* Avatar Name Input */}
             <View className="mb-6">
               <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
-                Avatar İsmi (Opsiyonel)
+                {t("avatar.avatarName")}
               </Text>
               <TextInput
                 className="bg-white border border-gray-200 rounded-2xl px-4 py-3 text-gray-900"
-                placeholder="lovelyavatar"
+                placeholder={t("avatar.avatarNamePlaceholder")}
                 value={avatarName}
                 onChangeText={setAvatarCreationName}
                 maxLength={50}
@@ -218,7 +218,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
             {/* Face Image Upload */}
             <View className="mb-6">
               <Text className="text-lg font-outfit-semibold text-gray-900 mb-3">
-                Yüz Fotoğrafı *
+                {t("avatar.facePhoto")} *
               </Text>
               <TouchableOpacity
                 onPress={pickFaceImage}
@@ -234,20 +234,20 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                       />
                     </View>
                     <Text className="text-blue-600 font-outfit-semibold">
-                      Fotoğraf Seçildi ✓
+                      {t("avatar.photoSelected")}
                     </Text>
                     <Text className="text-gray-500 font-outfit text-sm">
-                      Değiştirmek için tekrar dokunun
+                      {t("avatar.tapToChange")}
                     </Text>
                   </View>
                 ) : (
                   <View className="items-center">
                     <Ionicons name="camera-outline" size={40} color="#6B7280" />
                     <Text className="text-gray-700 font-outfit-semibold mt-3">
-                      Yüz Fotoğrafı Seçin
+                      {t("avatar.selectFacePhoto")}
                     </Text>
                     <Text className="text-gray-500 font-outfit text-sm text-center mt-1">
-                      En iyi sonuç için net, iyi aydınlatılmış selfie kullanın
+                      {t("avatar.photoTips")}
                     </Text>
                   </View>
                 )}
@@ -264,11 +264,10 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
                 />
                 <View className="ml-3 flex-1">
                   <Text className="font-outfit-semibold text-green-900 mb-2">
-                    İdeal Fotoğraf Özellikleri
+                    {t("avatar.idealPhoto")}
                   </Text>
                   <Text className="text-green-800 font-outfit text-sm">
-                    • Yüz net görünür olmalı{"\n"}• İyi aydınlatma{"\n"}• Tek
-                    kişi{"\n"}• Gözlük veya maske olmadan{"\n"}• Frontal açı
+                    {t("avatar.photoRequirements")}
                   </Text>
                 </View>
               </View>
@@ -276,7 +275,7 @@ const AvatarTryOn: React.FC<AvatarTryOnProps> = ({
 
             {/* Create Button */}
             <ReusableButton
-              title={isCreating ? "Avatar Oluşturuluyor..." : "Avatar Oluştur"}
+              title={isCreating ? t("avatar.creatingAvatar") : t("avatar.createAvatar")}
               onPress={handleCreateAvatar}
               disabled={!faceImage || isCreating}
               bgColor={faceImage && !isCreating ? "bg-blue-500" : "bg-gray-400"}

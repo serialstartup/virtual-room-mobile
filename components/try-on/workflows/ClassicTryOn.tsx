@@ -68,8 +68,8 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       !classicData.selectedAvatar
     ) {
       Alert.alert(
-        "Missing Image",
-        "Please upload your photo or select an avatar first."
+        t("common.missingImage"),
+        t("classic.uploadPhotoOrSelectAvatar")
       );
       return;
     }
@@ -79,8 +79,8 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       !classicData.dressDescription
     ) {
       Alert.alert(
-        "Missing Garment",
-        "Please select a garment image or add a description."
+        t("classic.missingGarment"),
+        t("classic.selectGarmentOrDescription")
       );
       return;
     }
@@ -89,13 +89,13 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
 
   const handleCreateTryOn = async () => {
     if (!isCurrentWorkflowValid()) {
-      Alert.alert("Incomplete Data", "Please complete all required steps.");
+      Alert.alert(t("common.incompleteData"), t("common.completeAllSteps"));
       return;
     }
 
     if (!hasCredits) {
       // analytics.trackOutOfCredits("classic_try_on");
-      Alert.alert("No Credits", "You need credits to create a try-on.");
+      Alert.alert(t("common.noCredits"), t("classic.needCreditsForTryOn"));
       return;
     }
 
@@ -115,7 +115,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       onTryOnCreate(newTryOn.id);
     } catch (err: any) {
       // analytics.trackTryOnFailed("classic", err.message || "Unknown error");
-      Alert.alert("Error", err.message || "Failed to create try-on");
+      Alert.alert(t("common.error"), err.message || t("classic.failedToCreateTryOn"));
     }
   };
 
@@ -148,10 +148,10 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   </View>
                   <View>
                     <Text className="text-2xl font-outfit-semibold text-gray-900">
-                      Step 1
+                      {t("steps.step1")}
                     </Text>
                     <Text className="text-lg font-outfit text-gray-600">
-                      Upload Your Photo
+                      {t("classic.uploadYourPhoto")}
                     </Text>
                   </View>
                 </View>
@@ -159,8 +159,8 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                 <UploadTab
                   onImageSelect={handlePersonImageSelect}
                   selectedImage={classicData.selfImage || undefined}
-                  title="Model ekle"
-                  skeletonTitle="Model seçmek için tıkla"
+                  title={t("classic.addModel")}
+                  skeletonTitle={t("classic.clickToSelectModel")}
                   enableAvatarSelection={true}
                   onAvatarSelect={handleAvatarSelect}
                   selectedAvatar={classicData.selectedAvatar}
@@ -188,9 +188,9 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                 </View>
                 <View>
                   <Text className="text-2xl font-outfit-semibold text-gray-900">
-                    Step 2
+                    {t("steps.step2")}
                   </Text>
-                  <Text className="text-lg font-outfit text-gray-600">Choose Garment</Text>
+                  <Text className="text-lg font-outfit text-gray-600">{t("classic.chooseGarment")}</Text>
                 </View>
               </View>
 
@@ -210,7 +210,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                         : "text-gray-500"
                     }`}
                   >
-                    Upload Image
+                    {t("classic.uploadImage")}
                   </Text>
                 </TouchableOpacity>
 
@@ -228,7 +228,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                         : "text-gray-500"
                     }`}
                   >
-                    Describe
+                    {t("classic.describe")}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -269,26 +269,26 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                 </View>
                 <View>
                   <Text className="text-2xl font-outfit-semibold text-gray-900">
-                    Step 3
+                    {t("steps.step3")}
                   </Text>
-                  <Text className="text-lg text-gray-600">Ready to Create</Text>
+                  <Text className="text-lg text-gray-600">{t("classic.readyToCreate")}</Text>
                 </View>
               </View>
 
               {/* Summary */}
               <View className="bg-white rounded-2xl p-4 mb-6">
                 <Text className="text-lg font-outfit-semibold text-gray-900 mb-4">
-                  Summary
+                  {t("summary.title")}
                 </Text>
 
                 <View className="flex-row items-center mb-3">
                   <Ionicons name="person-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 font-outfit ml-3">
                     {classicData.selfImage
-                      ? "Your photo uploaded ✓"
+                      ? t("classic.photoUploaded")
                       : classicData.selectedAvatar
-                        ? `Avatar selected: ${classicData.selectedAvatar.name || "Unnamed"} ✓`
-                        : "No photo or avatar selected"}
+                        ? t("classic.avatarSelected", { name: classicData.selectedAvatar.name || t("classic.unnamed") })
+                        : t("classic.noPhotoOrAvatarSelected")}
                   </Text>
                 </View>
 
@@ -296,17 +296,17 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   <Ionicons name="shirt-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 font-outfit ml-3">
                     {classicData.dressImage
-                      ? "Garment image uploaded ✓"
+                      ? t("classic.garmentImageUploaded")
                       : classicData.dressDescription
-                        ? `Described: "${classicData.dressDescription.substring(0, 30)}..."`
-                        : "No garment selected"}
+                        ? t("classic.garmentDescribed", { description: classicData.dressDescription.substring(0, 30) })
+                        : t("classic.noGarmentSelected")}
                   </Text>
                 </View>
 
                 <View className="flex-row items-center">
                   <Ionicons name="time-outline" size={20} color="#6B7280" />
                   <Text className="text-gray-700 font-outfit ml-3">
-                    Processing time: ~2-5 minutes
+                    {t("classic.processingTime")}
                   </Text>
                 </View>
               </View>
@@ -347,10 +347,10 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
       <View className="px-6 py-4">
         <View className="flex-row items-center justify-between mb-2">
           <Text className="text-sm font-outfit-semibold text-gray-600">
-            Step {currentStep} of 3
+            {t("classic.stepProgress", { current: currentStep, total: 3 })}
           </Text>
           <Text className="text-sm font-outfit-semibold text-virtual-primary">
-            {getWorkflowProgress()}% Complete
+            {t("classic.percentComplete", { percent: getWorkflowProgress() })}
           </Text>
         </View>
 
@@ -398,7 +398,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   currentStep === 1 ? "text-gray-400" : "text-gray-700"
                 }`}
               >
-                Previous
+                {t("common.previous")}
               </Text>
             </TouchableOpacity>
 
@@ -422,7 +422,7 @@ const ClassicTryOn: React.FC<ClassicTryOnProps> = ({ onTryOnCreate }) => {
                   isCurrentStepValid() ? "text-white" : "text-gray-500"
                 }`}
               >
-                Next
+                {t("common.next")}
               </Text>
               <Ionicons
                 name="chevron-forward"
